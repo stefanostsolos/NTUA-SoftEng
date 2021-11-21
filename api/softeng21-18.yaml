@@ -1,0 +1,428 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Softeng 21-18 Toll Interoperability API
+  description: REST API supporting the function of an interoperability
+    system for highway toll stations. Created for the purposes of the
+    term project of the Software Engineering course (7th Semester, NTUA).
+servers:
+  - url: https://localhost:91003/interoperability/api
+    description: Development server
+
+paths:
+  /login:
+    post:
+      description: Post user login credentials (encoded as application/
+        x-www-form-urlencoded) and perform identification.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "RandomUser123"
+                password:
+                  type: string
+                  example: "foobar123!"
+      
+      responses:
+        200:
+          description: Succesful identification
+          content:
+           application/json:
+            schema:
+             type: object
+             properties:
+              token:
+                type: string
+                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
+        400:
+          description: Invalid username or password
+        401:
+          description: Identification failed
+        402:
+          description: No response
+        500:
+          description: Internal server error
+
+
+  /admin/usermod/:
+    post:
+      description: Add new user or change password of existing user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "RandomUser123"
+                password:
+                  type: string
+                  example: "foobar123!"
+      responses:
+        200:
+          description: User added or password changed succesfully
+          content:
+           application/json:
+            schema:
+             type: object
+             properties:
+              username:
+                type: string
+                example: "RandomUser123"
+              password:
+                type: string
+                example: "foobar123!"
+        400:
+          description: Invalid username or password
+        401:
+          description: Unauthorised admin
+        402:
+          description: No data
+        500:
+          description: Internal server error
+
+
+  /admin/users/{username}:
+    get:
+      description: Get data of user with given username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Username of user whose data should be fetched
+          schema:
+            type: string
+            example: "RandomUser"
+      
+      responses:
+        200:
+          description: Succesful fetch of user data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: "RandomUser"
+                  password:
+                    type: string
+                    example: "foobar123!"
+                  email:
+                    type: string
+                    example: "foo@bar.com"
+        400:
+          description: Invalid username
+        401:
+          description: Unauthorised admin
+        402:
+          description: User with requested username not found
+        500:
+          description: Internal server error
+  
+
+  /admin/healthcheck:
+    get:
+      description: Check end-to-end connectivity (between user and database)
+
+      responses:
+        200:
+          description: Healthcheck successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description: >
+                      If end-to-end connectivity is established, return "OK",
+                      otherwise return "failed".
+                    type: string
+                    enum: ["OK", "failed"]
+                  dbconnection:
+                    type: string
+                    example: "..."
+        401:
+          description: Unauthorised admin
+        402:
+          description: No data
+        500:
+          description: Internal server error
+
+
+  /admin/resetpasses:
+    post:
+      description: >
+        Deletes all pass records from the database and resets 
+        the administrator account to default (username: admin, 
+        password: freepasses4all).
+
+      responses:
+        200:
+          description: >
+            Succesful deletion of pass records and reset of 
+            default administrator account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        401:
+          description: Unauthorised admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+        402:
+          description: No data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+
+
+  /PassesPerStation/{stationID}/{date_from}/{date_to}:
+    get:
+      description: >
+        Fetch a list of passes that were recorded between specified dates,
+        on station with given ID. The passes are returned in ascending time order.
+      parameters:
+        - name: stationID
+          in: path
+          required: true
+          description: ID of station for which passes will be fetched.
+          schema:
+            type: string
+            example: "AO17"
+        - name: date_from
+          in: path
+          required: true
+          description: The earliest date of pass records to be fetched in YYYYMMDD format.
+          schema:
+            type: string
+            example: "2020-07-18"
+        - name: date_to
+          in: path
+          required: true
+          description: The latest date of pass records to be fetched in YYYYMMDD format.
+          schema:
+            type: string
+            example: "2020-08-18"
+        - name: format
+          in: query
+          description: The data format of the response content.
+          schema:
+            type: string
+            enum: ["json", "csv"]
+            default: "json"
+
+      responses:
+        200: 
+          description: Return list with analytic data for the passes in the specific given time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passesPerStation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/passesPerStation'
+        400:
+          description: Invalid time period or station id
+        401:
+          description: Unauthorised user
+        402:
+          description: No records found with the requested parameters
+        500:
+          description: Internal server error          
+
+
+  /PassesAnalysis/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
+    get:
+      description: >
+        Fetch a list of passes that were recorded between specified dates,
+        on stations of operator {op1_ID}, in which a tag of operator {op2_ID} 
+        was used. The passes are returned in ascending time order.
+      parameters:
+        - name: op1_ID
+          in: path
+          required: true
+          description: > 
+            The ID of the owner of the station for which the pass
+            records will be fetched.
+          schema:
+            type: string
+            example: "AO"
+        - name: op2_ID
+          in: path
+          required: true
+          description: >
+            The ID of the owner of the tags for which the pass records
+            will be fetched.
+          schema:
+            type: string
+            example: "EO"
+        - name: date_from
+          in: path
+          required: true
+          description: >
+            The earliest date of pass records to be fetched in YYYYMMDD format.
+          schema:
+            type: string
+            example: "20200517"
+        - name: date_to
+          in: path
+          required: true
+          description: >
+            The latest date of pass records to be fetched in YYYYMMDD format.
+          schema:
+            type: string
+            example: "20200629"
+        - name: format
+          in: query
+          description: The data format of the response content.
+          schema:
+            type: string
+            enum: ["json", "csv"]
+            default: "json" 
+      
+      responses:
+        200:
+          description: Succesful fetch of pass record information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passesAnalysis'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/passesAnalysis'
+                
+        400:
+          description: Invalid input parameters (operator IDs or dates)
+        401:
+          description: Unauthorised user
+        402:
+          description: No records found with the requested parameters
+        500:
+          description: Internal server error
+                          
+
+components:
+  schemas:
+    status_ok:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["OK"]
+
+    status_failed:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["failed"]
+
+    passesPerStation:
+      type: object
+      properties:
+        Station:
+          type: string
+          example: "AO17"
+        StationOperator:
+          type: string
+          example: "aodos"
+        RequestTimestamp:
+          type: string
+          example: "2020-09-25 15:33:25"
+        PeriodFrom:
+          type: string
+          example: "2020-05-25 00:00:00"
+        PeriodTo:
+          type: string
+          example: "2021-01-10 23:59:59"
+        NumberOfPasses:
+          type: array
+          items:
+            type: object
+            properties:
+              PassIndex:
+                type: integer
+                example: 1
+              PassID:
+                type: string
+                example: "WSI3219204"
+              PassTimeStamp:
+                type: string
+                example: "2020-02-17 19:46:27"
+              VehicleID:
+                type: string
+                example: "ED51EWW52190"
+              TagProvider:
+                type: string
+                example: "aodos"
+              PassType:
+                type: string
+                enum: ["home", "visitor"]
+                example: "visitor"
+              PassCharge:
+                type: number
+                format: float
+                example: 2.8
+
+    passesAnalysis:
+      type: object
+      properties:
+        op1_ID:
+          type: string
+          example: "AO"
+        op2_ID:
+          type: string
+          example: "EO"
+        RequestTimestamp:
+          type: string
+          example: "2020-07-01 12:39:12"
+        PeriodFrom:
+          type: string
+          example: "2020-05-17 00:00:00"
+        PeriodTo:
+          type: string
+          example: "2020-06-29 23:59:59"
+        NumberOfPasses:
+          type: integer
+          example: 9182
+        PassesList:
+          type: array
+          items:
+            type: object
+            properties:
+              PassIndex:
+                type: integer
+                example: 1
+              PassID:
+                type: string
+                example: "XNN3133547"
+              StationID:
+                type: string
+                example: "AO17"
+              TimeStamp:
+                type: string
+                example: "2020-05-19 17:59:17"
+              VehicleID:
+                type: string
+                example: "EM54HQI58682"
+              Charge:
+                type: number
+                format: float
+                example: 2.8
