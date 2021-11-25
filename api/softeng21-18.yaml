@@ -12,21 +12,15 @@ servers:
 paths:
   /login:
     post:
-      description: Post user login credentials (encoded as application/
-        x-www-form-urlencoded) and perform identification.
+      description: > 
+        Post user login credentials (inputted by user in the login form) 
+        and perform identification.
       requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  example: "RandomUser123"
-                password:
-                  type: string
-                  example: "foobar123!"
+              $ref: '#/components/schemas/username_password'
       
       responses:
         200:
@@ -38,53 +32,51 @@ paths:
              properties:
               token:
                 type: string
-                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
+                description: The user's authentication token
+                example: 
+                  $ref: '#/components/examples/authToken'
         400:
           description: Invalid username or password
-        401:
-          description: Identification failed
         402:
-          description: No response
+          description: No user found with given credentials
         500:
           description: Internal server error
-
-
+  
+  /logout:
+    post:
+      description: Perform user logout
+      parameters:
+        - $ref: '#/components/parameters/customHeader'
+      responses:
+        200:
+          description: Succesful logout
+        500:
+          description: Internal server error
+  
   /admin/usermod/:
     post:
       description: Add new user or change password of existing user
+      parameters:
+        - $ref: '#/components/parameters/customHeader'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  example: "RandomUser123"
-                password:
-                  type: string
-                  example: "foobar123!"
+              $ref: '#/components/schemas/username_password'
       responses:
         200:
-          description: User added or password changed succesfully
+          description: >
+            User added or password changed succesfully. The new
+            credentials of the user are returned.
           content:
            application/json:
             schema:
-             type: object
-             properties:
-              username:
-                type: string
-                example: "RandomUser123"
-              password:
-                type: string
-                example: "foobar123!"
+             $ref: '#/components/schemas/username_password'
         400:
           description: Invalid username or password
         401:
           description: Unauthorised admin
-        402:
-          description: No data
         500:
           description: Internal server error
 
@@ -100,6 +92,7 @@ paths:
           schema:
             type: string
             example: "RandomUser"
+        - $ref: '#/components/parameters/customHeader'
       
       responses:
         200:
@@ -107,17 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  username:
-                    type: string
-                    example: "RandomUser"
-                  password:
-                    type: string
-                    example: "foobar123!"
-                  email:
-                    type: string
-                    example: "foo@bar.com"
+                $ref: '#/components/schemas/username_password_email'
         400:
           description: Invalid username
         401:
@@ -127,6 +110,49 @@ paths:
         500:
           description: Internal server error
   
+  /admin/system/passesupd:
+    post:
+      description: >
+        Post a CSV file containing the pass records from a single
+        toll gate station.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              file:
+                contentType: text/csv
+    
+      responses:
+        200:
+          description: >
+            Succesful post of CSV file and importation of new pass records.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  PassesInUploadedFile:
+                    type: integer
+                    example: 572
+                  PassesImported:
+                    type: integer
+                    example: 563
+                  TotalPassesInDatabase:
+                    type: integer
+                    example: 8731
+        400:
+          description: Invalid file uploaded
+        401:
+          description: Unauthorised admin
+        500:
+          description: Internal server error
 
   /admin/healthcheck:
     get:
@@ -149,10 +175,6 @@ paths:
                   dbconnection:
                     type: string
                     example: "..."
-        401:
-          description: Unauthorised admin
-        402:
-          description: No data
         500:
           description: Internal server error
 
@@ -173,18 +195,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_ok'
-        401:
-          description: Unauthorised admin
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/status_failed'
-        402:
-          description: No data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/status_failed'
         500:
           description: Internal server error
           content:
@@ -206,27 +216,10 @@ paths:
           schema:
             type: string
             example: "AO17"
-        - name: date_from
-          in: path
-          required: true
-          description: The earliest date of pass records to be fetched in YYYYMMDD format.
-          schema:
-            type: string
-            example: "2020-07-18"
-        - name: date_to
-          in: path
-          required: true
-          description: The latest date of pass records to be fetched in YYYYMMDD format.
-          schema:
-            type: string
-            example: "2020-08-18"
-        - name: format
-          in: query
-          description: The data format of the response content.
-          schema:
-            type: string
-            enum: ["json", "csv"]
-            default: "json"
+        - $ref: '#/components/parameters/dateFromParam'
+        - $ref: '#/components/parameters/dateToParam'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
 
       responses:
         200: 
@@ -273,29 +266,10 @@ paths:
           schema:
             type: string
             example: "EO"
-        - name: date_from
-          in: path
-          required: true
-          description: >
-            The earliest date of pass records to be fetched in YYYYMMDD format.
-          schema:
-            type: string
-            example: "20200517"
-        - name: date_to
-          in: path
-          required: true
-          description: >
-            The latest date of pass records to be fetched in YYYYMMDD format.
-          schema:
-            type: string
-            example: "20200629"
-        - name: format
-          in: query
-          description: The data format of the response content.
-          schema:
-            type: string
-            enum: ["json", "csv"]
-            default: "json" 
+        - $ref: '#/components/parameters/dateFromParam'
+        - $ref: '#/components/parameters/dateToParam'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
       
       responses:
         200:
@@ -319,7 +293,75 @@ paths:
                           
 
 components:
+  examples:
+    authToken: 
+      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
+
+  parameters:
+    dateFromParam:
+      name: date_from
+      in: path
+      required: true
+      description: The earliest date of pass records to be fetched in YYYYMMDD format.
+      schema:
+        type: string
+        example: "20200718"
+
+    dateToParam:
+      name: date_to
+      in: path
+      required: true
+      description: The latest date of pass records to be fetched in YYYYMMDD format.
+      schema:
+        type: string
+        example: "20200818"
+
+    formatParam:
+      name: format
+      in: query
+      description: The data format of the response content.
+      schema:
+        type: string
+        enum: ["json", "csv"]
+        default: "json"
+    
+    customHeader:
+      name: X-OBSERVATORY-AUTH
+      in: header
+      required: true
+      description: >
+        Custom HTTP header to be sent on each authorised operation.
+        Contains the user's authentication token, as returned from the
+        login operation.
+      schema:
+        type: string
+        example:
+          $ref: '#/components/examples/authToken'
+
   schemas:
+    username_password:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "RandomUser"
+        password:
+          type: string
+          example: "foobar123!"
+    
+    username_password_email:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "RandomUser"
+        password:
+          type: string
+          example: "foobar123!"
+        email:
+          type: string
+          example: "example@mail.com"
+
     status_ok:
       type: object
       properties:
