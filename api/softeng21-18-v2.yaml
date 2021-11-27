@@ -1,0 +1,836 @@
+openapi: 3.0.0
+info:
+  title: Softeng 21-18 Toll Interoperability API
+  description: REST API supporting the function of an interoperability system for highway toll stations. Created for the purposes of the term project of the Software Engineering course (7th Semester, NTUA).
+  version: 1.0.0
+servers:
+- url: https://localhost:91003/interoperability/api
+  description: Development server
+paths:
+  /login:
+    post:
+      description: |
+        Post user login credentials (inputted by user in the login form)  and perform identification.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/username_password'
+        required: true
+      responses:
+        "200":
+          description: Succesful identification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Invalid username or password
+        "402":
+          description: No user found with given credentials
+        "500":
+          description: Internal server error
+  /logout:
+    post:
+      description: Perform user logout
+      parameters:
+      - name: X-OBSERVATORY-AUTH
+        in: header
+        description: |
+          Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: '{"$ref":"#/components/examples/authToken"}'
+      responses:
+        "200":
+          description: Succesful logout
+        "500":
+          description: Internal server error
+  /admin/usermod/:
+    post:
+      description: Add new user or change password of existing user
+      parameters:
+      - name: X-OBSERVATORY-AUTH
+        in: header
+        description: |
+          Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: '{"$ref":"#/components/examples/authToken"}'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/username_password'
+        required: true
+      responses:
+        "200":
+          description: |
+            User added or password changed succesfully. The new credentials of the user are returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/username_password'
+        "400":
+          description: Invalid username or password
+        "401":
+          description: Unauthorised admin
+        "500":
+          description: Internal server error
+  /admin/users/{username}:
+    get:
+      description: Get data of user with given username
+      parameters:
+      - name: username
+        in: path
+        description: Username of user whose data should be fetched
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: RandomUser
+      - name: X-OBSERVATORY-AUTH
+        in: header
+        description: |
+          Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: '{"$ref":"#/components/examples/authToken"}'
+      responses:
+        "200":
+          description: Succesful fetch of user data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/username_password_email'
+        "400":
+          description: Invalid username
+        "401":
+          description: Unauthorised admin
+        "402":
+          description: User with requested username not found
+        "500":
+          description: Internal server error
+  /admin/system/passesupd:
+    post:
+      description: |
+        Post a CSV file containing the pass records from a single toll gate station.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/system_passesupd_body'
+            encoding:
+              file:
+                contentType: text/csv
+                style: form
+        required: true
+      responses:
+        "200":
+          description: |
+            Succesful post of CSV file and importation of new pass records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: Invalid file uploaded
+        "401":
+          description: Unauthorised admin
+        "500":
+          description: Internal server error
+  /admin/healthcheck:
+    get:
+      description: Check end-to-end connectivity (between user and database)
+      responses:
+        "200":
+          description: Healthcheck successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "500":
+          description: Internal server error
+  /admin/resetpasses:
+    post:
+      description: |
+        Deletes all pass records from the database and resets  the administrator account to default (username: admin,  password: freepasses4all).
+      responses:
+        "200":
+          description: |
+            Succesful deletion of pass records and reset of  default administrator account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+  /admin/resetstations/:
+    post:
+      description: |
+        Deletes all stations records from the database and resets  the stations data to default.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/admin_resetstations_body'
+            encoding:
+              file:
+                contentType: text/csv
+                style: form
+        required: true
+      responses:
+        "200":
+          description: |
+            Succesful deletion of stations records and reset of  default data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+  /admin/resetvehicles/:
+    post:
+      description: |
+        Deletes all vehicles records from the database and resets the vehicle datato default.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/admin_resetvehicles_body'
+            encoding:
+              file:
+                contentType: text/csv
+                style: form
+        required: true
+      responses:
+        "200":
+          description: |
+            Succesful deletion of vehicles records and reset of default vehicle data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+  /PassesPerStation/{stationID}/{date_from}/{date_to}:
+    get:
+      description: |
+        Fetch a list of passes that were recorded between specified dates, on station with given ID. The passes are returned in ascending time order.
+      parameters:
+      - name: stationID
+        in: path
+        description: ID of station for which passes will be fetched.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: AO17
+      - name: date_from
+        in: path
+        description: The earliest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200718"
+      - name: date_to
+        in: path
+        description: The latest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200818"
+      - name: format
+        in: query
+        description: The data format of the response content.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: json
+          enum:
+          - json
+          - csv
+      - name: X-OBSERVATORY-AUTH
+        in: header
+        description: |
+          Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: '{"$ref":"#/components/examples/authToken"}'
+      responses:
+        "200":
+          description: Return list with analytic data for the passes in the specific given time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passesPerStation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/passesPerStation'
+        "400":
+          description: Invalid time period or station id
+        "401":
+          description: Unauthorised user
+        "402":
+          description: No records found with the requested parameters
+        "500":
+          description: Internal server error
+  /PassesAnalysis/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
+    get:
+      description: |
+        Fetch a list of passes that were recorded between specified dates, on stations of operator {op1_ID}, in which a tag of operator {op2_ID}  was used. The passes are returned in ascending time order.
+      parameters:
+      - name: op1_ID
+        in: path
+        description: |
+          The ID of the owner of the station for which the pass records will be fetched.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: AO
+      - name: op2_ID
+        in: path
+        description: |
+          The ID of the owner of the tags for which the pass records will be fetched.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: EO
+      - name: date_from
+        in: path
+        description: The earliest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200718"
+      - name: date_to
+        in: path
+        description: The latest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200818"
+      - name: format
+        in: query
+        description: The data format of the response content.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: json
+          enum:
+          - json
+          - csv
+      - name: X-OBSERVATORY-AUTH
+        in: header
+        description: |
+          Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: '{"$ref":"#/components/examples/authToken"}'
+      responses:
+        "200":
+          description: Succesful fetch of pass record information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passesAnalysis'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/passesAnalysis'
+        "400":
+          description: Invalid input parameters (operator IDs or dates)
+        "401":
+          description: Unauthorised user
+        "402":
+          description: No records found with the requested parameters
+        "500":
+          description: Internal server error
+  /PassesCost/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
+    get:
+      description: |
+        Returns the number of passes from op1_ID in which op2_ID tags were used  and also the amount that op2_ID owes to op1_ID for the given period.
+      parameters:
+      - name: op1_ID
+        in: path
+        description: |
+          The ID of the owner of the station to whom a different  operator ID was used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: AO
+      - name: op2_ID
+        in: path
+        description: |
+          The ID of the owner of the station whose tag ID was used to a different operator.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: EO
+      - name: date_from
+        in: path
+        description: The earliest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200718"
+      - name: date_to
+        in: path
+        description: The latest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200818"
+      - name: format
+        in: query
+        description: The data format of the response content.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: json
+          enum:
+          - json
+          - csv
+      - name: X-OBSERVATORY-AUTH
+        in: header
+        description: |
+          Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: '{"$ref":"#/components/examples/authToken"}'
+      responses:
+        "200":
+          description: Succesful fetch of pass record information and fee amount
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passesCost'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/passesCost'
+        "400":
+          description: Invalid input parameters (operator IDs or dates)
+        "401":
+          description: Unauthorised user
+        "402":
+          description: No records found with the requested parameters
+        "500":
+          description: Internal server error
+  /ChargesBy/{op1_ID}/{date_from}/{date_to}:
+    get:
+      description: |
+        Returns the number of passes from op1_ID in which the op tag that was used was different from that of op1_ID and also the amount that  all the other operators owe to op1_ID for the given period.
+      parameters:
+      - name: op1_ID
+        in: path
+        description: |
+          The ID of the owner of the station to whom a different  operator ID was used.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: AO
+      - name: date_from
+        in: path
+        description: The earliest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200718"
+      - name: date_to
+        in: path
+        description: The latest date of pass records to be fetched in YYYYMMDD format.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: "20200818"
+      - name: format
+        in: query
+        description: The data format of the response content.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: json
+          enum:
+          - json
+          - csv
+      - name: X-OBSERVATORY-AUTH
+        in: header
+        description: |
+          Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: '{"$ref":"#/components/examples/authToken"}'
+      responses:
+        "200":
+          description: Succesful fetch of passes' number and passes' cost
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChargesBy'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/ChargesBy'
+        "400":
+          description: Invalid input parameters (operator IDs or dates)
+        "401":
+          description: Unauthorised user
+        "402":
+          description: No records found with the requested parameters
+        "500":
+          description: Internal server error
+components:
+  schemas:
+    username_password:
+      type: object
+      properties:
+        username:
+          type: string
+          example: RandomUser
+        password:
+          type: string
+          example: foobar123!
+    username_password_email:
+      type: object
+      properties:
+        username:
+          type: string
+          example: RandomUser
+        password:
+          type: string
+          example: foobar123!
+        email:
+          type: string
+          example: example@mail.com
+    status_ok:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - OK
+    status_failed:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - failed
+    passesPerStation:
+      type: object
+      properties:
+        Station:
+          type: string
+          example: AO17
+        StationOperator:
+          type: string
+          example: aodos
+        RequestTimestamp:
+          type: string
+          example: 2020-09-25 15:33:25
+        PeriodFrom:
+          type: string
+          example: 2020-05-25 00:00:00
+        PeriodTo:
+          type: string
+          example: 2021-01-10 23:59:59
+        NumberOfPasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/passesPerStation_NumberOfPasses'
+    passesAnalysis:
+      type: object
+      properties:
+        op1_ID:
+          type: string
+          example: AO
+        op2_ID:
+          type: string
+          example: EO
+        RequestTimestamp:
+          type: string
+          example: 2020-07-01 12:39:12
+        PeriodFrom:
+          type: string
+          example: 2020-05-17 00:00:00
+        PeriodTo:
+          type: string
+          example: 2020-06-29 23:59:59
+        NumberOfPasses:
+          type: integer
+          example: 9182
+        PassesList:
+          type: array
+          items:
+            $ref: '#/components/schemas/passesAnalysis_PassesList'
+    passesCost:
+      type: object
+      properties:
+        op1_ID:
+          type: string
+          example: AO
+        op2_ID:
+          type: string
+          example: EO
+        RequestTimestamp:
+          type: string
+          example: 2020-07-02 12:39:12
+        PeriodFrom:
+          type: string
+          example: 2020-06-01 00:00:00
+        PeriodTo:
+          type: string
+          example: 2020-07-01 23:59:59
+        NumberOfPasses:
+          type: integer
+          example: 3452
+        PassesCost:
+          type: number
+          format: float
+          example: 152.82
+    ChargesBy:
+      type: object
+      properties:
+        op1_ID:
+          type: string
+          example: AO
+        RequestTimestamp:
+          type: string
+          example: 2020-08-02 9:00:12
+        PeriodFrom:
+          type: string
+          example: 2020-07-01 00:00:00
+        PeriodTo:
+          type: string
+          example: 2020-08-01 23:59:59
+        PPOList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChargesBy_PPOList'
+    inline_response_200:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The user's authentication token
+          example: '{"$ref":"#/components/examples/authToken"}'
+    system_passesupd_body:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+    inline_response_200_1:
+      type: object
+      properties:
+        PassesInUploadedFile:
+          type: integer
+          example: 572
+        PassesImported:
+          type: integer
+          example: 563
+        TotalPassesInDatabase:
+          type: integer
+          example: 8731
+    inline_response_200_2:
+      type: object
+      properties:
+        status:
+          type: string
+          description: |
+            If end-to-end connectivity is established, return "OK", otherwise return "failed".
+          enum:
+          - OK
+          - failed
+        dbconnection:
+          type: string
+          example: '...'
+    admin_resetstations_body:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+    admin_resetvehicles_body:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+    passesPerStation_NumberOfPasses:
+      type: object
+      properties:
+        PassIndex:
+          type: integer
+          example: 1
+        PassID:
+          type: string
+          example: WSI3219204
+        PassTimeStamp:
+          type: string
+          example: 2020-02-17 19:46:27
+        VehicleID:
+          type: string
+          example: ED51EWW52190
+        TagProvider:
+          type: string
+          example: aodos
+        PassType:
+          type: string
+          example: visitor
+          enum:
+          - home
+          - visitor
+        PassCharge:
+          type: number
+          format: float
+          example: 2.8
+    passesAnalysis_PassesList:
+      type: object
+      properties:
+        PassIndex:
+          type: integer
+          example: 1
+        PassID:
+          type: string
+          example: XNN3133547
+        StationID:
+          type: string
+          example: AO17
+        TimeStamp:
+          type: string
+          example: 2020-05-19 17:59:17
+        VehicleID:
+          type: string
+    ChargesBy_PPOList:
+      type: object
+      properties:
+        VisitingOperator:
+          type: string
+          example: EO
+        NumberOfPasses:
+          type: integer
+          example: 2398
+        PassesCost:
+          type: number
+          format: float
+          example: 130.91
+        Charge:
+          type: number
+          format: float
+          example: 2.8
+  parameters:
+    dateFromParam:
+      name: date_from
+      in: path
+      description: The earliest date of pass records to be fetched in YYYYMMDD format.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        example: "20200718"
+    dateToParam:
+      name: date_to
+      in: path
+      description: The latest date of pass records to be fetched in YYYYMMDD format.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        example: "20200818"
+    formatParam:
+      name: format
+      in: query
+      description: The data format of the response content.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        default: json
+        enum:
+        - json
+        - csv
+    customHeader:
+      name: X-OBSERVATORY-AUTH
+      in: header
+      description: |
+        Custom HTTP header to be sent on each authorised operation. Contains the user's authentication token, as returned from the login operation.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        example: '{"$ref":"#/components/examples/authToken"}'
+  examples:
+    authToken:
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os
