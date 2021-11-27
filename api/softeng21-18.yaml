@@ -33,8 +33,7 @@ paths:
               token:
                 type: string
                 description: The user's authentication token
-                example: 
-                  $ref: '#/components/examples/authToken'
+                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
         400:
           description: Invalid username or password
         402:
@@ -201,6 +200,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_failed'
+  
+
+  /admin/resetstations/:
+    post:
+      description: >
+        Resets the station records in the database to default.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              file:
+                contentType: text/csv
+
+      responses:
+        200:
+          description: >
+            Succesful reset of station records to default.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+  
+
+  /admin/resetvehicles/:
+    post:
+      description: >
+        Resets the vehicle records in the database to default.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              file:
+                contentType: text/csv
+
+      responses:
+        200:
+          description: >
+            Succesful reset of vehicle records to default.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
 
 
   /PassesPerStation/{stationID}/{date_from}/{date_to}:
@@ -248,24 +315,8 @@ paths:
         on stations of operator {op1_ID}, in which a tag of operator {op2_ID} 
         was used. The passes are returned in ascending time order.
       parameters:
-        - name: op1_ID
-          in: path
-          required: true
-          description: > 
-            The ID of the owner of the station for which the pass
-            records will be fetched.
-          schema:
-            type: string
-            example: "AO"
-        - name: op2_ID
-          in: path
-          required: true
-          description: >
-            The ID of the owner of the tags for which the pass records
-            will be fetched.
-          schema:
-            type: string
-            example: "EO"
+        - $ref: '#/components/parameters/stationOwnerID'
+        - $ref: '#/components/parameters/tagOwnerID'
         - $ref: '#/components/parameters/dateFromParam'
         - $ref: '#/components/parameters/dateToParam'
         - $ref: '#/components/parameters/formatParam'
@@ -290,14 +341,111 @@ paths:
           description: No records found with the requested parameters
         500:
           description: Internal server error
-                          
+
+
+  /PassesCost/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
+    get:
+      description: >
+        Fetch the number of passes that were recorded between specified dates,
+        on stations of operator {op1_ID}, in which a tag of operator {op2_ID} 
+        was used. In addition, fetch the total cost of these passes.
+      parameters:
+        - $ref: '#/components/parameters/stationOwnerID'
+        - $ref: '#/components/parameters/tagOwnerID'
+        - $ref: '#/components/parameters/dateFromParam'
+        - $ref: '#/components/parameters/dateToParam'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
+        
+      responses:
+        200:
+          description: Succesful fetch of pass record and total cost information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/passesCost'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/passesCost'
+                
+        400:
+          description: Invalid input parameters (operator IDs or dates)
+        401:
+          description: Unauthorised user
+        402:
+          description: No records found with the requested parameters
+        500:
+          description: Internal server error
+
+
+  /ChargesBy/{op_ID}/{date_from}/{date_to}:
+    get:
+      description: >
+        Fetch the number of passes that were recorded between specified dates,
+        on stations of operator {op_ID}, in which a tag *not* belonging to {op_ID}
+        was used. In addition, fetch the total cost of these passes, groupped by
+        the operator to whom the tags used belong.
+      parameters:
+        - name: op_ID
+          in: path
+          required: true 
+          description: >
+            The ID of the owner of the stations for which the pass
+            records will be fetched.
+          schema:
+            type: string
+            example: "AO"
+        - $ref: '#/components/parameters/dateFromParam'
+        - $ref: '#/components/parameters/dateToParam'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
+        
+      responses:
+        200:
+          description: Succesful fetch of pass record and total cost information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/chargesBy'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/chargesBy'
+                
+        400:
+          description: Invalid input parameters (operator IDs or dates)
+        401:
+          description: Unauthorised user
+        402:
+          description: No records found with the requested parameters
+        500:
+          description: Internal server error
+                     
 
 components:
-  examples:
-    authToken: 
-      value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
 
   parameters:
+    stationOwnerID:
+      name: op1_ID
+      in: path
+      required: true
+      description: > 
+        The ID of the owner of the stations for which the pass
+        records will be fetched.
+      schema:
+        type: string
+        example: "AO"
+
+    tagOwnerID:
+      name: op2_ID
+      in: path
+      required: true
+      description: >
+        The ID of the owner of the tags for which the pass records
+        will be fetched.
+      schema:
+        type: string
+        example: "EO"
+
     dateFromParam:
       name: date_from
       in: path
@@ -335,8 +483,7 @@ components:
         login operation.
       schema:
         type: string
-        example:
-          $ref: '#/components/examples/authToken'
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
 
   schemas:
     username_password:
@@ -375,6 +522,9 @@ components:
         status:
           type: string
           enum: ["failed"]
+        details:
+          type: string
+          example: "Optional failure details"
 
     passesPerStation:
       type: object
@@ -468,3 +618,60 @@ components:
                 type: number
                 format: float
                 example: 2.8
+      
+    passesCost:
+      type: object
+      properties:
+        op1_ID:
+          type: string
+          example: "AO"
+        op2_ID:
+          type: string
+          example: "EO"
+        RequestTimestamp:
+          type: string
+          example: "2020-07-02 12:39:12"
+        PeriodFrom:
+          type: string
+          example: "2020-06-01 00:00:00"
+        PeriodTo:
+          type: string
+          example: "2020-06-30 23:59:59"
+        NumberOfPasses:
+          type: integer
+          example: 3452
+        PassesCost:
+          type: number
+          format: float
+          example: 15242.82
+    
+    chargesBy:
+      type: object
+      properties:
+        op_ID:
+          type: string
+          example: "AO"
+        RequestTimestamp:
+          type: string
+          example: "2020-08-02 09:00:12"
+        PeriodFrom:
+          type: string
+          example: "2020-07-01 00:00:00"
+        PeriodTo:
+          type: string
+          example: "2020-07-31 23:59:59"
+        PPOList:
+          type: array
+          items:
+            type: object
+            properties:
+              VisitingOperator:
+                type: string
+                example: "EO"
+              NumberOfPasses:
+                type: integer
+                example: 2398
+              PassesCost:
+                type: number
+                format: float
+                example: 13017.91
