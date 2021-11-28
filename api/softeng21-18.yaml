@@ -1,12 +1,13 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 1.0.1
   title: Softeng 21-18 Toll Interoperability API
-  description: REST API supporting the function of an interoperability
-    system for highway toll stations. Created for the purposes of the
-    term project of the Software Engineering course (7th Semester, NTUA).
+  description: >
+    REST API supporting the function of an interoperability system 
+    for highway toll stations. Created for the purposes of the term 
+    project of the Software Engineering course (7th Semester, NTUA).
 servers:
-  - url: https://localhost:91003/interoperability/api
+  - url: https://localhost:9103/interoperability/api
     description: Development server
 
 paths:
@@ -41,6 +42,7 @@ paths:
         500:
           description: Internal server error
   
+
   /logout:
     post:
       description: Perform user logout
@@ -52,9 +54,11 @@ paths:
         500:
           description: Internal server error
   
+
   /admin/usermod/:
     post:
-      description: Add new user or change password of existing user
+      description: >
+        Add new user or change password of existing user
       parameters:
         - $ref: '#/components/parameters/customHeader'
       requestBody:
@@ -82,7 +86,8 @@ paths:
 
   /admin/users/{username}:
     get:
-      description: Get data of user with given username
+      description: >
+        Get data of user with given username
       parameters:
         - name: username
           in: path
@@ -109,6 +114,7 @@ paths:
         500:
           description: Internal server error
   
+
   /admin/system/passesupd:
     post:
       description: >
@@ -153,9 +159,11 @@ paths:
         500:
           description: Internal server error
 
+
   /admin/healthcheck:
     get:
-      description: Check end-to-end connectivity (between user and database)
+      description: > 
+        Check end-to-end connectivity (between user and database)
 
       responses:
         200:
@@ -483,7 +491,7 @@ components:
         login operation.
       schema:
         type: string
-        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
+        example: "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
 
   schemas:
     username_password:
@@ -545,6 +553,9 @@ components:
           type: string
           example: "2021-01-10 23:59:59"
         NumberOfPasses:
+          type: integer
+          example: 1359
+        PassesList:
           type: array
           items:
             type: object
