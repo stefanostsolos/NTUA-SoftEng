@@ -1,68 +1,62 @@
 openapi: 3.0.0
 info:
-  version: 1.0.1
+  version: 1.0.2
   title: Softeng 21-18 Toll Interoperability API
   description: >
-    REST API supporting the function of an interoperability system 
-    for highway toll stations. Created for the purposes of the term 
-    project of the Software Engineering course (7th Semester, NTUA).
+    REST API supporting the function of an interoperability system  for highway
+    toll stations. Created for the purposes of the term  project of the Software
+    Engineering course (7th Semester, NTUA).
 servers:
-  # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/softeng21-18/interoperability/1.0.1
   - url: https://localhost:9103/interoperability/api
     description: Development server
 security:
   - bearerAuth: []
-
 paths:
   /login:
     post:
-      description: > 
-        Post user login credentials (inputted by user in the login form) 
-        and perform identification.
+      description: >
+        Post user login credentials (inputted by user in the login form)  and
+        perform identification.
       requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/username_password'
-      
       responses:
-        200:
+        '200':
           description: Succesful identification
           content:
-           application/json:
-            schema:
-             type: object
-             properties:
-              token:
-                type: string
-                description: The user's authentication token
-                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
-        400:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: The user's authentication token
+                    example: >-
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os
+        '400':
           description: Invalid username or password
-        402:
+        '402':
           description: No user found with given credentials
-        500:
+        '500':
           description: Internal server error
-  
-
   /logout:
     post:
       description: Perform user logout
       parameters:
         - $ref: '#/components/parameters/customHeader'
       responses:
-        200:
+        '200':
           description: Succesful logout
-        500:
+        '500':
           description: Internal server error
-  
-
   /admin/usermod/:
     post:
-      description: >
+      description: |
         Add new user or change password of existing user
       parameters:
         - $ref: '#/components/parameters/customHeader'
@@ -73,25 +67,23 @@ paths:
             schema:
               $ref: '#/components/schemas/username_password'
       responses:
-        200:
+        '200':
           description: >
-            User added or password changed succesfully. The new
-            credentials of the user are returned.
+            User added or password changed succesfully. The new credentials of
+            the user are returned.
           content:
-           application/json:
-            schema:
-             $ref: '#/components/schemas/username_password'
-        400:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/username_password'
+        '400':
           description: Invalid username or password
-        401:
+        '401':
           description: Unauthorised admin
-        500:
+        '500':
           description: Internal server error
-
-
   /admin/users/{username}:
     get:
-      description: >
+      description: |
         Get data of user with given username
       parameters:
         - name: username
@@ -100,31 +92,28 @@ paths:
           description: Username of user whose data should be fetched
           schema:
             type: string
-            example: "RandomUser"
+            example: RandomUser
         - $ref: '#/components/parameters/customHeader'
-      
       responses:
-        200:
+        '200':
           description: Succesful fetch of user data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/username_password_email'
-        400:
+        '400':
           description: Invalid username
-        401:
+        '401':
           description: Unauthorised admin
-        402:
+        '402':
           description: User with requested username not found
-        500:
+        '500':
           description: Internal server error
-  
-
   /admin/system/passesupd:
     post:
       description: >
-        Post a CSV file containing the pass records from a single
-        toll gate station.
+        Post a CSV file containing the pass records from a single toll gate
+        station.
       requestBody:
         required: true
         content:
@@ -133,15 +122,30 @@ paths:
               type: object
               properties:
                 file:
-                  type: string
-                  format: binary
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: DAZ4523102
+                    tagID:
+                      type: string
+                      example: GF26E1328
+                    stationID:
+                      type: string
+                      example: GF00
+                    timestamp:
+                      type: string
+                      example: '2021-11-15 23:28:07'
+                    charge:
+                      type: number
+                      format: float
+                      example: 2.8
             encoding:
               file:
                 contentType: text/csv
-    
       responses:
-        200:
-          description: >
+        '200':
+          description: |
             Succesful post of CSV file and importation of new pass records.
           content:
             application/json:
@@ -157,21 +161,18 @@ paths:
                   TotalPassesInDatabase:
                     type: integer
                     example: 8731
-        400:
+        '400':
           description: Invalid file uploaded
-        401:
+        '401':
           description: Unauthorised admin
-        500:
+        '500':
           description: Internal server error
-
-
   /admin/healthcheck:
     get:
-      description: > 
+      description: |
         Check end-to-end connectivity (between user and database)
-
       responses:
-        200:
+        '200':
           description: Healthcheck successful
           content:
             application/json:
@@ -183,41 +184,39 @@ paths:
                       If end-to-end connectivity is established, return "OK",
                       otherwise return "failed".
                     type: string
-                    enum: ["OK", "failed"]
+                    enum:
+                      - OK
+                      - failed
                   dbconnection:
                     type: string
-                    example: "Server=localhost;Database=interoperability;User Id=root;Password=password;"
-        500:
+                    example: >-
+                      Server=localhost;Database=interoperability;User
+                      Id=root;Password=password;
+        '500':
           description: Internal server error
-
-
   /admin/resetpasses:
     post:
       description: >
-        Deletes all pass records from the database and resets 
-        the administrator account to default (username: admin, 
-        password: freepasses4all).
-
+        Deletes all pass records from the database and resets  the administrator
+        account to default (username: admin,  password: freepasses4all).
       responses:
-        200:
+        '200':
           description: >
-            Succesful deletion of pass records and reset of 
-            default administrator account.
+            Succesful deletion of pass records and reset of  default
+            administrator account.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_ok'
-        500:
+        '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_failed'
-  
-
   /admin/resetstations/:
     post:
-      description: >
+      description: |
         Resets the station records in the database to default.
       requestBody:
         required: true
@@ -232,26 +231,23 @@ paths:
             encoding:
               file:
                 contentType: text/csv
-
       responses:
-        200:
-          description: >
+        '200':
+          description: |
             Succesful reset of station records to default.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_ok'
-        500:
+        '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_failed'
-  
-
   /admin/resetvehicles/:
     post:
-      description: >
+      description: |
         Resets the vehicle records in the database to default.
       requestBody:
         required: true
@@ -266,28 +262,25 @@ paths:
             encoding:
               file:
                 contentType: text/csv
-
       responses:
-        200:
-          description: >
+        '200':
+          description: |
             Succesful reset of vehicle records to default.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_ok'
-        500:
+        '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_failed'
-
-
   /PassesPerStation/{stationID}/{date_from}/{date_to}:
     get:
       description: >
-        Fetch a list of passes that were recorded between specified dates,
-        on station with given ID. The passes are returned in ascending time order.
+        Fetch a list of passes that were recorded between specified dates, on
+        station with given ID. The passes are returned in ascending time order.
       parameters:
         - name: stationID
           in: path
@@ -295,15 +288,16 @@ paths:
           description: ID of station for which passes will be fetched.
           schema:
             type: string
-            example: "AO17"
+            example: AO17
         - $ref: '#/components/parameters/dateFromParam'
         - $ref: '#/components/parameters/dateToParam'
         - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/customHeader'
-
       responses:
-        200: 
-          description: Return list with analytic data for the passes in the specific given time
+        '200':
+          description: >-
+            Return list with analytic data for the passes in the specific given
+            time
           content:
             application/json:
               schema:
@@ -311,22 +305,20 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/passesPerStationList'
-        400:
+        '400':
           description: Invalid time period or station id
-        401:
+        '401':
           description: Unauthorised user
-        402:
+        '402':
           description: No records found with the requested parameters
-        500:
-          description: Internal server error          
-
-
+        '500':
+          description: Internal server error
   /PassesAnalysis/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
     get:
       description: >
-        Fetch a list of passes that were recorded between specified dates,
-        on stations of operator {op1_ID}, in which a tag of operator {op2_ID} 
-        was used. The passes are returned in ascending time order.
+        Fetch a list of passes that were recorded between specified dates, on
+        stations of operator {op1_ID}, in which a tag of operator {op2_ID}  was
+        used. The passes are returned in ascending time order.
       parameters:
         - $ref: '#/components/parameters/stationOwnerID'
         - $ref: '#/components/parameters/tagOwnerID'
@@ -334,9 +326,8 @@ paths:
         - $ref: '#/components/parameters/dateToParam'
         - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/customHeader'
-      
       responses:
-        200:
+        '200':
           description: Succesful fetch of pass record information
           content:
             application/json:
@@ -345,17 +336,14 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/passesAnalysisList'
-                
-        400:
+        '400':
           description: Invalid input parameters (operator IDs or dates)
-        401:
+        '401':
           description: Unauthorised user
-        402:
+        '402':
           description: No records found with the requested parameters
-        500:
+        '500':
           description: Internal server error
-
-
   /PassesCost/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
     get:
       description: >
@@ -369,9 +357,8 @@ paths:
         - $ref: '#/components/parameters/dateToParam'
         - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/customHeader'
-        
       responses:
-        200:
+        '200':
           description: Succesful fetch of pass record and total cost information
           content:
             application/json:
@@ -380,41 +367,37 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/passesCost'
-                
-        400:
+        '400':
           description: Invalid input parameters (operator IDs or dates)
-        401:
+        '401':
           description: Unauthorised user
-        402:
+        '402':
           description: No records found with the requested parameters
-        500:
+        '500':
           description: Internal server error
-
-
   /ChargesBy/{op_ID}/{date_from}/{date_to}:
     get:
       description: >
         Fetch the number of passes that were recorded between specified dates,
-        on stations of operator {op_ID}, in which a tag *not* belonging to {op_ID}
-        was used. In addition, fetch the total cost of these passes, groupped by
-        the operator to whom the tags used belong.
+        on stations of operator {op_ID}, in which a tag *not* belonging to
+        {op_ID} was used. In addition, fetch the total cost of these passes,
+        groupped by the operator to whom the tags used belong.
       parameters:
         - name: op_ID
           in: path
-          required: true 
+          required: true
           description: >
-            The ID of the owner of the stations for which the pass
-            records will be fetched.
+            The ID of the owner of the stations for which the pass records will
+            be fetched.
           schema:
             type: string
-            example: "AO"
+            example: AO
         - $ref: '#/components/parameters/dateFromParam'
         - $ref: '#/components/parameters/dateToParam'
         - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/customHeader'
-        
       responses:
-        200:
+        '200':
           description: Succesful fetch of pass record and total cost information
           content:
             application/json:
@@ -423,48 +406,41 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/chargesByList'
-                
-        400:
+        '400':
           description: Invalid input parameters (operator IDs or dates)
-        401:
+        '401':
           description: Unauthorised user
-        402:
+        '402':
           description: No records found with the requested parameters
-        500:
+        '500':
           description: Internal server error
-                     
-
 components:
-
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
   parameters:
     stationOwnerID:
       name: op1_ID
       in: path
       required: true
-      description: > 
-        The ID of the owner of the stations for which the pass
-        records will be fetched.
+      description: >
+        The ID of the owner of the stations for which the pass records will be
+        fetched.
       schema:
         type: string
-        example: "AO"
-
+        example: AO
     tagOwnerID:
       name: op2_ID
       in: path
       required: true
       description: >
-        The ID of the owner of the tags for which the pass records
-        will be fetched.
+        The ID of the owner of the tags for which the pass records will be
+        fetched.
       schema:
         type: string
-        example: "EO"
-
+        example: EO
     dateFromParam:
       name: date_from
       in: path
@@ -472,8 +448,7 @@ components:
       description: The earliest date of pass records to be fetched in YYYYMMDD format.
       schema:
         type: string
-        example: "20200718"
-
+        example: '20200718'
     dateToParam:
       name: date_to
       in: path
@@ -481,70 +456,67 @@ components:
       description: The latest date of pass records to be fetched in YYYYMMDD format.
       schema:
         type: string
-        example: "20200818"
-
+        example: '20200818'
     formatParam:
       name: format
       in: query
       description: The data format of the response content.
       schema:
         type: string
-        enum: ["json", "csv"]
-        default: "json"
-    
+        enum:
+          - json
+          - csv
+        default: json
     customHeader:
       name: X-OBSERVATORY-AUTH
       in: header
       required: true
       description: >
-        Custom HTTP header to be sent on each authorised operation.
-        Contains the user's authentication token, as returned from the
-        login operation.
+        Custom HTTP header to be sent on each authorised operation. Contains the
+        user's authentication token, as returned from the login operation.
       schema:
         type: string
-        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
-
+        example: >-
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os
   schemas:
     username_password:
       type: object
       properties:
         username:
           type: string
-          example: "RandomUser"
+          example: RandomUser
         password:
           type: string
-          example: "foobar123!"
-    
+          example: foobar123!
     username_password_email:
       type: object
       properties:
         username:
           type: string
-          example: "RandomUser"
+          example: RandomUser
         password:
           type: string
-          example: "foobar123!"
+          example: foobar123!
         email:
           type: string
-          example: "example@mail.com"
-
+          example: example@mail.com
     status_ok:
       type: object
       properties:
         status:
           type: string
-          enum: ["OK"]
-
+          enum:
+            - OK
     status_failed:
       type: object
       properties:
         status:
           type: string
-          enum: ["failed"]
+          enum:
+            - failed
         details:
           type: string
-          example: "Optional failure details"
-
+          example: Optional failure details
     passesPerStationList:
       type: array
       items:
@@ -555,50 +527,49 @@ components:
             example: 1
           PassID:
             type: string
-            example: "WSI3219204"
+            example: WSI3219204
           PassTimeStamp:
             type: string
-            example: "2020-02-17 19:46:27"
+            example: '2020-02-17 19:46:27'
           VehicleID:
             type: string
-            example: "ED51EWW52190"
+            example: ED51EWW52190
           TagProvider:
             type: string
-            example: "aodos"
+            example: aodos
           PassType:
             type: string
-            enum: ["home", "visitor"]
-            example: "visitor"
+            enum:
+              - home
+              - visitor
+            example: visitor
           PassCharge:
             type: number
             format: float
             example: 2.8
-
     passesPerStation:
       type: object
       properties:
         Station:
           type: string
-          example: "AO17"
+          example: AO17
         StationOperator:
           type: string
-          example: "aodos"
+          example: aodos
         RequestTimestamp:
           type: string
-          example: "2020-09-25 15:33:25"
+          example: '2020-09-25 15:33:25'
         PeriodFrom:
           type: string
-          example: "2020-05-25 00:00:00"
+          example: '2020-05-25 00:00:00'
         PeriodTo:
           type: string
-          example: "2021-01-10 23:59:59"
+          example: '2021-01-10 23:59:59'
         NumberOfPasses:
           type: integer
           example: 1359
         PassesList:
           $ref: '#/components/schemas/passesPerStationList'
-                
-
     passesAnalysisList:
       type: array
       items:
@@ -609,64 +580,61 @@ components:
             example: 1
           PassID:
             type: string
-            example: "XNN3133547"
+            example: XNN3133547
           StationID:
             type: string
-            example: "AO17"
+            example: AO17
           TimeStamp:
             type: string
-            example: "2020-05-19 17:59:17"
+            example: '2020-05-19 17:59:17'
           VehicleID:
             type: string
-            example: "EM54HQI58682"
+            example: EM54HQI58682
           Charge:
             type: number
             format: float
             example: 2.8
-    
-
     passesAnalysis:
       type: object
       properties:
         op1_ID:
           type: string
-          example: "AO"
+          example: AO
         op2_ID:
           type: string
-          example: "EO"
+          example: EO
         RequestTimestamp:
           type: string
-          example: "2020-07-01 12:39:12"
+          example: '2020-07-01 12:39:12'
         PeriodFrom:
           type: string
-          example: "2020-05-17 00:00:00"
+          example: '2020-05-17 00:00:00'
         PeriodTo:
           type: string
-          example: "2020-06-29 23:59:59"
+          example: '2020-06-29 23:59:59'
         NumberOfPasses:
           type: integer
           example: 9182
         PassesList:
           $ref: '#/components/schemas/passesAnalysisList'
-      
     passesCost:
       type: object
       properties:
         op1_ID:
           type: string
-          example: "AO"
+          example: AO
         op2_ID:
           type: string
-          example: "EO"
+          example: EO
         RequestTimestamp:
           type: string
-          example: "2020-07-02 12:39:12"
+          example: '2020-07-02 12:39:12'
         PeriodFrom:
           type: string
-          example: "2020-06-01 00:00:00"
+          example: '2020-06-01 00:00:00'
         PeriodTo:
           type: string
-          example: "2020-06-30 23:59:59"
+          example: '2020-06-30 23:59:59'
         NumberOfPasses:
           type: integer
           example: 3452
@@ -674,7 +642,6 @@ components:
           type: number
           format: float
           example: 15242.82
-    
     chargesByList:
       type: array
       items:
@@ -682,7 +649,7 @@ components:
         properties:
           VisitingOperator:
             type: string
-            example: "EO"
+            example: EO
           NumberOfPasses:
             type: integer
             example: 2398
@@ -690,21 +657,20 @@ components:
             type: number
             format: float
             example: 13017.91
-    
     chargesBy:
       type: object
       properties:
         op_ID:
           type: string
-          example: "AO"
+          example: AO
         RequestTimestamp:
           type: string
-          example: "2020-08-02 09:00:12"
+          example: '2020-08-02 09:00:12'
         PeriodFrom:
           type: string
-          example: "2020-07-01 00:00:00"
+          example: '2020-07-01 00:00:00'
         PeriodTo:
           type: string
-          example: "2020-07-31 23:59:59"
+          example: '2020-07-31 23:59:59'
         PPOList:
           $ref: '#/components/schemas/chargesByList'
