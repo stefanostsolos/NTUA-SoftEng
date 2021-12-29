@@ -7,8 +7,13 @@ info:
     for highway toll stations. Created for the purposes of the term 
     project of the Software Engineering course (7th Semester, NTUA).
 servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/softeng21-18/interoperability/1.0.1
   - url: https://localhost:9103/interoperability/api
     description: Development server
+security:
+  - bearerAuth: []
 
 paths:
   /login:
@@ -181,7 +186,7 @@ paths:
                     enum: ["OK", "failed"]
                   dbconnection:
                     type: string
-                    example: "..."
+                    example: "Server=localhost;Database=interoperability;User Id=root;Password=password;"
         500:
           description: Internal server error
 
@@ -305,7 +310,7 @@ paths:
                 $ref: '#/components/schemas/passesPerStation'
             text/csv:
               schema:
-                $ref: '#/components/schemas/passesPerStation'
+                $ref: '#/components/schemas/passesPerStationList'
         400:
           description: Invalid time period or station id
         401:
@@ -339,7 +344,7 @@ paths:
                 $ref: '#/components/schemas/passesAnalysis'
             text/csv:
               schema:
-                $ref: '#/components/schemas/passesAnalysis'
+                $ref: '#/components/schemas/passesAnalysisList'
                 
         400:
           description: Invalid input parameters (operator IDs or dates)
@@ -417,7 +422,7 @@ paths:
                 $ref: '#/components/schemas/chargesBy'
             text/csv:
               schema:
-                $ref: '#/components/schemas/chargesBy'
+                $ref: '#/components/schemas/chargesByList'
                 
         400:
           description: Invalid input parameters (operator IDs or dates)
@@ -430,6 +435,12 @@ paths:
                      
 
 components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
   parameters:
     stationOwnerID:
@@ -491,7 +502,7 @@ components:
         login operation.
       schema:
         type: string
-        example: "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os"
 
   schemas:
     username_password:
@@ -534,6 +545,35 @@ components:
           type: string
           example: "Optional failure details"
 
+    passesPerStationList:
+      type: array
+      items:
+        type: object
+        properties:
+          PassIndex:
+            type: integer
+            example: 1
+          PassID:
+            type: string
+            example: "WSI3219204"
+          PassTimeStamp:
+            type: string
+            example: "2020-02-17 19:46:27"
+          VehicleID:
+            type: string
+            example: "ED51EWW52190"
+          TagProvider:
+            type: string
+            example: "aodos"
+          PassType:
+            type: string
+            enum: ["home", "visitor"]
+            example: "visitor"
+          PassCharge:
+            type: number
+            format: float
+            example: 2.8
+
     passesPerStation:
       type: object
       properties:
@@ -556,33 +596,34 @@ components:
           type: integer
           example: 1359
         PassesList:
-          type: array
-          items:
-            type: object
-            properties:
-              PassIndex:
-                type: integer
-                example: 1
-              PassID:
-                type: string
-                example: "WSI3219204"
-              PassTimeStamp:
-                type: string
-                example: "2020-02-17 19:46:27"
-              VehicleID:
-                type: string
-                example: "ED51EWW52190"
-              TagProvider:
-                type: string
-                example: "aodos"
-              PassType:
-                type: string
-                enum: ["home", "visitor"]
-                example: "visitor"
-              PassCharge:
-                type: number
-                format: float
-                example: 2.8
+          $ref: '#/components/schemas/passesPerStationList'
+                
+
+    passesAnalysisList:
+      type: array
+      items:
+        type: object
+        properties:
+          PassIndex:
+            type: integer
+            example: 1
+          PassID:
+            type: string
+            example: "XNN3133547"
+          StationID:
+            type: string
+            example: "AO17"
+          TimeStamp:
+            type: string
+            example: "2020-05-19 17:59:17"
+          VehicleID:
+            type: string
+            example: "EM54HQI58682"
+          Charge:
+            type: number
+            format: float
+            example: 2.8
+    
 
     passesAnalysis:
       type: object
@@ -606,29 +647,7 @@ components:
           type: integer
           example: 9182
         PassesList:
-          type: array
-          items:
-            type: object
-            properties:
-              PassIndex:
-                type: integer
-                example: 1
-              PassID:
-                type: string
-                example: "XNN3133547"
-              StationID:
-                type: string
-                example: "AO17"
-              TimeStamp:
-                type: string
-                example: "2020-05-19 17:59:17"
-              VehicleID:
-                type: string
-                example: "EM54HQI58682"
-              Charge:
-                type: number
-                format: float
-                example: 2.8
+          $ref: '#/components/schemas/passesAnalysisList'
       
     passesCost:
       type: object
@@ -656,6 +675,22 @@ components:
           format: float
           example: 15242.82
     
+    chargesByList:
+      type: array
+      items:
+        type: object
+        properties:
+          VisitingOperator:
+            type: string
+            example: "EO"
+          NumberOfPasses:
+            type: integer
+            example: 2398
+          PassesCost:
+            type: number
+            format: float
+            example: 13017.91
+    
     chargesBy:
       type: object
       properties:
@@ -672,17 +707,4 @@ components:
           type: string
           example: "2020-07-31 23:59:59"
         PPOList:
-          type: array
-          items:
-            type: object
-            properties:
-              VisitingOperator:
-                type: string
-                example: "EO"
-              NumberOfPasses:
-                type: integer
-                example: 2398
-              PassesCost:
-                type: number
-                format: float
-                example: 13017.91
+          $ref: '#/components/schemas/chargesByList'
