@@ -53,7 +53,7 @@ router.get('/:stationID/:date_from/:date_to', async function (req, res, next) {
             `SELECT operator.ID, operator.name 
             FROM station JOIN operator ON station.operatorID = operator.ID 
             WHERE station.ID = ?`;
-        const answer = await db.query(sql_aux, [stationID]);
+        const [answer] = await db.execute(sql_aux, [stationID]);
         const [station_opID, station_opName] = [answer[0].ID, answer[0].name];
 
         // Fetch the required information for each pass record
@@ -63,7 +63,7 @@ router.get('/:stationID/:date_from/:date_to', async function (req, res, next) {
             FROM pass JOIN tag ON pass.tagID = tag.ID JOIN operator ON tag.operatorID = operator.ID
             WHERE pass.stationID = ? AND pass.timestamp BETWEEN ? AND ?
             ORDER BY pass.timestamp ASC`;
-        const rows = await db.query(sql_main, [stationID, date_from, date_to]);
+        const [rows] = await db.execute(sql_main, [stationID, date_from, date_to]);
 
         // If no results were found, throw 402
         if (!rows.length) {

@@ -14,6 +14,7 @@ servers:
 security:
   - bearerAuth: []
 paths:
+
   /login:
     post:
       description: >
@@ -44,6 +45,7 @@ paths:
           description: No user found with given credentials
         '500':
           description: Internal server error
+          
   /logout:
     post:
       description: Perform user logout
@@ -54,6 +56,7 @@ paths:
           description: Succesful logout
         '500':
           description: Internal server error
+          
   /admin/usermod/:
     post:
       description: |
@@ -81,6 +84,7 @@ paths:
           description: Unauthorised admin
         '500':
           description: Internal server error
+          
   /admin/users/{username}:
     get:
       description: |
@@ -109,6 +113,7 @@ paths:
           description: User with requested username not found
         '500':
           description: Internal server error
+          
   /admin/system/passesupd:
     post:
       description: >
@@ -167,6 +172,7 @@ paths:
           description: Unauthorised admin
         '500':
           description: Internal server error
+          
   /admin/healthcheck:
     get:
       description: |
@@ -189,11 +195,11 @@ paths:
                       - failed
                   dbconnection:
                     type: string
-                    example: >-
-                      Server=localhost;Database=interoperability;User
-                      Id=root;Password=password;
+                    example: >
+                      Server=localhost;Database=interoperability;UserId=root;Password=password;
         '500':
           description: Internal server error
+          
   /admin/resetpasses:
     post:
       description: >
@@ -214,23 +220,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_failed'
-  /admin/resetstations/:
+                
+  /admin/resetstations:
     post:
-      description: |
+      description: >
         Resets the station records in the database to default.
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-            encoding:
-              file:
-                contentType: text/csv
       responses:
         '200':
           description: |
@@ -245,23 +239,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_failed'
-  /admin/resetvehicles/:
+                
+  /admin/resettags:
     post:
-      description: |
+      description: >
+        Resets the tag records in the database to default.
+      responses:
+        '200':
+          description: |
+            Succesful reset of tag records to default.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+                
+  /admin/resetvehicles:
+    post:
+      description: >
         Resets the vehicle records in the database to default.
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-            encoding:
-              file:
-                contentType: text/csv
       responses:
         '200':
           description: |
@@ -276,6 +277,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/status_failed'
+              
   /PassesPerStation/{stationID}/{date_from}/{date_to}:
     get:
       description: >
@@ -313,6 +315,7 @@ paths:
           description: No records found with the requested parameters
         '500':
           description: Internal server error
+          
   /PassesAnalysis/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
     get:
       description: >
@@ -344,6 +347,7 @@ paths:
           description: No records found with the requested parameters
         '500':
           description: Internal server error
+          
   /PassesCost/{op1_ID}/{op2_ID}/{date_from}/{date_to}:
     get:
       description: >
@@ -375,6 +379,7 @@ paths:
           description: No records found with the requested parameters
         '500':
           description: Internal server error
+          
   /ChargesBy/{op_ID}/{date_from}/{date_to}:
     get:
       description: >
@@ -414,6 +419,8 @@ paths:
           description: No records found with the requested parameters
         '500':
           description: Internal server error
+          
+          
 components:
   securitySchemes:
     bearerAuth:
@@ -431,6 +438,7 @@ components:
       schema:
         type: string
         example: AO
+        
     tagOwnerID:
       name: op2_ID
       in: path
@@ -441,6 +449,7 @@ components:
       schema:
         type: string
         example: EO
+        
     dateFromParam:
       name: date_from
       in: path
@@ -449,6 +458,7 @@ components:
       schema:
         type: string
         example: '20200718'
+        
     dateToParam:
       name: date_to
       in: path
@@ -457,6 +467,7 @@ components:
       schema:
         type: string
         example: '20200818'
+        
     formatParam:
       name: format
       in: query
@@ -467,6 +478,7 @@ components:
           - json
           - csv
         default: json
+        
     customHeader:
       name: X-OBSERVATORY-AUTH
       in: header
@@ -478,6 +490,7 @@ components:
         type: string
         example: >-
           eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os
+          
   schemas:
     username_password:
       type: object
@@ -488,6 +501,7 @@ components:
         password:
           type: string
           example: foobar123!
+          
     username_password_email:
       type: object
       properties:
@@ -500,6 +514,7 @@ components:
         email:
           type: string
           example: example@mail.com
+          
     status_ok:
       type: object
       properties:
@@ -507,6 +522,7 @@ components:
           type: string
           enum:
             - OK
+            
     status_failed:
       type: object
       properties:
@@ -517,6 +533,7 @@ components:
         details:
           type: string
           example: Optional failure details
+          
     passesPerStationList:
       type: array
       items:
@@ -547,6 +564,7 @@ components:
             type: number
             format: float
             example: 2.8
+            
     passesPerStation:
       type: object
       properties:
@@ -570,6 +588,7 @@ components:
           example: 1359
         PassesList:
           $ref: '#/components/schemas/passesPerStationList'
+          
     passesAnalysisList:
       type: array
       items:
@@ -594,6 +613,7 @@ components:
             type: number
             format: float
             example: 2.8
+            
     passesAnalysis:
       type: object
       properties:
@@ -617,6 +637,7 @@ components:
           example: 9182
         PassesList:
           $ref: '#/components/schemas/passesAnalysisList'
+          
     passesCost:
       type: object
       properties:
@@ -642,6 +663,7 @@ components:
           type: number
           format: float
           example: 15242.82
+          
     chargesByList:
       type: array
       items:
@@ -657,6 +679,7 @@ components:
             type: number
             format: float
             example: 13017.91
+            
     chargesBy:
       type: object
       properties:
