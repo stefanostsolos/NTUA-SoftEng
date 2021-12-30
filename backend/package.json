@@ -1,0 +1,18 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend source code for term project of Software Engineering course, 7th Semester, ECE NTUA",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "json2csv": "^5.0.6",
+    "moment": "^2.29.1",
+    "multer": "^1.4.4",
+    "mysql2": "^2.3.3"
+  }
+}
