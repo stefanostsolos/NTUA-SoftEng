@@ -1,17 +1,22 @@
 const express = require('express');
 const db = require('./db');
 const multer = require('multer');
-const fs = require('fs');
+const fs = require('fs/promises');
 
 const router = express.Router();
 const upload = multer({ dest: './uploads' });
 
-async function validate_file(path) {
-    const fileStream = fs.createReadStream(path);
-    const rl = readline.createInterface({ input: fileStream });
+async function read_rows(path) {
+    const file = await fs.readFile(path, 'utf-8');
+    rows = file.split('\n');
+    rows.pop();
+    return rows;
+}
 
-    row_regex = /^\w+,\w+,\w+,\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+.\d+$/
-    for await (const row of rl) {
+async function validate_file(path) {
+    rows = await read_rows(path);
+    row_regex = /^\w+,\w+,\w+,\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+.\d+$/;
+    for (const row of rows) {
         if (!row_regex.test(row)) {
             return false;
         }
@@ -28,9 +33,8 @@ router.post('/', upload.single('file'), async function(req, res, next) {
             err.status = 400;
             throw(err);
         }
-        const file = fs.readFileSync(req.file.path, 'utf-8');
-        var rows = file.split('\n');
-        rows.pop();
+
+        rows = await read_rows(req.file.path);
 
         await db.query('START TRANSACTION');
 
@@ -58,7 +62,6 @@ router.post('/', upload.single('file'), async function(req, res, next) {
             // If pass record is new, insert it into the database
             await db.execute(sql_insert, [id, tagID, stationID, timestamp, charge]); 
             imported++;
-            console.log(imported);
         }
 
         // Count pass records in database

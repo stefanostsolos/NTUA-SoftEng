@@ -8,10 +8,16 @@ const baseURL = `/interoperability/api`;
 const passesupd = require('./passesupd');
 const admin = require('./admin');
 const passesPerStation = require('./passesPerStation');
+const passesAnalysis = require('./passesAnalysis');
+const passesCost = require('./passesCost');
+const chargesBy = require('./chargesBy');
 
 app.use(`${baseURL}/admin/`, admin);
 app.use(`${baseURL}/admin/system/passesupd`, passesupd);
 app.use(`${baseURL}/PassesPerStation`, passesPerStation);
+app.use(`${baseURL}/PassesAnalysis`, passesAnalysis);
+app.use(`${baseURL}/PassesCost`, passesCost);
+app.use(`${baseURL}/ChargesBy/`, chargesBy);
 
 // Middleware for undefined URLs
 app.use((req, res, next) => {
