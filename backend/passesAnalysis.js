@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./db');
-const aux = require('./aux');
+const aux = require('./helper');
 const { Parser } = require('json2csv');
 
 const router = express.Router();
@@ -34,14 +34,15 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function(req, res, next
         let PassesList = [];
 
         // Fetch information for each element of PassesList
-        const sql = `SELECT pass.ID AS passID, station.ID AS stationID, pass.timestamp, 
-                            vehicle.ID AS vehicleID, pass.charge
-                     FROM pass JOIN station ON pass.stationID = station.ID 
-                          JOIN tag ON pass.tagID = tag.ID 
-                          JOIN vehicle ON tag.vehicleID = vehicle.ID
-                     WHERE station.operatorID = ? AND tag.operatorID = ?
-                           AND pass.timestamp BETWEEN ? AND ?
-                     ORDER BY pass.timestamp ASC`;
+        const sql = 
+            `SELECT pass.ID AS passID, station.ID AS stationID, pass.timestamp, 
+                    vehicle.ID AS vehicleID, pass.charge
+             FROM pass JOIN station ON pass.stationID = station.ID 
+                  JOIN tag ON pass.tagID = tag.ID 
+                  JOIN vehicle ON tag.vehicleID = vehicle.ID
+             WHERE station.operatorID = ? AND tag.operatorID = ?
+                   AND pass.timestamp BETWEEN ? AND ?
+             ORDER BY pass.timestamp ASC`;
         const [rows] = await db.execute(sql, [station_opID, tag_opID, date_from, date_to]);
 
         // If no results were found, throw 402
@@ -80,7 +81,7 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function(req, res, next
             const csv = parser.parse(PassesList);
             res.status(200).send(csv);
         } else {
-            err = new Error("Invalid format parameter");
+            const err = new Error("Invalid format parameter");
             err.status(400);
             throw(err);
         }

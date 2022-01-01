@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./db');
-const aux = require('./aux');
+const aux = require('./helper');
 const { Parser } = require('json2csv');
 
 const router = express.Router();
@@ -61,7 +61,7 @@ router.get('/:stationID/:date_from/:date_to', async function (req, res, next) {
             PassesList.push({
                 PassesIndex: idx,
                 PassID: row.passID,
-                PassTimeStamp: convert_date_object(row.timestamp),
+                PassTimeStamp: aux.convert_date_object(row.timestamp),
                 VehicleID: row.vehicleID,
                 TagProvider: row.tag_opName,
                 PassType: row.tag_opID == station_opID ? "home" : "away",
@@ -86,7 +86,7 @@ router.get('/:stationID/:date_from/:date_to', async function (req, res, next) {
             const csv = parser.parse(PassesList);
             res.status(200).send(csv);
         } else {
-            err = new Error("Invalid format parameter");
+            const err = new Error("Invalid format parameter");
             err.status(400);
             throw(err);
         }

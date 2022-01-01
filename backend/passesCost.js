@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./db');
-const aux = require('./aux');
+const aux = require('./helper');
 const { Parser } = require('json2csv');
 
 const router = express.Router();
@@ -59,7 +59,7 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function (req, res, nex
             const csv = parser.parse(result);
             res.status(200).send(csv);
         } else {
-            err = new Error("Invalid format parameter");
+            const err = new Error("Invalid format parameter");
             err.status(400);
             throw(err);
         }

@@ -4,18 +4,18 @@ const multer = require('multer');
 const fs = require('fs/promises');
 
 const router = express.Router();
-const upload = multer({ dest: './uploads' });
+const upload = multer({ dest: './' });
 
 async function read_rows(path) {
     const file = await fs.readFile(path, 'utf-8');
-    rows = file.split('\n');
+    const rows = file.split('\n');
     rows.pop();
     return rows;
 }
 
 async function validate_file(path) {
-    rows = await read_rows(path);
-    row_regex = /^\w+,\w+,\w+,\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+.\d+$/;
+    const rows = await read_rows(path);
+    const row_regex = /^\w+,\w+,\w+,\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d+.\d+$/;
     for (const row of rows) {
         if (!row_regex.test(row)) {
             return false;
@@ -29,12 +29,12 @@ router.post('/', upload.single('file'), async function(req, res, next) {
     try {
         // If an invalid file has been uploaded, throw 400
         if (!validate_file(req.file.path)) {
-            err = new Error("Invalid file uploaded");
+            const err = new Error("Invalid file uploaded");
             err.status = 400;
             throw(err);
         }
 
-        rows = await read_rows(req.file.path);
+        const rows = await read_rows(req.file.path);
 
         await db.query('START TRANSACTION');
 
@@ -69,6 +69,9 @@ router.post('/', upload.single('file'), async function(req, res, next) {
         const [count] = await db.execute(sql_count);
         
         await db.query('COMMIT');
+
+        // Delete uploaded file
+        await fs.rm(req.file.path);
 
         res.status(200).send({
             PassesInUploadedFile : uploaded,
