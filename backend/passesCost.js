@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('./db');
 const aux = require('./helper');
 const { Parser } = require('json2csv');
+const createError = require('http-errors');
 
 const router = express.Router();
 
@@ -19,9 +20,7 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function (req, res, nex
             req.params.op1_ID != req.params.op2_ID;
 
         if (!valid) {
-            const err = new Error("Invalid input parameters (operator ID or date)");
-            err.status = 400;
-            throw(err);
+            throw(new createError(400, "Invalid input parameters (operator ID or date)"));
         }
 
         // Get path parameters
@@ -59,9 +58,7 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function (req, res, nex
             const csv = parser.parse(result);
             res.status(200).send(csv);
         } else {
-            const err = new Error("Invalid format parameter");
-            err.status(400);
-            throw(err);
+            throw(new createError(400, "Invalid format parameter"));
         }
     } catch (err) {
         next(err);

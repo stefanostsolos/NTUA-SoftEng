@@ -29,6 +29,19 @@ class aux {
         // Check if operator ID is valid
         return ['AO', 'EG', 'GF', 'KO', 'MR', 'NE', 'OO'].includes(opID);
     }
+
+    static validate_username_password(username, password) {
+        // Check if given username and password are valid, i.e. if they 
+        // contain no whitespace
+        return !/\s/.test(username) && !/\s/.test(password);
+    }
+
+    static validate_user_attributes(username, password, type) {
+        // Check if given user attributes are valid. We accept any string that
+        // does not contain whitespace as a valid username or password
+        return this.validate_username_password(username, password) && 
+               ['operator', 'transportation', 'payment', 'admin'].includes(type);
+    }
 }
 
 

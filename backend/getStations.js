@@ -19,7 +19,7 @@ router.get('/', async function (req, res, next) {
 
         res.status(200).send({
             RequestTimestamp: request_timestamp,
-            ID_List: id_list
+            StationIDList: id_list
         });
     } catch (err) {
         next(err);
