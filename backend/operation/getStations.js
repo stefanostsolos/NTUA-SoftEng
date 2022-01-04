@@ -1,13 +1,21 @@
 const express = require('express');
-const db = require('./db');
-const aux = require('./helper');
+const passport = require('passport');
+const createError = require('http-errors');
+const db = require('../db');
+const aux = require('../helper');
 
 const router = express.Router();
 
 // {baseURL}/GetStations
-router.get('/', async function (req, res, next) {
-    try {    
+router.get('/', 
+    passport.authenticate('jwt', { session: false }),
+    async function (req, res, next) {
+    try {
         const request_timestamp = aux.get_current_timestamp();
+        
+        if (! ['operator', 'transportation', 'admin'].includes(req.user.type)) {
+            throw new createError(401);
+        }
 
         const sql = 'SELECT ID FROM station';
         [rows] = await db.execute(sql);

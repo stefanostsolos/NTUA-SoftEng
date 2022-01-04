@@ -71,15 +71,19 @@ passport.use(
 
 // Routing middleware
 const login = require('./login');
-const users = require('./users');
-const usermod = require('./usermod');
-const passesupd = require('./passesupd');
-const admin = require('./admin');
-const passesPerStation = require('./passesPerStation');
-const passesAnalysis = require('./passesAnalysis');
-const passesCost = require('./passesCost');
-const chargesBy = require('./chargesBy');
-const getStations = require('./getStations')
+const users = require('./admin/users');
+const usermod = require('./admin/usermod');
+const passesupd = require('./admin/passesupd');
+const admin = require('./admin/admin');
+const passesPerStation = require('./operation/passesPerStation');
+const passesAnalysis = require('./operation/passesAnalysis');
+const passesCost = require('./operation/passesCost');
+const chargesBy = require('./operation/chargesBy');
+const getStations = require('./operation/getStations')
+const newSettlement = require('./operation/newSettlement');
+const settlementByID = require('./operation/settlementByID');
+const settlementsByOperator = require('./operation/settlementsByOperator');
+const clearSettlement = require('./operation/clearSettlement');
 
 app.use(`${baseURL}/login`, login);
 app.use(`${baseURL}/admin/users`, users);
@@ -91,6 +95,10 @@ app.use(`${baseURL}/PassesAnalysis`, passesAnalysis);
 app.use(`${baseURL}/PassesCost`, passesCost);
 app.use(`${baseURL}/ChargesBy/`, chargesBy);
 app.use(`${baseURL}/GetStations`, getStations);
+app.use(`${baseURL}/NewSettlement`, newSettlement);
+app.use(`${baseURL}/SettlementByID`, settlementByID);
+app.use(`${baseURL}/SettlementsByOperator`, settlementsByOperator);
+app.use(`${baseURL}/ClearSettlement`, clearSettlement);
 
 // Middleware for undefined URLs
 app.use((req, res, next) => {

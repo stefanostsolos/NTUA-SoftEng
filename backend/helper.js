@@ -47,6 +47,11 @@ class aux {
                ['operator', 'transportation', 'payment', 'admin'].includes(type) &&
                (operatorID === null || this.validate_operatorID(operatorID));
     }
+
+    static validate_settlementID(settlementID) {
+        // Check if settlement ID is valid
+        return /^[A-Z0-9]*$/.test(settlementID);
+    }
 }
 
 

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.5
+  version: 1.1.0
   title: Softeng 21-18 Toll Interoperability API
   description: >
     REST API supporting the function of an interoperability system  for highway
@@ -26,7 +26,7 @@ paths:
               $ref: '#/components/schemas/login'
       responses:
         200:
-          description: Succesful identification
+          description: Successful identification
           content:
             application/json:
               schema:
@@ -51,14 +51,15 @@ paths:
         - $ref: '#/components/parameters/customHeader'
       responses:
         200:
-          description: Succesful logout
+          description: Successful logout
         500:
           description: Internal server error
           
   /admin/usermod/:
     post:
       description: >
-        Add new user or change attributes of existing user
+        Add new user or change attributes of existing user.
+        Only admin users may access this resource.
       parameters:
         - $ref: '#/components/parameters/customHeader'
       requestBody:
@@ -86,7 +87,8 @@ paths:
   /admin/users:
     get:
       description: >
-        Get data of all users
+        Get data of all users.
+        Only admin users may access this resource.
       parameters:
         - $ref: '#/components/parameters/customHeader'
       responses:
@@ -106,7 +108,8 @@ paths:
   /admin/users/{username}:
     get:
       description: >
-        Get data of user with given username
+        Get data of user with given username.
+        Only admin users may access this resource.
       parameters:
         - name: username
           in: path
@@ -137,6 +140,7 @@ paths:
       description: >
         Post a CSV file containing any number of pass records, one per row.
         Any uploaded records not already in the database will be inserted into it.
+        Only admin users may access this resource.
       requestBody:
         required: true
         content:
@@ -169,7 +173,7 @@ paths:
       responses:
         200:
           description: >
-            Succesful post of CSV file and importation of new pass records.
+            Successful post of CSV file and importation of new pass records.
           content:
             application/json:
               schema:
@@ -194,7 +198,7 @@ paths:
   /admin/healthcheck:
     get:
       description: >
-        Check end-to-end connectivity (between user and database)
+        Check end-to-end connectivity (between user and database).
       responses:
         200:
           description: Healthcheck successful
@@ -263,7 +267,7 @@ paths:
       responses:
         200:
           description: |
-            Succesful reset of station records to default.
+            Successful reset of station records to default.
           content:
             application/json:
               schema:
@@ -282,7 +286,7 @@ paths:
       responses:
         200:
           description: |
-            Succesful reset of tag records to default.
+            Successful reset of tag records to default.
           content:
             application/json:
               schema:
@@ -301,7 +305,7 @@ paths:
       responses:
         200:
           description: >
-            Succesful reset of vehicle records to default.
+            Successful reset of vehicle records to default.
           content:
             application/json:
               schema:
@@ -316,11 +320,12 @@ paths:
   /GetStations:
     get:
       description: >
-        Fetch a list of all station IDs
+        Fetch a list of all station IDs.
+        This resource may be accessed by any operator, transportation or admin user.
       responses:
         200:
           description: >
-            Succesful fetch of station IDs
+            Successful fetch of station IDs
           content:
             application/json:
               schema:
@@ -335,13 +340,13 @@ paths:
                       type: string
                       example: "AO10"
 
-
-
   /PassesPerStation/{stationID}/{date_from}/{date_to}:
     get:
       description: >
         Fetch a list of passes that were recorded between specified dates, on
         station with given ID. The passes are returned in ascending time order.
+        This resource may be accessed by any operator user whose ID matches the 
+        operatorID of the requested station, as well as by any trasnportation or admin user.
       parameters:
         - name: stationID
           in: path
@@ -381,6 +386,8 @@ paths:
         Fetch a list of passes that were recorded between specified dates, on
         stations of operator {op1_ID}, in which a tag of operator {op2_ID}  was
         used. The passes are returned in ascending time order.
+        This resource may be accessed by any operator user whose ID matches either of
+        the operator IDs in the request, as well as by any trasnportation or admin user.
       parameters:
         - $ref: '#/components/parameters/stationOwnerID'
         - $ref: '#/components/parameters/tagOwnerID'
@@ -390,7 +397,7 @@ paths:
         - $ref: '#/components/parameters/customHeader'
       responses:
         200:
-          description: Succesful fetch of pass record information
+          description: Successful fetch of pass record information
           content:
             application/json:
               schema:
@@ -413,6 +420,8 @@ paths:
         Fetch the number of passes that were recorded between specified dates,
         on stations of operator {op1_ID}, in which a tag of operator {op2_ID} 
         was used. In addition, fetch the total cost of these passes.
+        This resource may be accessed by any operator user whose ID matches either of
+        the operator IDs in the request, as well as by any admin user.
       parameters:
         - $ref: '#/components/parameters/stationOwnerID'
         - $ref: '#/components/parameters/tagOwnerID'
@@ -422,7 +431,7 @@ paths:
         - $ref: '#/components/parameters/customHeader'
       responses:
         200:
-          description: Succesful fetch of pass record and total cost information
+          description: Successful fetch of pass record and total cost information
           content:
             application/json:
               schema:
@@ -444,6 +453,8 @@ paths:
         on stations of operator {op_ID}, in which a tag *not* belonging to
         {op_ID} was used. In addition, fetch the total cost of these passes,
         groupped by the operator to whom the tags used belong.
+        This resource may be accessed by any operator user whose ID matches either of
+        the operator IDs in the request, as well as by any admin user.
       parameters:
         - name: op_ID
           in: path
@@ -460,7 +471,7 @@ paths:
         - $ref: '#/components/parameters/customHeader'
       responses:
         200:
-          description: Succesful fetch of pass record and total cost information
+          description: Successful fetch of pass record and total cost information
           content:
             application/json:
               schema:
@@ -474,7 +485,150 @@ paths:
           description: Unauthorised user
         500:
           description: Internal server error
-          
+
+  /NewSettlement/{op1_ID}/{op2_ID}/{date_to}:
+    get:
+      description: >
+        Creates a new settlement record in the database for the debts between the
+        two given operators. The settlement accounts for the debts created between
+        the last settlement date and the provided date.
+        This resource may be accessed by any operator user whose ID matches either of
+        the operator IDs in the request, as well as by any admin user.
+      parameters:
+        - name: op1_ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: AO
+        - name: op2_ID
+          in: path
+          required: true
+          schema: 
+            type: string
+            example: EG
+        - name: date_to
+          in: path
+          required: true
+          schema:
+            type: string
+            example: '20200117'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
+      responses:
+        200:
+          description: >
+            Successful calculation of total debts and creation of settlement record in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settlement'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/settlement'
+        400:
+          description: Invalid input parameters
+        401:
+          description: Unauthorised user
+        500:
+          description: Internal server error
+
+  /SettlementByID/{ID}:
+    get:
+      description: >
+        Fetches a settlement record with the provided ID.
+        This resource may be accessed by any payment user and any admin user.
+      parameters:
+        - name: ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: DNA83N02NC
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
+      responses:
+        200:
+          description: >
+            Successful fetch of settlement record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settlement'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/settlement'
+        400:
+          description: Invalid input parameters
+        401:
+          description: Unauthorised user
+        402:
+          description: No settlement record found with requested ID
+        500:
+          description: Internal server error
+
+  /SettlementsByOperator/{op_ID}:
+    get:
+      description: >
+        Fetch a list of settlement records concerning the given operator.
+        This resource may be accessed by any operator user whose ID matches 
+        the operator ID in the request and by any admin user.
+      parameters:
+        - name: op_ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: OO
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
+      responses:
+        200:
+          description: >
+            Successful fetch of settlement record list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settlementsByOperator'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/settlementList'
+        400:
+          description: Invalid input parameters
+        401:
+          description: Unauthorised user
+        402:
+          description: No settlement records found with requested operator ID
+        500:
+          description: Internal server error
+
+  /ClearSettlement/{ID}:
+    get:
+      description: >
+        Mark an existing settlement record as cleared in the database.
+        This resource may be accessed by any payment or admin user.
+      parameters:
+        - name: ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: DNA83N02NC
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/customHeader'
+      responses:
+        200:
+          description: Settlement record successfully marked as cleared
+        400:
+          description: Invalid input parameters
+        401:
+          description: Unauthorised user
+        402:
+          description: No settlement record found with requested ID
+        500:
+          description: Internal server error
+
+
           
 components:
   securitySchemes:
@@ -786,3 +940,69 @@ components:
           example: '2020-07-31 23:59:59'
         PPOList:
           $ref: '#/components/schemas/chargesByList'
+
+    settlement:
+      type: object
+      properties:
+        RequestTimestamp:
+          type: string
+          example: '2021-01-04 20:32:42'
+        SettlementID:
+          type: string
+          example: 'FN30GB1D8X'
+        OperatorCredited:
+          type: string
+          example: 'EG'
+        OperatorDebited:
+          type: string
+          example: 'GF'
+        DateFrom:
+          type: string
+          example: '2019-01-01 00:00:00'
+        DateTo:
+          type: string
+          example: '2019-01-31 23:59:59'
+        Amount:
+          type: number
+          format: float
+          example: 58.95
+        Cleared:
+          type: boolean
+          example: false
+
+    settlementList:
+      type: array
+      items:
+        type: object
+        properties:
+          SettlementID:
+            type: string
+            example: 'FN30GB1D8X'
+          OperatorCredited:
+            type: string
+            example: 'EG'
+          OperatorDebited:
+            type: string
+            example: 'GF'
+          DateFrom:
+            type: string
+            example: '2019-01-01 00:00:00'
+          DateTo:
+            type: string
+            example: '2019-01-31 23:59:59'
+          Amount:
+            type: number
+            format: float
+            example: 58.95
+          Cleared:
+            type: boolean
+            example: false
+    
+    settlementsByOperator:
+      type: object
+      properties:
+        RequestTimestamp:
+          type: string
+          example: '2021-01-04 20:32:42'
+        SettlementList:
+          $ref: '#/components/schemas/settlementList'

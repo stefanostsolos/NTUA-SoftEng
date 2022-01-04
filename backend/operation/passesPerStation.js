@@ -1,6 +1,6 @@
 const express = require('express');
-const db = require('./db');
-const aux = require('./helper');
+const db = require('../db');
+const aux = require('../helper');
 const { Parser } = require('json2csv');
 const createError = require('http-errors');
 const passport = require('passport');
@@ -34,7 +34,7 @@ router.get('/:stationID/:date_from/:date_to',
             ];
             
             // Check if user can access resource. This resource can be accessed by any
-            // any operator users whose ID matches the operatorID of the requested station,
+            // operator users whose ID matches the operatorID of the requested station,
             // as well as by any trasnportation users and any admin users
             if (req.user.type != 'transportation' && req.user.type != 'admin') {
                 const sql_auth = `SELECT * FROM station WHERE ID = ? AND operatorID = ?`;

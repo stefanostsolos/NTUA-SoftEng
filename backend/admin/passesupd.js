@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('./db');
+const db = require('../db');
 const multer = require('multer');
 const fs = require('fs/promises');
 const passport = require('passport');
@@ -25,7 +25,7 @@ async function validate_file(path) {
     return true;
 }
 
-// {baseURL}/admin/system/passesupd
+// {baseURL}/admin/passesupd
 router.post('/', 
     upload.single('file'), 
     passport.authenticate('jwt', { session: false }),

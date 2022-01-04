@@ -1,14 +1,14 @@
 const express = require('express');
-const db = require('./db');
+const db = require('../db');
 const fs = require('fs/promises');
 
 
 const router = express.Router();
-const ADMIN = require('./default_admin');
+const ADMIN = require('../default_admin');
 
 async function reset(table) {
     // Isolate each row from file of defaults
-    const file = await fs.readFile(`./defaults/${table}.csv`, 'utf-8');
+    const file = await fs.readFile(`../defaults/${table}.csv`, 'utf-8');
     var rows = file.split('\n');
     rows.pop();
 
