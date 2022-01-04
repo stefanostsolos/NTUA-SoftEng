@@ -3,11 +3,14 @@ const db = require('./db');
 const aux = require('./helper');
 const { Parser } = require('json2csv');
 const createError = require('http-errors');
+const passport = require('passport');
 
 const router = express.Router();
 
 // {baseURL}/PassesAnalysis
-router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function(req, res, next) {
+router.get('/:op1_ID/:op2_ID/:date_from/:date_to', 
+    passport.authenticate('jwt', { session: false }),
+    async function(req, res, next) {
     try {
         const request_timestamp = aux.get_current_timestamp();
 
@@ -45,10 +48,8 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function(req, res, next
         const [rows] = await db.execute(sql, [station_opID, tag_opID, date_from, date_to]);
 
         // If no results were found, throw 402
-        if (!rows.length) {
-            const err = new Error("No records found with the requested parameters");
-            err.status = 402;
-            throw(err);
+        if (rows.length === 0) {
+            throw new createError(402, "No pass records found with requested parameters");
         }
 
         // Create an element of PassesList for each fetched row
@@ -65,7 +66,7 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function(req, res, next
 
         // Check the format query parameter, then accordingly send either a JSON
         // or a CSV file as a response (or throw 400 if the format is invalid).
-        if (!req.query.format || req.query.format == 'json') {
+        if (!req.query.format || req.query.format === 'json') {
             res.status(200).send({
                 op1_ID: station_opID,
                 op2_ID: tag_opID,
@@ -75,7 +76,7 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to', async function(req, res, next
                 NumberOfPasses: rows.length,
                 PassesList: PassesList
             });
-        } else if (req.query.format == 'csv') {
+        } else if (req.query.format === 'csv') {
             const parser = new Parser();
             const csv = parser.parse(PassesList);
             res.status(200).send(csv);

@@ -397,8 +397,6 @@ paths:
           description: Invalid input parameters (operator IDs or dates)
         401:
           description: Unauthorised user
-        402:
-          description: No records found with the requested parameters
         500:
           description: Internal server error
           
@@ -437,8 +435,6 @@ paths:
           description: Invalid input parameters (operator IDs or dates)
         401:
           description: Unauthorised user
-        402:
-          description: No records found with the requested parameters
         500:
           description: Internal server error
           
@@ -543,6 +539,13 @@ components:
             Payment service provider or Administrator
           type: string
           enum: ['operator', 'transportation', 'payment', 'admin']
+        operatorID:
+          description: >
+            If the user is an operator, this should equal the operator's ID, otherwise it
+            should be null.
+          type: string
+          nullable: true
+          example: "AO"
           
     status_ok:
       type: object

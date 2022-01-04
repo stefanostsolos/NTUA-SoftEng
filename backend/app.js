@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const createError = require('http-errors');
 const morgan = require('morgan');
+const db = require('./db');
 
 const app = express();
 const port = 9103;
@@ -11,7 +12,58 @@ const baseURL = `/interoperability/api`;
 app.use(morgan('dev'));
 
 // Authentication middleware
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const aux = require('./helper');
+
 app.use(passport.initialize());
+
+// Configure authentication strategy for username/password login
+passport.use(
+    new LocalStrategy(async function (username, password, done) {
+        try {
+            // Check if given username and password are valid, throw 400 if not
+            if (!aux.validate_username_password(username, password)) {
+                throw new createError(400, 'Invalid username or password');
+            }
+
+            // Search for a user with the given username in the database
+            const sql_find = `SELECT * FROM user WHERE username = ?`;
+            const [result] = await db.execute(sql_find, [username]);
+
+            // If the requested user does not exist, or if the given password
+            // does not match, authentication fails
+            if (result.length === 0) {
+                return done(null, false, { message: 'Incorrect username or password' });
+            }
+            const user = result[0];
+            const match = await bcrypt.compare(password, user.password);
+            if (!match) {
+                return done(null, false, { message: 'Incorrect username or password' });
+            }
+
+            // If username and password match, return user attributes
+            return done(null, user);
+        } catch (err) {
+            return done(err);
+        }
+    })
+);
+
+// Configure authentication strategy for authorised operations using JWT
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const JWT_SECRET = require('./jwt-secret');
+
+passport.use(
+    new JwtStrategy ({
+            secretOrKey: JWT_SECRET,
+            jwtFromRequest: ExtractJwt.fromHeader('x-observatory-auth')
+        }, function(jwt_payload, done) {
+            return done(null, { username: jwt_payload.username, type: jwt_payload.type });
+        }
+    )
+);
 
 // Routing middleware
 const login = require('./login')
@@ -49,6 +101,7 @@ app.use((err, req, res, next) => {
     res.status(status).send(message);
 });
 
+// Begin listening at predetermined port
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`)
 });

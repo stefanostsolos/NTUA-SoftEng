@@ -10,10 +10,10 @@ const router = express.Router();
 router.post('/', express.json(), async function(req, res, next) {
     try {
         // Check if given username and password are valid, throw 400 if not
-        const [username, password, type] = [
-            req.body.username, req.body.password, req.body.type
+        const [username, password, type, operatorID] = [
+            req.body.username, req.body.password, req.body.type, req.body.operatorID
         ];
-        if (!aux.validate_user_attributes(username, password, type)) {
+        if (!aux.validate_user_attributes(username, password, type, operatorID)) {
             throw new createError(400, 'Invalid user attributes');
         }
 
@@ -29,18 +29,19 @@ router.post('/', express.json(), async function(req, res, next) {
         // update attribues of existing user
         if (check.length == 0) {
             const sql_main = 
-                `INSERT INTO user (username, password, type) VALUES (?, ?, ?)`;
-            await db.execute(sql_main, [username, hashed_password, type]);
+                `INSERT INTO user (username, password, type, operatorID) VALUES (?, ?, ?, ?)`;
+            await db.execute(sql_main, [username, hashed_password, type, operatorID]);
         } else {
             const sql_main = 
-                `UPDATE user SET password = ?, type = ? WHERE user.username = ?`;
-            await db.execute(sql_main, [hashed_password, type, username]);
+                `UPDATE user SET password = ?, type = ?, operatorID = ? WHERE user.username = ?`;
+            await db.execute(sql_main, [hashed_password, type, operatorID, username]);
         }
 
         res.status(200).send({
             username: username,
             password: password,
-            type: type
+            type: type,
+            operatorID: operatorID
         });
     } catch (err) {
         next(err);
