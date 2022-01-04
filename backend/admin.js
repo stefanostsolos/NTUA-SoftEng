@@ -2,7 +2,9 @@ const express = require('express');
 const db = require('./db');
 const fs = require('fs/promises');
 
+
 const router = express.Router();
+const ADMIN = require('./default_admin');
 
 async function reset(table) {
     // Isolate each row from file of defaults
@@ -16,10 +18,6 @@ async function reset(table) {
         case 'station':
             sql_insert = 
                 `INSERT INTO station (ID, operatorID, stationName) VALUES (?, ?, ?)`; 
-            break;
-        case 'pass':
-            sql_insert = 
-                `INSERT INTO pass (ID, tagID, stationID, timestamp, charge) VALUES (?, ?, ?, ?, ?)`;
             break;
         case 'tag':
             sql_insert = 
@@ -36,9 +34,11 @@ async function reset(table) {
     await db.execute(`DELETE FROM ${table}`);
 
     // Read default data row by row and import
-    for (const row of rows) {
-        params = row.split(',');
-        await db.execute(sql_insert, params);
+    if (table != 'pass') {
+        for (const row of rows) {
+            params = row.split(',');
+            await db.execute(sql_insert, params);
+        }
     }
 
     // If successful, commit transaction
@@ -46,6 +46,35 @@ async function reset(table) {
 }
 
 // {baseURL}/admin/
+router.post('/resetadmin', async function(req, res) {
+    try {
+        // Check if a user with the default admin username exists
+        const sql_check = `SELECT * FROM user WHERE username = ?`;
+        const [check] = await db.execute(sql_check, [ADMIN.username]);
+
+        // If not, create a default user account
+        if (check.length === 0) {
+            const sql_main = `INSERT INTO user (username, password, type, operatorID) VALUES (?, ?, ?, ?)`;
+            await db.execute(sql_main, 
+                [ADMIN.username, ADMIN.hashed_password, ADMIN.type, ADMIN.operatorID]
+            );
+        } else {
+            const sql_main = `UPDATE user SET password = ?, type = ?, operatorID = ? WHERE user.username = ?`;
+            await db.execute(sql_main, 
+                [ADMIN.hashed_password, ADMIN.type, ADMIN.operatorID, ADMIN.username]
+            );
+        }
+
+        res.status(200).send({ status: 'OK' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({
+            status: "failed",
+            details: err.message ? err.message : ""
+        });
+    }
+});
+
 router.post('/resetstations', async function(req, res) {
     try {
         await reset('station');

@@ -25,12 +25,24 @@ router.get('/:stationID/:date_from/:date_to',
                 throw new createError(400, "Invalid input parameters (time period or station ID)");
             }
 
+            
             // Get and convert request parameters
             const [stationID, date_from, date_to] = [
                 req.params.stationID, 
                 aux.convert_date_param(req.params.date_from) + ' 00:00:00', 
                 aux.convert_date_param(req.params.date_to) + ' 23:59:59'
             ];
+            
+            // Check if user can access resource. This resource can be accessed by any
+            // any operator users whose ID matches the operatorID of the requested station,
+            // as well as by any trasnportation users and any admin users
+            if (req.user.type != 'transportation' && req.user.type != 'admin') {
+                const sql_auth = `SELECT * FROM station WHERE ID = ? AND operatorID = ?`;
+                const [auth] = await db.execute(sql_auth, [stationID, req.user.operatorID]);
+                if (auth.length === 0) {
+                    throw new createError(401, 'Unauthorised user');
+                }
+            }
 
             // Fetch the ID and name of the station's owner
             const sql_aux = 
@@ -38,6 +50,9 @@ router.get('/:stationID/:date_from/:date_to',
                 FROM station JOIN operator ON station.operatorID = operator.ID 
                 WHERE station.ID = ?`;
             const [answer] = await db.execute(sql_aux, [stationID]);
+            if (answer.length === 0) {
+                throw new createError(400, 'Station with given ID does not exist')
+            }
             const [station_opID, station_opName] = [answer[0].ID, answer[0].name];
 
             // Fetch the required information for each pass record
@@ -91,6 +106,7 @@ router.get('/:stationID/:date_from/:date_to',
         } catch (err) {
             next(err); // Call error handler
         }
-});
+    }
+);
 
 module.exports = router;

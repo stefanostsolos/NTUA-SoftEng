@@ -16,8 +16,8 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to',
 
             // Check if path parameters are valid, throw 400 if not
             const valid = 
-                aux.validate_opID(req.params.op1_ID) && 
-                aux.validate_opID(req.params.op2_ID) &&
+                aux.validate_operatorID(req.params.op1_ID) && 
+                aux.validate_operatorID(req.params.op2_ID) &&
                 aux.validate_date(req.params.date_from) &&
                 aux.validate_date(req.params.date_to) &&
                 req.params.op1_ID != req.params.op2_ID;
@@ -32,6 +32,17 @@ router.get('/:op1_ID/:op2_ID/:date_from/:date_to',
                 aux.convert_date_param(req.params.date_from),
                 aux.convert_date_param(req.params.date_to)
             ];
+
+            // Check if user can access resource. This resource can be accessed by any
+            // any operator users whose ID matches either of the operator IDs in the request,
+            // as well as by any admin users
+            const auth = 
+                req.user.type === 'admin' || 
+                (req.user.type === 'operator' && req.user.operatorID === station_opID) || 
+                (req.user.type === 'operator' && req.user.operatorID === tag_opID);
+            if (!auth) {
+                throw new createError(401);
+            }
 
             // Fetch number of passes and total cost
             const sql = 

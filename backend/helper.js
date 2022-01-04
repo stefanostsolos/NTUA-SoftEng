@@ -30,10 +30,14 @@ class aux {
         return ['AO', 'EG', 'GF', 'KO', 'MR', 'NE', 'OO'].includes(opID);
     }
 
+    static validate_username(username) {
+        return username && !/\s/.test(username);
+    }
+
     static validate_username_password(username, password) {
         // Check if given username and password are valid, i.e. if they 
         // contain no whitespace
-        return !/\s/.test(username) && !/\s/.test(password);
+        return username && password && !/\s/.test(username) && !/\s/.test(password);
     }
 
     static validate_user_attributes(username, password, type, operatorID) {

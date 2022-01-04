@@ -11,7 +11,15 @@ router.post('/',
     passport.authenticate('local', { session: false }), 
     async function(req, res, next) {
         try {
-            const token = jwt.sign(req.user, JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign(
+                {
+                    username: req.user.username,
+                    type: req.user.type,
+                    operatorID: req.user.operatorID
+                }, 
+                JWT_SECRET, 
+                { expiresIn: '1h' }
+            );
             res.status(200).send({ token: token });
         } catch (err) {
             next(err);

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.2
+  version: 1.0.5
   title: Softeng 21-18 Toll Interoperability API
   description: >
     REST API supporting the function of an interoperability system  for highway
@@ -11,8 +11,8 @@ servers:
     description: Development server
 security:
   - bearerAuth: []
-paths:
 
+paths:
   /login:
     post:
       description: >
@@ -23,7 +23,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/username_password'
+              $ref: '#/components/schemas/login'
       responses:
         200:
           description: Succesful identification
@@ -39,7 +39,7 @@ paths:
                       eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmRvbVVzZXIiLCJlbWFpbCI6InJhbmRvbUB1c2VyLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os
         400:
           description: Invalid username or password
-        402:
+        401:
           description: No user found with given credentials
         500:
           description: Internal server error
@@ -66,7 +66,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: '#/components/schemas/usermod'
       responses:
         200:
           description: >
@@ -75,14 +75,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/usermod'
         400:
           description: Invalid user attributes
         401:
           description: Unauthorised admin
         500:
           description: Internal server error
-          
+  
+  /admin/users:
+    get:
+      description: >
+        Get data of all users
+      parameters:
+        - $ref: '#/components/parameters/customHeader'
+      responses:
+        200:
+          description: Successful fetch of user data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/users'
+        401:
+          description: Unauthorised admin
+        500:
+          description: Internal server error
+
   /admin/users/{username}:
     get:
       description: >
@@ -98,11 +118,11 @@ paths:
         - $ref: '#/components/parameters/customHeader'
       responses:
         200:
-          description: Succesful fetch of user data
+          description: Successful fetch of user data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/users'
         400:
           description: Invalid username
         401:
@@ -112,7 +132,7 @@ paths:
         500:
           description: Internal server error
           
-  /admin/system/passesupd:
+  /admin/passesupd:
     post:
       description: >
         Post a CSV file containing any number of pass records, one per row.
@@ -197,17 +217,34 @@ paths:
                       Server=localhost;Database=interoperability;UserId=root;Password=password;
         500:
           description: Internal server error
-          
-  /admin/resetpasses:
+
+  /admin/resetadmin:
     post:
       description: >
-        Deletes all pass records from the database and resets  the administrator
-        account to default (username: admin,  password: freepasses4all).
+        Resets the administrator user account to default (username: admin,  password: freepasses4all).
       responses:
         200:
           description: >
-            Succesful deletion of pass records and reset of  default
-            administrator account.
+            Successful reset of default administrator user account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_ok'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status_failed'
+
+  /admin/resetpasses:
+    post:
+      description: >
+        Deletes all pass records from the database.
+      responses:
+        200:
+          description: >
+            Successful deletion of pass records.
           content:
             application/json:
               schema:
@@ -514,7 +551,7 @@ components:
           VFq_QK6pzjNvKpm0ju_gbOjB3u3dMjs7EZcUCvSH-Os
           
   schemas:
-    username_password:
+    login:
       type: object
       properties:
         username:
@@ -524,7 +561,7 @@ components:
           type: string
           example: foobar123!
 
-    user:
+    usermod:
       type: object
       properties:
         username:
@@ -533,6 +570,26 @@ components:
         password:
           type: string
           example: foobar123!
+        type:
+          description: >
+            Indicates whether the user is an Operator, Transportation authority official,
+            Payment service provider or Administrator
+          type: string
+          enum: ['operator', 'transportation', 'payment', 'admin']
+        operatorID:
+          description: >
+            If the user is an operator, this should equal the operator's ID, otherwise it
+            should be null.
+          type: string
+          nullable: true
+          example: "AO"
+    
+    users:
+      type: object
+      properties:
+        username:
+          type: string
+          example: aodos
         type:
           description: >
             Indicates whether the user is an Operator, Transportation authority official,

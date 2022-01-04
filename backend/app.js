@@ -60,13 +60,18 @@ passport.use(
             secretOrKey: JWT_SECRET,
             jwtFromRequest: ExtractJwt.fromHeader('x-observatory-auth')
         }, function(jwt_payload, done) {
-            return done(null, { username: jwt_payload.username, type: jwt_payload.type });
+            return done(null, { 
+                username: jwt_payload.username, 
+                type: jwt_payload.type,
+                operatorID: jwt_payload.operatorID 
+            });
         }
     )
 );
 
 // Routing middleware
-const login = require('./login')
+const login = require('./login');
+const users = require('./users');
 const usermod = require('./usermod');
 const passesupd = require('./passesupd');
 const admin = require('./admin');
@@ -77,9 +82,10 @@ const chargesBy = require('./chargesBy');
 const getStations = require('./getStations')
 
 app.use(`${baseURL}/login`, login);
+app.use(`${baseURL}/admin/users`, users);
 app.use(`${baseURL}/admin/usermod`, usermod);
 app.use(`${baseURL}/admin/`, admin);
-app.use(`${baseURL}/admin/system/passesupd`, passesupd);
+app.use(`${baseURL}/admin/passesupd`, passesupd);
 app.use(`${baseURL}/PassesPerStation`, passesPerStation);
 app.use(`${baseURL}/PassesAnalysis`, passesAnalysis);
 app.use(`${baseURL}/PassesCost`, passesCost);
