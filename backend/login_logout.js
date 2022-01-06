@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const JWT_SECRET = require('./jwt-secret');
 
-// {baseURL}/login
-router.post('/', 
+router.post('/login', 
     express.urlencoded({ extended: false }), 
     passport.authenticate('local', { session: false }), 
     async function(req, res, next) {
@@ -24,6 +23,13 @@ router.post('/',
         } catch (err) {
             next(err);
         }
+    }
+);
+
+router.post('/logout', 
+    passport.authenticate('jwt', { session: false }), 
+    function (req, res) {
+        res.status(200).send();
     }
 );
 

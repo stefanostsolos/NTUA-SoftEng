@@ -3,6 +3,8 @@ const passport = require('passport');
 const createError = require('http-errors');
 const morgan = require('morgan');
 const db = require('./db');
+const bcrypt = require('bcrypt');
+const aux = require('./helper');
 
 const app = express();
 const port = 9103;
@@ -12,13 +14,11 @@ const baseURL = `/interoperability/api`;
 app.use(morgan('dev'));
 
 // Authentication middleware
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
-const aux = require('./helper');
-
 app.use(passport.initialize());
 
 // Configure authentication strategy for username/password login
+const LocalStrategy = require('passport-local').Strategy;
+
 passport.use(
     new LocalStrategy(async function (username, password, done) {
         try {
@@ -54,11 +54,12 @@ passport.use(
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const JWT_SECRET = require('./jwt-secret');
+const CUSTOM_HEADER = 'x-observatory-auth';
 
 passport.use(
     new JwtStrategy ({
             secretOrKey: JWT_SECRET,
-            jwtFromRequest: ExtractJwt.fromHeader('x-observatory-auth')
+            jwtFromRequest: ExtractJwt.fromHeader(CUSTOM_HEADER)
         }, function(jwt_payload, done) {
             return done(null, { 
                 username: jwt_payload.username, 
@@ -70,7 +71,7 @@ passport.use(
 );
 
 // Routing middleware
-const login = require('./login');
+const login_logout = require('./login_logout');
 const users = require('./admin/users');
 const usermod = require('./admin/usermod');
 const passesupd = require('./admin/passesupd');
@@ -79,22 +80,24 @@ const passesPerStation = require('./operation/passesPerStation');
 const passesAnalysis = require('./operation/passesAnalysis');
 const passesCost = require('./operation/passesCost');
 const chargesBy = require('./operation/chargesBy');
-const getStations = require('./operation/getStations')
+const getStationIDs = require('./operation/getStationIDs');
+const getOperatorIDs = require('./operation/getOperatorIDs');
 const newSettlement = require('./operation/newSettlement');
 const settlementByID = require('./operation/settlementByID');
 const settlementsByOperator = require('./operation/settlementsByOperator');
 const clearSettlement = require('./operation/clearSettlement');
 
-app.use(`${baseURL}/login`, login);
+app.use(baseURL, login_logout);
 app.use(`${baseURL}/admin/users`, users);
 app.use(`${baseURL}/admin/usermod`, usermod);
-app.use(`${baseURL}/admin/`, admin);
+app.use(`${baseURL}/admin`, admin);
 app.use(`${baseURL}/admin/passesupd`, passesupd);
 app.use(`${baseURL}/PassesPerStation`, passesPerStation);
 app.use(`${baseURL}/PassesAnalysis`, passesAnalysis);
 app.use(`${baseURL}/PassesCost`, passesCost);
-app.use(`${baseURL}/ChargesBy/`, chargesBy);
-app.use(`${baseURL}/GetStations`, getStations);
+app.use(`${baseURL}/ChargesBy`, chargesBy);
+app.use(`${baseURL}/GetStationIDs`, getStationIDs);
+app.use(`${baseURL}/GetOperationIDs`, getOperatorIDs);
 app.use(`${baseURL}/NewSettlement`, newSettlement);
 app.use(`${baseURL}/SettlementByID`, settlementByID);
 app.use(`${baseURL}/SettlementsByOperator`, settlementsByOperator);

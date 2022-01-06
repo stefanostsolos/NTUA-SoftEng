@@ -52,6 +52,8 @@ paths:
       responses:
         200:
           description: Successful logout
+        401:
+          description: Unauthorised user
         500:
           description: Internal server error
           
@@ -317,7 +319,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/status_failed'
   
-  /GetStations:
+  /GetStationIDs:
     get:
       description: >
         Fetch a list of all station IDs.
@@ -339,6 +341,29 @@ paths:
                     items:
                       type: string
                       example: "AO10"
+
+  /GetOpearatorIDs:
+    get:
+      description: >
+        Fetch a list of all opearator IDs.
+        This resource may be accessed by any operator, transportation or admin user.
+      responses:
+        200:
+          description: >
+            Successful fetch of operator IDs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  RequestTimestamp:
+                    type: string
+                    example: '2020-09-25 15:33:25'
+                  StationIDList:
+                    type: array
+                    items:
+                      type: string
+                      example: "AO"
 
   /PassesPerStation/{stationID}/{date_from}/{date_to}:
     get:
