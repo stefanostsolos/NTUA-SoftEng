@@ -1,7 +1,7 @@
 {
   "name": "epass",
   "version": "1.0.0",
-  "description": "A CLI to help with interoperability of tolls",
+  "description": "A CLI supporting the function of an interoperability system for highway toll stations. Created for the purposes of the term project of the Software Engineering course(7th Semester, NTUA)",
   "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
