@@ -342,10 +342,10 @@ paths:
                       type: string
                       example: "AO10"
 
-  /GetOpearatorIDs:
+  /GetOperatorIDs:
     get:
       description: >
-        Fetch a list of all opearator IDs.
+        Fetch a list of all operator IDs.
         This resource may be accessed by any operator, transportation or admin user.
       responses:
         200:
