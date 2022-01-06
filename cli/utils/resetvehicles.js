@@ -6,7 +6,7 @@ const axios = require('axios');
 const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
 
 async function resetvehicles() {
-    fs.createReadStream('./sampledata01/sampledata01_stations.csv')
+    fs.createReadStream('./sampledata01/sampledata01_vehicles_100.csv')
         .pipe(csv({ separator: ';' }))
         .on('data', async function (chunk) {
             const res = await axios.post(`${baseURL}/admin/resetvehicles`, { vehicleID: `${chunk.vehicleID}`, tagID: `${chunk.tagID}`, tagProvider: `${chunk.tagProvider}`, providerAbbr: `${chunk.providerAbbr}`, licenseYear: `${chunk.licenseYear}` });
