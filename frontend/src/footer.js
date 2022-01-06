@@ -1,0 +1,43 @@
+import React from "react";
+import "./App.css";
+import youtube from "./images/youtube-icon.png";
+import fb from "./images/facebook-icon.png";
+import twitter from "./images/twitter-icon.png";
+import instagram from "./images/instagram-icon.png";
+/* import {withRouter} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; */
+
+function Footer() {
+  return (
+    <footer>
+      <ul ul className="footer-links">
+        {/* <li><a href="#">About</a></li>   */}
+        < li >
+          <a href="/contact">Project creators</a>
+        </li>
+        <li>
+          <a href="https://webmail.ntua.gr">Contact us</a>
+        </li>
+        <li>
+          <a href="https://github.com/ntua/TL21-18">Github repository</a>
+        </li>
+      </ul>
+      <ul className="footer-social">
+        <a href="https://www.youtube.com/">
+          <img src={youtube} alt="youtube icon" />
+        </a>
+        <a href="https://www.facebook.com/">
+          <img src={fb} alt="facebook icon" />
+        </a>
+        <a href="https://www.twitter.com/">
+          <img src={twitter} alt="twitter icon" />
+        </a>
+        <a href="https://www.instagram.com/">
+          <img src={instagram} alt="instagram icon" />
+        </a>
+      </ul>
+    </footer>
+  );
+}
+
+export default Footer;
