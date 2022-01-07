@@ -359,7 +359,7 @@ paths:
                   RequestTimestamp:
                     type: string
                     example: '2020-09-25 15:33:25'
-                  StationIDList:
+                  OperatorIDList:
                     type: array
                     items:
                       type: string
