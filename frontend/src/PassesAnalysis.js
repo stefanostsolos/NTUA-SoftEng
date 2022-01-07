@@ -1,21 +1,16 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Box from "@mui/material/Box";
 import styled from "styled-components/macro";
 import { spacing } from "@material-ui/system";
-import {
-  FormControl as MuiFormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import Stack from "@mui/material/Stack";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
+import { FormControl as MenuItem, Select, TextField } from "@mui/material";
 /* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import login from './login';
 import Signup from './signup';
@@ -31,12 +26,43 @@ const FormControl = styled(FormControlSpacing)`
   border-color: "4px solid #ffffff";
 `;
 
+const fetchOperators = async () => {
+  const res = await fetch(
+    "https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/GetOperatorIDs"
+  );
+  const data = await res.json();
+
+  return data.OperatorIDList;
+};
+
+
 function PassesAnalysis() {
+  const [operators, setOperators] = useState([]);
   const [op1, setOp1] = useState("");
   const [op2, setOp2] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
-  const operators = ["AAA0939423", "AAB2596984", "AAB6113266"];
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [requestedData, setRequestedData] = useState(null);
+
+  useEffect(() => {
+    const getOperators = async () => {
+      const operatorsFromServer = await fetchOperators();
+      setOperators(operatorsFromServer);
+    };
+    getOperators();
+    console.log(operators);
+  }, []);
+
+  useEffect(() => {
+    if (op1 && op2 && datefrom && dateto) {
+      setCanSubmit(true);
+    } else {
+      setCanSubmit(false);
+    }
+    console.log(requestedData);
+  }, [op1, op2, datefrom, dateto]);
+
 
   const handleOp1Change = (event) => {
     setOp1(event.target.value);
@@ -54,23 +80,31 @@ function PassesAnalysis() {
     setDateto(newdate);
   };
 
-  let x = document.cookie.split(";").reduce((res, c) => {
-    const [key, val] = c.trim().split("=").map(decodeURIComponent);
-    const allNumbers = (str) => /^\d+$/.test(str);
-    try {
-      return Object.assign(res, {
-        [key]: allNumbers(val) ? val : JSON.parse(val),
-      });
-    } catch (e) {
-      return Object.assign(res, { [key]: val });
-    }
-  }, {});
+  const fetchResults = async (operatorid1,operatorid2, datefrom, dateto) => {
+    const datefromstr = `${datefrom.getFullYear()}${String(
+      datefrom.getMonth() + 1
+    ).padStart(2, "0")}${String(datefrom.getDate()).padStart(2, "0")}`;
+
+    const datetostr = `${dateto.getFullYear()}${String(
+      dateto.getMonth() + 1
+    ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
+
+  
+    const res = await fetch(
+      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
+    );
+
+    const data = await res.json();
+
+    setRequestedData(data);
+    //console.log(data)
+  };
 
   return (
     <main>
       <section className="index-banner">
         <h2>Passes Analysis</h2>
-        <div style={{ zIndex: 99 }}>
+        <div className="form-container">
           <Stack spacing={3}>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
@@ -79,6 +113,7 @@ function PassesAnalysis() {
                     Operator 1
                   </InputLabel>
                   <Select
+                    className="form-input"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={op1}
@@ -90,11 +125,13 @@ function PassesAnalysis() {
                     ))}
                   </Select>
                 </FormControl>
+
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Operator 2
                   </InputLabel>
                   <Select
+                   className="form-input"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={op2}
@@ -108,6 +145,7 @@ function PassesAnalysis() {
                 </FormControl>
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <div className="form-input">
                   <DesktopDatePicker
                     label="Date from"
                     inputFormat="MM/dd/yyyy"
@@ -115,7 +153,8 @@ function PassesAnalysis() {
                     onChange={handleDateFromChange}
                     renderInput={(params) => <TextField {...params} />}
                   />
-
+                  </div>
+                  <div className="form-input">
                   <DesktopDatePicker
                     label="Date to"
                     inputFormat="MM/dd/yyyy"
@@ -123,9 +162,21 @@ function PassesAnalysis() {
                     onChange={handleDateToChange}
                     renderInput={(params) => <TextField {...params} />}
                   />
+                  </div>
                 </LocalizationProvider>
               </FormControl>
             </Box>
+            <Button
+              variant="contained"
+              disabled={!canSubmit}
+              onClick={() => {
+                fetchResults(op1, op2, datefrom, dateto);
+                console.log(op1, op2);
+              }
+            }
+            >
+              Search
+            </Button>
           </Stack>
         </div>
       </section>
