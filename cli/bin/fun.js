@@ -1,53 +1,102 @@
 module.exports = { switch_fun: switch_fun };
 
 function switch_fun(fun, options) {
+    let code = -400;
     let utils;
     switch (fun) {
         case 'healthcheck':
             utils = path(fun);
-            utils.healthcheck();
+            code = utils.healthcheck();
             break;
         case 'resetpasses':
             utils = path(fun);
-            utils.resetpasses();
+            code = utils.resetpasses();
             break;
         case 'resetstations':
             utils = path(fun);
-            utils.resetstations();
+            code = utils.resetstations();
             break;
         case 'resetvehicles':
             utils = path(fun);
-            utils.resetvehicles();
+            code = utils.resetvehicles();
+            break;
+        case 'resettags':
+            utils = path(fun);
+            code = utils.resettags();
+            break;
+        case 'resetadmin':
+            utils = path(fun);
+            code = utils.resetadmin();
+            break; 
+        case 'passesupd':
+            utils = path(fun)
+            code = utils.passesupd()
+            break
+        case 'usermod':
+            utils = path(fun)
+            code = utils.usermod(options.username, options.password, options.type, options.opID)
             break;
         case 'login':
             utils = path(fun);
-            utils.login(options.username, options.passw);
+            code = utils.login(options.username, options.passw);
             break;
         case 'logout':
             utils = path(fun);
-            utils.logout();
+            code = utils.logout();
             break;
+        case 'getstationids':
+            utils = path(fun);
+            code = utils.getstationids();
+            break;
+        case 'getoperatorids':
+            utils = path(fun);
+            code = utils.getoperatorids()
+            break
         case 'passesperstation':
             utils = path(fun);
-            utils.passesperstation(options.station, options.datefrom, options.dateto, options.format);
+            code = utils.passesperstation(options.station, options.datefrom, options.dateto);
             break;
         case 'passesanalysis':
             utils = path(fun);
-            utils.passesanalysis(options.op1, options.op2, options.datefrom, options.dateto, options.format);
+            code = utils.passesanalysis(options.op1, options.op2, options.datefrom, options.dateto);
             break;
         case 'passescost':
             utils = path(fun);
-            utils.passescost(options.op1, options.op2, options.datefrom, options.dateto, options.format);
+            code = utils.passescost(options.op1, options.op2, options.datefrom, options.dateto);
             break;
         case 'chargesby':
             utils = path(fun);
-            utils.chargesby(options.op, options.datefrom, options.dateto, options.format);
+            code = utils.chargesby(options.op, options.datefrom, options.dateto);
+            break;
+        case 'users':
+            utils = path(fun);
+            code = utils.users();
+            break;
+        case 'userdata':
+            utils = path(fun);
+            code = utils.userdata(options.username);
+            break;
+        case 'newsettlement':
+            utils = path(fun);
+            code = utils.newsettlement(options.op1, options.op2, options.dateto);
+            break;
+        case 'settlementbyid':
+            utils = path(fun);
+            code = utils.settlementbyid(options.id);
+            break;
+        case 'settlementbyoperator':
+            utils = path(fun);
+            code = utils.settlementbyoperator(options.opid);
+            break;
+        case 'clearsettlement':
+            utils = path(fun);
+            code = utils.clearsettlement(options.id);
             break;
         default:
-            console.log("Error 400: Bad request");
-            console.log("Found at: Scope");
+            console.log("Error: Wrong scope input");
             break;
     }
+    return code;
 }
 
 function path(fun) {

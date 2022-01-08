@@ -1,3 +1,5 @@
+
+
 module.exports = { scope: scope }
 
 const inquirer = require("inquirer");
@@ -9,16 +11,28 @@ async function promptMissingScope() {
         type: 'list',
         name: 'scope',
         message: 'Please choose which scope you want',
-        choices: ['healthcheck: Check end-to-end connectivity (between user and database)',
-            'resetpasses: Deletes all pass records from the database and resets the administrator account to default',
-            'resetstations: Resets the station records in the database to default',
-            'resetvehicles: Resets the vehicle records in the database to default',
-            'login: User login credentials (inputted by user in the login form) and perform identification',
-            'logout: Perform user logout',
-            'passesperstation: Fetch a list of passes that were recorded between specified dates',
-            'passesanalysis: Fetch a list of passes that were recorded between specified dates',
-            'passescost: Fetch the number of passes that were recorded between specified dates',
-            'chargesby: Fetch the number of passes that were recorded between specified dates'],
+        choices: ['healthcheck: check end-to-end connectivity (between user and database)',
+            'resetpasses',
+            'resetstations',
+            'resetvehicles',
+            'resettags',
+            'resetadmin',
+            'passesupd',
+            'usermod',
+            'login: post user login credentials (inputted by user in the login form) and perform identification',
+            'logout: perform user logout',
+            'getoperatorids',
+            'getstationids',
+            'passesperstation',
+            'passesanalysis',
+            'passescost',
+            'chargesby',
+            'users',
+            'userdata',
+            'newsettlement',
+            'settlementbyid',
+            'settlementbyoperator',
+            'clearsettlement'],
     });
 
     const answer = await inquirer.prompt(question);
