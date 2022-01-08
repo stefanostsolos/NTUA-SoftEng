@@ -7,19 +7,20 @@ const createError = require('http-errors');
 const router = express.Router();
 
 // {baseURL}/ClearSettlement
-router.get('/:ID',
+router.get('/',
+    express.json(),
     passport.authenticate('jwt', { session: false }),
     async function(req, res, next) {
         try {
             const request_timestamp = aux.get_current_timestamp();
 
             // Check if given settlement ID is valid
-            if (!aux.validate_settlementID(req.params.ID)) {
+            if (!aux.validate_settlementID(req.body.ID)) {
                 throw new createError(400, 'Invalid request parameter (settlement ID)');
             }
 
-            // Get path parameter
-            const id = req.params.ID;
+            // Get body parameter
+            const id = req.body.ID;
 
             // Check if user can access resource. This resource can be accessed
             // by any payment user and any admin user

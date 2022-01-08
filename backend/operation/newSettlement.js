@@ -10,25 +10,26 @@ const { Parser } = require('json2csv');
 const router = express.Router();
 
 // {baseURL}/NewSettlement
-router.get('/:op1_ID/:op2_ID/:date_to',
+router.get('/',
+    express.json(),
     passport.authenticate('jwt', { session: false }),
-   async function(req, res, next) {
+    async function(req, res, next) {
         try {
             const request_timestamp = aux.get_current_timestamp();
 
             // Check if given operator IDs are valid
             const valid = 
-                aux.validate_operatorID(req.params.op1_ID) &&
-                aux.validate_operatorID(req.params.op2_ID) &&
-                aux.validate_date(req.params.date_to);
+                aux.validate_operatorID(req.body.op1_ID) &&
+                aux.validate_operatorID(req.body.op2_ID) &&
+                aux.validate_date(req.body.date_to);
             if (!valid) {
                 throw new createError(400, 'Invalid request parameters (operator IDs or date)');
             }
 
-            // Get path parameters
+            // Get body parameters
             const [opID1, opID2, date_to] = [
-                req.params.op1_ID, req.params.op2_ID,
-                aux.convert_date_param(req.params.date_to) + ' 23:59:59'
+                req.body.op1_ID, req.body.op2_ID,
+                aux.convert_date_param(req.body.date_to) + ' 23:59:59'
             ];
 
             // Check if user can access resource. This resource can be accessed
@@ -103,7 +104,7 @@ router.get('/:op1_ID/:op2_ID/:date_to',
                 settlement_id, operatorCredited, operatorDebited, date_from, date_to, amount
             ]);
 
-            const result = {
+            res.status(200).send({
                 RequestTimestamp: request_timestamp,
                 SettlementID: settlement_id,
                 OperatorCredited: operatorCredited,
@@ -112,19 +113,7 @@ router.get('/:op1_ID/:op2_ID/:date_to',
                 DateTo: date_to,
                 Amount: amount,
                 Cleared: false
-            }
-
-            // Check the format query parameter, then accordingly send either a JSON
-            // or a CSV file as a response (or throw 400 if the format is invalid).        
-            if (!req.query.format || req.query.format === 'json') {
-                res.status(200).send(result);
-            } else if (req.query.format === 'csv') {
-                const parser = new Parser();
-                const csv = parser.parse(result);
-                res.status(200).send(csv);
-            } else {
-                throw(new createError(400, "Invalid format parameter"));
-            }
+            })
         } catch (err) {
             next(err);
         }

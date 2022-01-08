@@ -8,13 +8,17 @@ const ADMIN = require('../default_admin');
 
 async function reset(table) {
     // Isolate each row from file of defaults
-    const file = await fs.readFile(`../defaults/${table}.csv`, 'utf-8');
-    var rows = file.split('\n');
+    const file = await fs.readFile(`./defaults/${table}.csv`, 'utf-8');
+    let rows = file.split('\n');
     rows.pop();
 
     // Select the appropriate SQL query for insertion
-    var sql_insert;
+    let sql_insert;
     switch (table) {
+        case 'pass':
+            sql_insert =
+                `INSERT INTO pass (ID, tagID, stationID, timestamp, charge) VALUES (?, ?, ?, ?, ?)`
+            break;
         case 'station':
             sql_insert = 
                 `INSERT INTO station (ID, operatorID, stationName) VALUES (?, ?, ?)`; 
@@ -34,11 +38,9 @@ async function reset(table) {
     await db.execute(`DELETE FROM ${table}`);
 
     // Read default data row by row and import
-    if (table != 'pass') {
-        for (const row of rows) {
-            params = row.split(',');
-            await db.execute(sql_insert, params);
-        }
+    for (const row of rows) {
+        params = row.split(',');
+        await db.execute(sql_insert, params);
     }
 
     // If successful, commit transaction

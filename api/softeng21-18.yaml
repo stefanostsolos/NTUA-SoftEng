@@ -246,11 +246,11 @@ paths:
   /admin/resetpasses:
     post:
       description: >
-        Deletes all pass records from the database.
+        Resets the pass records in the database to default.
       responses:
         200:
           description: >
-            Successful deletion of pass records.
+            Successful reset of pass records to default.
           content:
             application/json:
               schema:
@@ -268,7 +268,7 @@ paths:
         Resets the station records in the database to default.
       responses:
         200:
-          description: |
+          description: >
             Successful reset of station records to default.
           content:
             application/json:
@@ -511,8 +511,8 @@ paths:
         500:
           description: Internal server error
 
-  /NewSettlement/{op1_ID}/{op2_ID}/{date_to}:
-    get:
+  /NewSettlement:
+    post:
       description: >
         Creates a new settlement record in the database for the debts between the
         two given operators. The settlement accounts for the debts created between
@@ -520,26 +520,23 @@ paths:
         This resource may be accessed by any operator user whose ID matches either of
         the operator IDs in the request, as well as by any admin user.
       parameters:
-        - name: op1_ID
-          in: path
-          required: true
-          schema:
-            type: string
-            example: AO
-        - name: op2_ID
-          in: path
-          required: true
-          schema: 
-            type: string
-            example: EG
-        - name: date_to
-          in: path
-          required: true
-          schema:
-            type: string
-            example: '20200117'
-        - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/customHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                op1_ID:
+                  type: string
+                  example: AO
+                op2_ID:
+                  type: string
+                  example: EG
+                date_to:
+                  type: string
+                  example: '20200117'
       responses:
         200:
           description: >
@@ -627,20 +624,23 @@ paths:
         500:
           description: Internal server error
 
-  /ClearSettlement/{ID}:
-    get:
+  /ClearSettlement:
+    post:
       description: >
         Mark an existing settlement record as cleared in the database.
         This resource may be accessed by any payment or admin user.
       parameters:
-        - name: ID
-          in: path
-          required: true
-          schema:
-            type: string
-            example: DNA83N02NC
-        - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/customHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ID:
+                  type: string
+                  example: DNA83N02NC
       responses:
         200:
           description: Settlement record successfully marked as cleared
