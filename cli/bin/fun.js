@@ -28,6 +28,10 @@ function switch_fun(fun, options) {
             utils = path(fun);
             code = utils.resetadmin();
             break; 
+        case 'passesupd':
+            utils = path(fun)
+            code = utils.passesupd()
+            break
         case 'usermod':
             utils = path(fun)
             code = utils.usermod(options.username, options.password, options.type, options.opID)
@@ -40,6 +44,14 @@ function switch_fun(fun, options) {
             utils = path(fun);
             code = utils.logout();
             break;
+        case 'getstationids':
+            utils = path(fun);
+            code = utils.getstationids();
+            break;
+        case 'getoperatorids':
+            utils = path(fun);
+            code = utils.getoperatorids()
+            break
         case 'passesperstation':
             utils = path(fun);
             code = utils.passesperstation(options.station, options.datefrom, options.dateto);
