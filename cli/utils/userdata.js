@@ -29,7 +29,7 @@ async function userdata(username) {
         station = await promptMissingUsername();
     }
 
-    const res = await axios.get(`${baseURL}/admin/users/${username}?format=${format}`)
+    const res = await axios.get(`${baseURL}/admin/users/${username}`)
 
     if (res.data == undefined) {
         console.log("Error 500: Internal server error");
