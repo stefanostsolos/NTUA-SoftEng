@@ -28,6 +28,10 @@ function switch_fun(fun, options) {
             utils = path(fun);
             code = utils.resetadmin();
             break; 
+        case 'usermod':
+            utils = path(fun)
+            code = utils.usermod(options.username, options.password, options.type, options.opID)
+            break;
         case 'login':
             utils = path(fun);
             code = utils.login(options.username, options.passw);
