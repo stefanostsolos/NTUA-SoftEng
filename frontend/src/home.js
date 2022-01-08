@@ -56,7 +56,7 @@ function Home() {
     getresults().then((data) => setDays(data));
   }, []);
 
-  /* -----------------Variable not used-------------------------------
+  /* -----------------Variable not used----
   let x = document.cookie.split(";").reduce((res, c) => {
     const [key, val] = c.trim().split("=").map(decodeURIComponent);
     const allNumbers = (str) => /^\d+$/.test(str);
@@ -114,7 +114,7 @@ function Home() {
   return (
     <main>
       <section className="index-banner">
-        <h1><b>Select the desired page!</b></h1>
+        <h3><b>Select the desired page!</b></h3>
         <div className="list-container">
         <ul>
           <li>

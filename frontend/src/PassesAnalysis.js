@@ -179,6 +179,7 @@ function PassesAnalysis() {
             </Button>
           </Stack>
         </div>
+        <p>{JSON.stringify(requestedData)}</p>
       </section>
     </main>
   );

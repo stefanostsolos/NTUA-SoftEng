@@ -233,6 +233,20 @@ header .header-cases {
   vertical-align: middle;
 }
 
+.index-banner h3 {
+  font-family: Helvetica, sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 70px;
+  color: #fff;
+  padding-left: 85px;
+  justify-content: center;
+  display: flex;
+  text-shadow: 2px 2px 8px #111
+}
+
+
 .index-banner h2 {
   font-family: Helvetica, sans-serif;
   padding-left: 1%;
@@ -261,7 +275,6 @@ header .header-cases {
   height: 100px;
   background-color: #f2f2f2;
 }
-
 
 .signinbutton {
   position: absolute;
@@ -852,7 +865,7 @@ footer ul li a {
 .list-container {
   display: flex;
   justify-content: center;
-  padding-top: 100px;
+  padding-top: 0px;
   width: 100%;
 }
 

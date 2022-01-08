@@ -176,7 +176,7 @@ function PassesCost() {
             </Button> 
           </Stack>
         </div>
-        {/* <p>{JSON.stringify(requestedData)}</p> */}
+        <p>{JSON.stringify(requestedData)}</p>
       </section>
     </main>
   );

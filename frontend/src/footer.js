@@ -16,23 +16,23 @@ function Footer() {
           <a href="/contact">Project creators</a>
         </li>
         <li>
-          <a href="https://webmail.ntua.gr">Contact us</a>
+          <a target="_blank" rel='noopener noreferrer' href="https://webmail.ntua.gr">Contact us</a>
         </li>
         <li>
-          <a href="https://github.com/ntua/TL21-18">Github repository</a>
+          <a target="_blank" rel='noopener noreferrer' href="https://github.com/ntua/TL21-18">Github repository</a>
         </li>
       </ul>
       <ul className="footer-social">
-        <a href="https://www.youtube.com/">
+        <a target="_blank" rel='noopener noreferrer' href="https://www.youtube.com/">
           <img src={youtube} alt="youtube icon" />
         </a>
-        <a href="https://www.facebook.com/">
+        <a target="_blank" rel='noopener noreferrer' href="https://www.facebook.com/">
           <img src={fb} alt="facebook icon" />
         </a>
-        <a href="https://www.twitter.com/">
+        <a target="_blank" rel='noopener noreferrer' href="https://www.twitter.com/">
           <img src={twitter} alt="twitter icon" />
         </a>
-        <a href="https://www.instagram.com/">
+        <a target="_blank" rel='noopener noreferrer' href="https://www.instagram.com/">
           <img src={instagram} alt="instagram icon" />
         </a>
       </ul>

@@ -11,6 +11,13 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { FormControl as MenuItem, Select, TextField } from "@mui/material";
+import Paper from "@material-ui/core/Paper";
+import {
+  ArgumentAxis,
+  ValueAxis,
+  Chart,
+  BarSeries,
+} from "@devexpress/dx-react-chart-material-ui";
 /* import {Link} from "react-router-dom";
 import SubmitButton from './SubmitButton';
 import { SelectChangeEvent } from "@mui/material/Select"; */
@@ -79,7 +86,6 @@ function PassesPerStation() {
       dateto.getMonth() + 1
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
-  
     const res = await fetch(
       `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesPerStation/${stationid}/${datefromstr}/${datetostr}`
     );
@@ -89,7 +95,15 @@ function PassesPerStation() {
     setRequestedData(data);
     //console.log(data)
   };
- 
+
+  // Sample data
+  const data = [
+    { argument: "Monday", value: 30 },
+    { argument: "Tuesday", value: 20 },
+    { argument: "Wednesday", value: 10 },
+    { argument: "Thursday", value: 50 },
+    { argument: "Friday", value: 60 },
+  ];
 
   return (
     <main>
@@ -142,14 +156,23 @@ function PassesPerStation() {
               onClick={() => {
                 fetchResults(station, datefrom, dateto);
                 console.log(station);
-              }
-            }
+              }}
             >
               Search
             </Button>
           </Stack>
         </div>
-        <p>{JSON.stringify(requestedData)}</p>
+        <div className="chart">
+        <Paper>
+          <Chart data={data}>
+            <ArgumentAxis />
+            <ValueAxis />
+
+            <BarSeries valueField="value" argumentField="argument" />
+          </Chart>
+        </Paper>
+        {/* <p>{JSON.stringify(requestedData)}</p> */}
+        </div>
       </section>
     </main>
   );
