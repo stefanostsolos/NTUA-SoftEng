@@ -42,9 +42,25 @@ function PassesCost() {
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
-
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
-  
+
+  /*  const rows = [
+    createData("PassesCost", JSON.stringify(requestedData.NumberOfPasses)),
+    createData("NumberOfPasse", JSON.stringify(requestedData.PassesCost)),
+  ]; */
+
+  function createData(PassesCost, NumberOfPasses) {
+    return { PassesCost, NumberOfPasses };
+  }
+
+  let rows = [];
+  if (requestedData) {
+    rows = [
+      createData("PassesCost", requestedData.PassesCost),
+      createData("NumberOfPasses", requestedData.NumberOfPasses),
+    ];
+  }
+
   useEffect(() => {
     const getOperators = async () => {
       const operatorsFromServer = await fetchOperators();
@@ -79,7 +95,6 @@ function PassesCost() {
       dateto.getMonth() + 1
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
-  
     const res = await fetch(
       `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesCost/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
     );
@@ -89,7 +104,7 @@ function PassesCost() {
     setRequestedData(data);
     //console.log(data)
   };
- 
+
   return (
     <main>
       <section className="index-banner">
@@ -111,7 +126,9 @@ function PassesCost() {
                     onChange={handleOp1Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem key={element} value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>
+                        {element}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -128,7 +145,9 @@ function PassesCost() {
                     onChange={handleOp2Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem key={element} value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>
+                        {element}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -159,14 +178,35 @@ function PassesCost() {
               variant="contained"
               disabled={!canSubmit}
               onClick={() => {
-                fetchResults(op1,op2, datefrom, dateto);
+                fetchResults(op1, op2, datefrom, dateto);
               }}
             >
               Search
-            </Button> 
+            </Button>
           </Stack>
         </div>
-        <p>{JSON.stringify(requestedData)}</p>
+        {requestedData ? (
+          <div className="data-presentation">
+            <table className="bigtable">
+              <thead>
+                <tr>
+                  <th scope="col">Total Passes Cost</th>
+                  <th scope="col">Total Number Of Passes</th>
+                  <th scope="col">Average Fee Per Pass</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr key="data-row">
+                  <td>{requestedData.PassesCost} Euros </td>
+                  <td>{requestedData.NumberOfPasses} Times</td>
+                  <td>
+                    {(~Math.round(requestedData.PassesCost / requestedData.NumberOfPasses * 100)/100 ).toFixed(2)} Euros
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ) : null}
       </section>
     </main>
   );

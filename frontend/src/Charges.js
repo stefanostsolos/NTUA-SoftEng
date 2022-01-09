@@ -11,6 +11,17 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { FormControl as MenuItem, Select, TextField } from "@mui/material";
+import Paper from "@material-ui/core/Paper";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 /* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import login from './login';
 import Signup from './signup';
@@ -25,6 +36,15 @@ const FormControl = styled(FormControlSpacing)`
   max-width: 300px;
   border-color: "4px solid #ffffff";
 `;
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const fetchOperators = async () => {
   const res = await fetch(
@@ -43,6 +63,44 @@ function Charges() {
   const [requestedData, setRequestedData] = useState(null);
 
   const canSubmit = [operator, datefrom, dateto].every(Boolean);
+
+  let result = {};
+
+  if(requestedData) {
+
+    const onlyDates = requestedData.PassesList.map(element => new Date(element.PassTimeStamp));
+
+    const sortedDates = onlyDates.sort((a,b)=>a.getTime()-b.getTime());
+
+    const stringDates = sortedDates.map(element => element.toLocaleDateString());
+  
+    //Group by dates and count 
+    result = stringDates.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), {});
+  }
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Bar Chart',
+      },
+    },
+  };
+
+  const chartData = {
+    labels: Object.keys(result),
+    datasets: [
+      {
+        label: 'Number of Passes',
+        data: Object.values(result),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      }
+    ],
+  };
 
   useEffect(() => {
     const getOperators = async () => {
@@ -143,7 +201,15 @@ function Charges() {
             </Button>
           </Stack>
         </div>
-        <p>{JSON.stringify(requestedData)}</p>
+        <div className="chart">
+        {requestedData ? (
+          <Paper>
+            <Bar options={options} data={chartData}>
+            </Bar>
+          </Paper> ) : (
+            null
+          )}
+        </div>
       </section>
     </main>
   );

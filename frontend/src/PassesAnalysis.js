@@ -11,6 +11,17 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { FormControl as MenuItem, Select, TextField } from "@mui/material";
+import Paper from "@material-ui/core/Paper";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 /* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import login from './login';
 import Signup from './signup';
@@ -26,6 +37,15 @@ const FormControl = styled(FormControlSpacing)`
   border-color: "4px solid #ffffff";
 `;
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 const fetchOperators = async () => {
   const res = await fetch(
     "https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/GetOperatorIDs"
@@ -34,7 +54,6 @@ const fetchOperators = async () => {
 
   return data.OperatorIDList;
 };
-
 
 function PassesAnalysis() {
   const [operators, setOperators] = useState([]);
@@ -45,6 +64,45 @@ function PassesAnalysis() {
   const [requestedData, setRequestedData] = useState(null);
 
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
+
+  
+  let result = {};
+
+  if(requestedData) {
+
+    const onlyDates = requestedData.PassesList.map(element => new Date(element.TimeStamp));
+
+    const sortedDates = onlyDates.sort((a,b)=>a.getTime()-b.getTime());
+
+    const stringDates = sortedDates.map(element => element.toLocaleDateString());
+  
+    //Group by dates and count 
+    result = stringDates.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), {});
+  }
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Bar Chart',
+      },
+    },
+  };
+
+  const chartData = {
+    labels: Object.keys(result),
+    datasets: [
+      {
+        label: 'Number of Passes',
+        data: Object.values(result),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      }
+    ],
+  };
 
   useEffect(() => {
     const getOperators = async () => {
@@ -71,7 +129,7 @@ function PassesAnalysis() {
     setDateto(newdate);
   };
 
-  const fetchResults = async (operatorid1,operatorid2, datefrom, dateto) => {
+  const fetchResults = async (operatorid1, operatorid2, datefrom, dateto) => {
     const datefromstr = `${datefrom.getFullYear()}${String(
       datefrom.getMonth() + 1
     ).padStart(2, "0")}${String(datefrom.getDate()).padStart(2, "0")}`;
@@ -80,9 +138,8 @@ function PassesAnalysis() {
       dateto.getMonth() + 1
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
-  
     const res = await fetch(
-      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
+      `http://localhost:9103/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
     );
 
     const data = await res.json();
@@ -112,7 +169,9 @@ function PassesAnalysis() {
                     onChange={handleOp1Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem key={element} value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>
+                        {element}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -122,7 +181,7 @@ function PassesAnalysis() {
                     Operator 2
                   </InputLabel>
                   <Select
-                   className="form-input"
+                    className="form-input"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={op2}
@@ -130,29 +189,31 @@ function PassesAnalysis() {
                     onChange={handleOp2Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem key={element} value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>
+                        {element}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <div className="form-input">
-                  <DesktopDatePicker
-                    label="Date from"
-                    inputFormat="MM/dd/yyyy"
-                    value={datefrom}
-                    onChange={handleDateFromChange}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
+                  <div className="form-input">
+                    <DesktopDatePicker
+                      label="Date from"
+                      inputFormat="MM/dd/yyyy"
+                      value={datefrom}
+                      onChange={handleDateFromChange}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
                   </div>
                   <div className="form-input">
-                  <DesktopDatePicker
-                    label="Date to"
-                    inputFormat="MM/dd/yyyy"
-                    value={dateto}
-                    onChange={handleDateToChange}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
+                    <DesktopDatePicker
+                      label="Date to"
+                      inputFormat="MM/dd/yyyy"
+                      value={dateto}
+                      onChange={handleDateToChange}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
                   </div>
                 </LocalizationProvider>
               </FormControl>
@@ -163,14 +224,21 @@ function PassesAnalysis() {
               onClick={() => {
                 fetchResults(op1, op2, datefrom, dateto);
                 console.log(op1, op2);
-              }
-            }
+              }}
             >
               Search
             </Button>
           </Stack>
         </div>
-        <p>{JSON.stringify(requestedData)}</p>
+        <div className="chart">
+        {requestedData ? (
+          <Paper>
+            <Bar options={options} data={chartData}>
+            </Bar>
+          </Paper> ) : (
+            null
+          )}
+        </div>
       </section>
     </main>
   );

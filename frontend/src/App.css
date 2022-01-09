@@ -428,6 +428,7 @@ footer ul li a {
   vertical-align: middle;
 }
 
+
 .about-box {
   width: 600px;
   height: 350px;
@@ -579,35 +580,52 @@ footer ul li a {
 }
 
 .bigtable {
+  padding-top: 50px;
+  padding-left: 18.5%;
   font-family: Helvetica, sans-serif;
   margin: 15px;
-  padding: 10px;
   width: 80%;
   border-collapse: collapse;
+  justify-content: center;
+  display: flex;
 }
 
 .bigtable td,
 .bigtable th {
+  
+  height: 60px;
   border: 1px solid #ddd;
   padding: 8px;
+  justify-content: center;
+  display: flex;
 }
 
 .bigtable tr:nth-child(even) {
   background-color: #f2f2f2;
+  justify-content: center;
+  display: flex;
 }
 .bigtable tr:nth-child(odd) {
   background-color: #ddd;
 }
 
 .bigtable tr:hover {
-  background-color: #e62525;
+  background-color: #645a5a;
 }
 
 .bigtable th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #04aa6d;
+  background-color: #cc8b4f;
+  color: white;
+}
+
+.bigtable td {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #9faa04;
   color: white;
 }
 
@@ -1017,5 +1035,11 @@ footer ul li a {
 
   body {
     font-family: Helvetica, sans-serif;
+  }
+
+  .data-presentation{
+    justify-content: center;
+    display: flex;
+    width: 100%;
   }
 }

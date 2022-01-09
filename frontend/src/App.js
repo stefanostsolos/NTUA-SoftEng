@@ -2,11 +2,11 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React from "react";
 import Header from "./Header";
-import Footer from "./footer";
-import Contact from "./contact";
+import Footer from "./Footer";
+import Contact from "./Contact";
 import Login from "./login";
 import Signup from "./signup";
-import Home from "./home";
+import Home from "./Home";
 import PassesPerStation from "./PassesPerStation";
 import PassesAnalysis from "./PassesAnalysis";
 import PassesCost from "./PassesCost";
