@@ -42,8 +42,9 @@ function PassesAnalysis() {
   const [op2, setOp2] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
-  const [canSubmit, setCanSubmit] = useState(false);
   const [requestedData, setRequestedData] = useState(null);
+
+  const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
 
   useEffect(() => {
     const getOperators = async () => {
@@ -53,16 +54,6 @@ function PassesAnalysis() {
     getOperators();
     console.log(operators);
   }, []);
-
-  useEffect(() => {
-    if (op1 && op2 && datefrom && dateto) {
-      setCanSubmit(true);
-    } else {
-      setCanSubmit(false);
-    }
-    console.log(requestedData);
-  }, [op1, op2, datefrom, dateto]);
-
 
   const handleOp1Change = (event) => {
     setOp1(event.target.value);
@@ -121,7 +112,7 @@ function PassesAnalysis() {
                     onChange={handleOp1Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>{element}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -139,7 +130,7 @@ function PassesAnalysis() {
                     onChange={handleOp2Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>{element}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>

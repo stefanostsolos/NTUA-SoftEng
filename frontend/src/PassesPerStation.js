@@ -13,11 +13,15 @@ import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { FormControl as MenuItem, Select, TextField } from "@mui/material";
 import Paper from "@material-ui/core/Paper";
 import {
-  ArgumentAxis,
-  ValueAxis,
-  Chart,
-  BarSeries,
-} from "@devexpress/dx-react-chart-material-ui";
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 /* import {Link} from "react-router-dom";
 import SubmitButton from './SubmitButton';
 import { SelectChangeEvent } from "@mui/material/Select"; */
@@ -29,6 +33,15 @@ const FormControl = styled(FormControlSpacing)`
   max-width: 300px;
   border-color: "4px solid #ffffff";
 `;
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const fetchStations = async () => {
   const res = await fetch(
@@ -44,8 +57,47 @@ function PassesPerStation() {
   const [station, setStation] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
-  const [canSubmit, setCanSubmit] = useState(false);
   const [requestedData, setRequestedData] = useState(null);
+
+  const canSubmit = [station, datefrom, dateto].every(Boolean);
+
+  let result = {};
+
+  if(requestedData) {
+
+    const onlyDates = requestedData.PassesList.map(element => new Date(element.PassTimeStamp));
+
+    const sortedDates = onlyDates.sort((a,b)=>a.getTime()-b.getTime());
+
+    const stringDates = sortedDates.map(element => element.toLocaleDateString());
+  
+    //Group by dates and count 
+    result = stringDates.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), {});
+  }
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Bar Chart',
+      },
+    },
+  };
+
+  const chartData = {
+    labels: Object.keys(result),
+    datasets: [
+      {
+        label: 'Number of Passes',
+        data: Object.values(result),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      }
+    ],
+  };
 
   useEffect(() => {
     const getStations = async () => {
@@ -55,15 +107,6 @@ function PassesPerStation() {
     getStations();
     console.log(stations);
   }, []);
-
-  useEffect(() => {
-    if (station && datefrom && dateto) {
-      setCanSubmit(true);
-    } else {
-      setCanSubmit(false);
-    }
-    console.log(requestedData);
-  }, [station, datefrom, dateto]);
 
   const handleStationChange = (event) => {
     setStation(event.target.value);
@@ -93,17 +136,8 @@ function PassesPerStation() {
     const data = await res.json();
 
     setRequestedData(data);
-    //console.log(data)
+    console.log(data)
   };
-
-  // Sample data
-  const data = [
-    { argument: "Monday", value: 30 },
-    { argument: "Tuesday", value: 20 },
-    { argument: "Wednesday", value: 10 },
-    { argument: "Thursday", value: 50 },
-    { argument: "Friday", value: 60 },
-  ];
 
   return (
     <main>
@@ -125,7 +159,7 @@ function PassesPerStation() {
                   className="form-input"
                 >
                   {stations.map((element) => (
-                    <MenuItem value={element}>{element}</MenuItem>
+                    <MenuItem key={element} value={element}>{element}</MenuItem>
                   ))}
                 </Select>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -163,15 +197,13 @@ function PassesPerStation() {
           </Stack>
         </div>
         <div className="chart">
-        <Paper>
-          <Chart data={data}>
-            <ArgumentAxis />
-            <ValueAxis />
-
-            <BarSeries valueField="value" argumentField="argument" />
-          </Chart>
-        </Paper>
-        {/* <p>{JSON.stringify(requestedData)}</p> */}
+        {requestedData ? (
+          <Paper>
+            <Bar options={options} data={chartData}>
+            </Bar>
+          </Paper> ) : (
+            null
+          )}
         </div>
       </section>
     </main>

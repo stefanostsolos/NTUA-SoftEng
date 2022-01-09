@@ -40,8 +40,9 @@ function Charges() {
   const [operator, setOperator] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
-  const [canSubmit, setCanSubmit] = useState(false);
   const [requestedData, setRequestedData] = useState(null);
+
+  const canSubmit = [operator, datefrom, dateto].every(Boolean);
 
   useEffect(() => {
     const getOperators = async () => {
@@ -51,15 +52,6 @@ function Charges() {
     getOperators();
     console.log(operators);
   }, []);
-
-  useEffect(() => {
-    if (operator && datefrom && dateto) {
-      setCanSubmit(true);
-    } else {
-      setCanSubmit(false);
-    }
-    console.log(requestedData);
-  }, [operator, datefrom, dateto]);
 
   const handleOperatorChange = (event) => {
     setOperator(event.target.value);
@@ -113,7 +105,7 @@ function Charges() {
                   className="form-input"
                 >
                   {operators.map((element) => (
-                    <MenuItem value={element}>{element}</MenuItem>
+                    <MenuItem key={element} value={element}>{element}</MenuItem>
                   ))}
                 </Select>
 

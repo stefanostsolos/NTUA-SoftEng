@@ -41,8 +41,9 @@ function PassesCost() {
   const [op2, setOp2] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
-  const [canSubmit, setCanSubmit] = useState(false);
   const [requestedData, setRequestedData] = useState(null);
+
+  const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
   
   useEffect(() => {
     const getOperators = async () => {
@@ -52,16 +53,6 @@ function PassesCost() {
     getOperators();
     console.log(operators);
   }, []);
-
-  useEffect(() => {
-    if (op1 && op2 && datefrom && dateto) {
-      setCanSubmit(true);
-    } else {
-      setCanSubmit(false);
-    }
-    console.log(requestedData);
-  }, [op1, op2 , datefrom, dateto]);
-
 
   const handleOp1Change = (event) => {
     setOp1(event.target.value);
@@ -90,7 +81,7 @@ function PassesCost() {
 
   
     const res = await fetch(
-      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesPerStation/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
+      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesCost/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
     );
 
     const data = await res.json();
@@ -120,7 +111,7 @@ function PassesCost() {
                     onChange={handleOp1Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>{element}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -137,7 +128,7 @@ function PassesCost() {
                     onChange={handleOp2Change}
                   >
                     {operators.map((element) => (
-                      <MenuItem value={element}>{element}</MenuItem>
+                      <MenuItem key={element} value={element}>{element}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -169,7 +160,6 @@ function PassesCost() {
               disabled={!canSubmit}
               onClick={() => {
                 fetchResults(op1,op2, datefrom, dateto);
-                console.log(op1, op2);
               }}
             >
               Search
