@@ -83,7 +83,7 @@ function PassesPerStation() {
       },
       title: {
         display: true,
-        text: 'Bar Chart',
+        text: 'Passes Per Station Analysis',
       },
     },
   };

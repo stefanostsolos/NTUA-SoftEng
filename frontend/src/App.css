@@ -939,6 +939,13 @@ footer ul li a {
   margin: 0 auto;
 }
 
+.chart {
+  justify-content: center;
+  padding: 5% 45% 5% 31%;
+  height: 750px;
+  width: 750px;
+}
+
 @media screen and (max-width: 768px) {
   .horizontal-list {
     flex-wrap: wrap;
@@ -993,6 +1000,7 @@ footer ul li a {
     margin-top: 16px;
     margin-bottom: 5px;
   }
+
   .signupbutton button {
     border: none;
     outline: none;

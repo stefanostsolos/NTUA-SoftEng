@@ -44,22 +44,18 @@ function PassesCost() {
   const [requestedData, setRequestedData] = useState(null);
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
 
-  /*  const rows = [
-    createData("PassesCost", JSON.stringify(requestedData.NumberOfPasses)),
-    createData("NumberOfPasse", JSON.stringify(requestedData.PassesCost)),
-  ]; */
-
+  /*
   function createData(PassesCost, NumberOfPasses) {
     return { PassesCost, NumberOfPasses };
   }
 
-  let rows = [];
+   let rows = [];
   if (requestedData) {
     rows = [
       createData("PassesCost", requestedData.PassesCost),
       createData("NumberOfPasses", requestedData.NumberOfPasses),
     ];
-  }
+  } */
 
   useEffect(() => {
     const getOperators = async () => {
@@ -102,7 +98,6 @@ function PassesCost() {
     const data = await res.json();
 
     setRequestedData(data);
-    //console.log(data)
   };
 
   return (
