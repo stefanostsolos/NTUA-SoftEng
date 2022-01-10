@@ -29,7 +29,7 @@ router.post('/login',
 router.post('/logout', 
     passport.authenticate('jwt', { session: false }), 
     function (req, res) {
-        res.status(200).send("OK");
+        res.status(200).send();
     }
 );
 

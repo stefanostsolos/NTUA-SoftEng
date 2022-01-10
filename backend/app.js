@@ -97,7 +97,7 @@ app.use(`${baseURL}/PassesAnalysis`, passesAnalysis);
 app.use(`${baseURL}/PassesCost`, passesCost);
 app.use(`${baseURL}/ChargesBy`, chargesBy);
 app.use(`${baseURL}/GetStationIDs`, getStationIDs);
-app.use(`${baseURL}/GetOperationIDs`, getOperatorIDs);
+app.use(`${baseURL}/GetOperatorIDs`, getOperatorIDs);
 app.use(`${baseURL}/NewSettlement`, newSettlement);
 app.use(`${baseURL}/SettlementByID`, settlementByID);
 app.use(`${baseURL}/SettlementsByOperator`, settlementsByOperator);

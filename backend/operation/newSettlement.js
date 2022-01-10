@@ -10,7 +10,7 @@ const { Parser } = require('json2csv');
 const router = express.Router();
 
 // {baseURL}/NewSettlement
-router.get('/',
+router.post('/',
     express.json(),
     passport.authenticate('jwt', { session: false }),
     async function(req, res, next) {
