@@ -39,7 +39,7 @@ router.get('/',
             const sql_main = `UPDATE settlement SET cleared = 1 WHERE ID = ?`;
             await db.execute(sql_main, [id]);
 
-            res.status(200).send();
+            res.status(200).send("OK");
         } catch (err) {
             next(err);
         }
