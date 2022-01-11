@@ -1,25 +1,26 @@
 {
   "name": "epass",
   "version": "1.0.0",
-  "description": "A CLI supporting the function of an interoperability system for highway toll stations. Created for the purposes of the term project of the Software Engineering course(7th Semester, NTUA)",
+  "description": "CLI module for SoftEng Team 18 project",
   "main": "bin/index.js",
+  "bin": {
+    "se2118": "./bin/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "cli"
   ],
-  "bin": {
-    "se2118": "./bin/index.js"
-  },
-  "author": "Symeon Porgiotis & Stefanos Tsolos",
+  "author": "SimCity&&Gigachad",
   "license": "ISC",
   "dependencies": {
     "arg": "^5.0.1",
-    "async": "^3.2.2",
     "axios": "^0.24.0",
     "csv-parser": "^3.0.0",
     "csv-writer": "^1.6.0",
+    "formdata": "^0.10.4",
+    "https": "^1.0.0",
     "inquirer": "^8.2.0",
     "yargs": "^17.3.1"
   }
