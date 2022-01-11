@@ -72,13 +72,11 @@ class Header extends React.Component {
                 Softeng 2021-2022-Team 18: Toll-Interoperability Website 
               </a>
             </div>
-            <ul>
               <div>
                 <Link  className="login-button" to="/login">
                   Sign in
                 </Link>
               </div>
-            </ul>
           </nav>
         </header>
       );

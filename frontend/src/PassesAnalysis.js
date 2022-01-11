@@ -10,7 +10,7 @@ import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
-import { FormControl as MenuItem, Select, TextField } from "@mui/material";
+import { MenuItem, Select, TextField } from "@mui/material";
 import Paper from "@material-ui/core/Paper";
 import {
   Chart as ChartJS,
@@ -48,7 +48,14 @@ ChartJS.register(
 
 const fetchOperators = async () => {
   const res = await fetch(
-    "https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/GetOperatorIDs"
+    "http://localhost:9103/interoperability/api/GetOperatorIDs", {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'x-observatory-auth': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwib3BlcmF0b3JJRCI6bnVsbCwiaWF0IjoxNjQxOTIxNzUyLCJleHAiOjE2NDE5MjUzNTJ9.aNIfDI5LxIiAkzrb6Dkd1zu58Vu9wb3pDmDMGePd_TM'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }
   );
   const data = await res.json();
 
@@ -62,7 +69,6 @@ function PassesAnalysis() {
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
-
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
 
   
@@ -139,7 +145,7 @@ function PassesAnalysis() {
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
     const res = await fetch(
-      `http://localhost:9103/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
+      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
     );
 
     const data = await res.json();

@@ -195,20 +195,11 @@ header {
   padding-right: 10%;
 }
 
-header nav ul {
-  display: block;
-  margin: 0 auto;
-  margin-top: -30px;
-  margin-left: 200px;
-}
-
-header nav ul li {
+header nav div {
   display: inline-block;
-  list-style: none;
-  padding: 0 16px;
 }
 
-header nav ul li a {
+header nav div a {
   font-family: Helvetica, sans-serif;
   font-size: 22px;
   color: #111;
@@ -279,7 +270,7 @@ header .header-cases {
 .signinbutton {
   position: absolute;
   padding-right: 140px;
-  margin-left: 10%;
+  margin-left: 0%;
   right: 0;
 }
 
@@ -326,30 +317,6 @@ header .header-cases {
   cursor: pointer;
 }
 
-.signupbutton {
-  position: absolute;
-  padding-right: 2%;
-  right: 0;
-}
-
-.signupbutton button {
-  border: none;
-  outline: none;
-  height: 35px;
-  width: 80px;
-  color: #f3f3f3;
-  background: #35312e;
-  font-family: Helvetica, sans-serif;
-  font-size: 15px;
-  border-radius: 5px;
-  margin-top: -5px;
-  margin-bottom: 5px;
-}
-
-.signupbutton button:hover {
-  background: #4f4b48;
-  cursor: pointer;
-}
 
 .list {
   padding-top: 12px;
@@ -365,7 +332,6 @@ footer {
 
 
 footer ul {
- 
   width: fit-content;
   float: left;
   padding-left: 20px;
@@ -387,6 +353,7 @@ footer ul li a {
   font-size: 18px;
   color: #fff;
 }
+
 .footer-social {
   width: 60px;
   float: right;
@@ -592,7 +559,6 @@ footer ul li a {
 
 .bigtable td,
 .bigtable th {
-  
   height: 60px;
   border: 1px solid #ddd;
   padding: 8px;
@@ -877,22 +843,23 @@ footer ul li a {
   background: #111;
   font-family: Helvetica, sans-serif;
   font-size: 20px;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 
 .login-button {
   list-style-type: none;
   box-sizing: border-box;
-  padding: 10px;
-  width: 100%;
-  height: 80px;
+  padding: 20px;
   border: solid;
   border-color: #f3f3f3;
   color: #f3f3f3;
   background: #111;
   font-family: Helvetica, sans-serif;
   font-size: 20px;
-  border-radius: 5px;
+  border-radius: 15px;
+  margin-left: 610px;
+  position: relative;
+  top: -6px;
 }
 
 .list-container {

@@ -10,18 +10,7 @@ import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
-import { FormControl as MenuItem, Select, TextField } from "@mui/material";
-import Paper from "@material-ui/core/Paper";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { MenuItem, Select, TextField } from "@mui/material";
 /* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import login from './login';
 import Signup from './signup';
@@ -37,18 +26,16 @@ const FormControl = styled(FormControlSpacing)`
   border-color: "4px solid #ffffff";
 `;
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
 const fetchOperators = async () => {
   const res = await fetch(
-    "https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/GetOperatorIDs"
+    "http://localhost:9103/interoperability/api/GetOperatorIDs", {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'x-observatory-auth': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwib3BlcmF0b3JJRCI6bnVsbCwiaWF0IjoxNjQxOTIxNzUyLCJleHAiOjE2NDE5MjUzNTJ9.aNIfDI5LxIiAkzrb6Dkd1zu58Vu9wb3pDmDMGePd_TM'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }
   );
   const data = await res.json();
 
@@ -64,43 +51,6 @@ function Charges() {
 
   const canSubmit = [operator, datefrom, dateto].every(Boolean);
 
-  let result = {};
-
-  if(requestedData) {
-
-    const onlyDates = requestedData.PassesList.map(element => new Date(element.PassTimeStamp));
-
-    const sortedDates = onlyDates.sort((a,b)=>a.getTime()-b.getTime());
-
-    const stringDates = sortedDates.map(element => element.toLocaleDateString());
-  
-    //Group by dates and count 
-    result = stringDates.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), {});
-  }
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Bar Chart',
-      },
-    },
-  };
-
-  const chartData = {
-    labels: Object.keys(result),
-    datasets: [
-      {
-        label: 'Number of Passes',
-        data: Object.values(result),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      }
-    ],
-  };
 
   useEffect(() => {
     const getOperators = async () => {
@@ -140,7 +90,7 @@ function Charges() {
     const data = await res.json();
 
     setRequestedData(data);
-    //console.log(data)
+ 
   };
 
   return (
@@ -201,15 +151,26 @@ function Charges() {
             </Button>
           </Stack>
         </div>
-        <div className="chart">
         {requestedData ? (
-          <Paper>
-            <Bar options={options} data={chartData}>
-            </Bar>
-          </Paper> ) : (
-            null
-          )}
-        </div>
+          <div className="data-presentation">
+            <table className="bigtable">
+              <thead>
+                <tr>
+                  <th scope="col">Total Passes Cost</th>
+                  <th scope="col">Total Number Of Passes</th>
+                  <th scope="col">Visiting Operator</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr key="data-row">
+                  <td>{requestedData.PassesCost} Euros </td>
+                  <td>{requestedData.NumberOfPasses} Times</td>
+                  <td>{requestedData.VisitingOperator} </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ) : null}
       </section>
     </main>
   );
