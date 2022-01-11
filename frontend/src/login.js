@@ -1,39 +1,15 @@
 import "./App.css";
-import React from "react";
-import { observer } from "mobx-react";
-import UserStore from "./UserStore";
+import React, { useState } from "react";
 import InputField from "./InputField";
 import SubmitButton from "./SubmitButton";
 //import { Redirect, useHistory } from "react-router-dom";
 //import { withCookies, Cookies } from 'react-cookie';
 
-class Login extends React.Component {
-  constructor(props) {
-    console.log(UserStore.isLoggedIn);
-    console.log(UserStore.username);
-    console.log(document.cookie);
-    super(props);
-    this.state = {
-      username: "",
-      password: "",
-      buttonDisabled: false,
-    };
-  }
-
-  setInputValue(property, val) {
-    this.setState({
-      [property]: val,
-    });
-  }
-
-  resetForm() {
-    this.setState({
-      username: "",
-      password: "",
-      buttonDisabled: false,
-    });
-  }
-
+function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [buttonDisabled, setDisabled] = useState(false);
+/*
   async doLogin() {
     console.log(this.state.username);
     if (!this.state.username) return;
@@ -88,8 +64,8 @@ class Login extends React.Component {
       console.log(e);
       this.resetForm();
     }
-  }
-
+  }*/
+/*
   async componentDidMount() {
     try {
       let res = await fetch("/isLoggedIn", {
@@ -114,8 +90,8 @@ class Login extends React.Component {
       UserStore.loading = false;
       UserStore.isLoggedIn = false;
     }
-  }
-
+  }*/
+/*
   async doLogout() {
     try {
       let res = await fetch("https://localhost:8765/evcharge/api/logout", {
@@ -135,9 +111,8 @@ class Login extends React.Component {
     } catch (e) {
       console.log(e);
     }
-  }
+  }*/
 
-  render() {
     return (
       <main>
         <section className="index-banner">
@@ -147,30 +122,29 @@ class Login extends React.Component {
               <InputField
                 className="input-box"
                 type="text"
-                value={this.state.username ? this.state.username : ""}
-                onChange={(val) => this.setInputValue("username", val)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
 
               <p className="email">Password:</p>
               <InputField
                 className="input-box"
                 type="password"
-                value={this.state.password ? this.state.password : ""}
-                onChange={(val) => this.setInputValue("password", val)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <br />
               <SubmitButton
                 text="Log in"
-                disabled={this.state.buttonDisabled}
+                disabled={buttonDisabled}
                 onClick={() => this.doLogin()}
               />
             </form>
           </div>
         </section>
       </main>
-    );
+    )
   }
-}
 
-export default observer(Login);
+export default Login;

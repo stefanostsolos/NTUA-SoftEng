@@ -5,7 +5,6 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Contact from "./Contact";
 import Login from "./login";
-import Signup from "./signup";
 import Home from "./Home";
 import PassesPerStation from "./PassesPerStation";
 import PassesAnalysis from "./PassesAnalysis";
@@ -24,7 +23,6 @@ class App extends React.Component {
             {/* <Route path="/header" component={Header} /> */}
             <Route path="/contact" component={Contact} />
             <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
             <Route path="/passesperstation" component={PassesPerStation} />
             <Route path="/passesanalysis" component={PassesAnalysis} />
             <Route path="/passescost" component={PassesCost} />

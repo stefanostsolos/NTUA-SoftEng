@@ -1,12 +1,11 @@
 import "./App.css";
 import React from "react";
 import SubmitButton from "./SubmitButton";
-import { BrowserRouter as Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import jwt_decode from "jwt-decode";
-/* import login from './login';
-import Signup from './signup';
-import { Redirect, useHistory } from "react-router-dom"; */
+import login from './login';
+//import { Redirect, useHistory } from "react-router-dom"; 
 
 class Header extends React.Component {
   constructor(props) {
@@ -74,18 +73,9 @@ class Header extends React.Component {
               </a>
             </div>
             <ul>
-              <div className="signinbutton">
-                <Link to="/login">
-                  <li>
-                    <button href={"/login.js"}>Sign in</button>
-                  </li>
-                </Link>
-              </div>
-              <div className="signupbutton">
-                <Link to="/signup">
-                  <li>
-                    <button href={"/signup.js"}>Sign up</button>
-                  </li>
+              <div>
+                <Link  className="login-button" to="/login">
+                  Sign in
                 </Link>
               </div>
             </ul>
