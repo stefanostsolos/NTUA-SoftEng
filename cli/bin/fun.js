@@ -1,105 +1,107 @@
 module.exports = { switch_fun: switch_fun };
 
+const baseURL = 'http://localhost:9103/interoperability/api';
+const axios = require('axios');
+const jwt = require('./jwt.js');
+
 function switch_fun(fun, options) {
-    let code = -400;
-    let utils;
+    const token = jwt.validate();
+    let utils, admin;
+
     switch (fun) {
         case 'healthcheck':
-            utils = path(fun);
-            code = utils.healthcheck();
+            admin = admin_path(fun);
+            admin.healthcheck(baseURL);
             break;
         case 'resetpasses':
-            utils = path(fun);
-            code = utils.resetpasses();
+            admin = admin_path(fun);
+            admin.resetpasses(baseURL, token);
             break;
         case 'resetstations':
-            utils = path(fun);
-            code = utils.resetstations();
+            admin = admin_path(fun);
+            admin.resetstations(baseURL, token);
             break;
         case 'resetvehicles':
-            utils = path(fun);
-            code = utils.resetvehicles();
+            admin = admin_path(fun);
+            admin.resetvehicles(baseURL, token);
             break;
         case 'resettags':
-            utils = path(fun);
-            code = utils.resettags();
+            admin = admin_path(fun);
+            admin.resettags(baseURL, token);
             break;
-        case 'resetadmin':
-            utils = path(fun);
-            code = utils.resetadmin();
-            break; 
-        case 'passesupd':
-            utils = path(fun)
-            code = utils.passesupd()
-            break
-        case 'usermod':
-            utils = path(fun)
-            code = utils.usermod(options.username, options.password, options.type, options.opID)
+        case 'admin':
+            admin = admin_path(fun);
+            admin.admin(baseURL, token, options);
             break;
         case 'login':
             utils = path(fun);
-            code = utils.login(options.username, options.passw);
+            utils.login(baseURL, options.username, options.passw);
             break;
         case 'logout':
             utils = path(fun);
-            code = utils.logout();
+            utils.logout(baseURL, token);
             break;
-        case 'getstationids':
-            utils = path(fun);
-            code = utils.getstationids();
-            break;
-        case 'getoperatorids':
-            utils = path(fun);
-            code = utils.getoperatorids()
-            break
         case 'passesperstation':
             utils = path(fun);
-            code = utils.passesperstation(options.station, options.datefrom, options.dateto);
+            utils.passesperstation(baseURL, token, options.station, options.datefrom, options.dateto, options.format);
             break;
         case 'passesanalysis':
             utils = path(fun);
-            code = utils.passesanalysis(options.op1, options.op2, options.datefrom, options.dateto);
+            utils.passesanalysis(baseURL, token, options.op1, options.op2, options.datefrom, options.dateto, options.format);
             break;
         case 'passescost':
             utils = path(fun);
-            code = utils.passescost(options.op1, options.op2, options.datefrom, options.dateto);
+            utils.passescost(baseURL, token, options.op1, options.op2, options.datefrom, options.dateto, options.format);
             break;
         case 'chargesby':
             utils = path(fun);
-            code = utils.chargesby(options.op, options.datefrom, options.dateto);
+            utils.chargesby(baseURL, token, options.op1, options.datefrom, options.dateto, options.format);
             break;
-        case 'users':
+        case 'getstationIDs':
             utils = path(fun);
-            code = utils.users();
+            utils.getstationIDs(baseURL, token);
             break;
-        case 'userdata':
+        case 'getoperatorIDs':
             utils = path(fun);
-            code = utils.userdata(options.username);
+            utils.getoperatorIDs(baseURL, token);
             break;
         case 'newsettlement':
             utils = path(fun);
-            code = utils.newsettlement(options.op1, options.op2, options.dateto);
-            break;
-        case 'settlementbyid':
-            utils = path(fun);
-            code = utils.settlementbyid(options.id);
-            break;
-        case 'settlementbyoperator':
-            utils = path(fun);
-            code = utils.settlementbyoperator(options.opid);
+            utils.newsettlement(baseURL, token, options.op1, options.op2, options.dateto);
             break;
         case 'clearsettlement':
             utils = path(fun);
-            code = utils.clearsettlement(options.id);
+            utils.clearsettlement(baseURL, token, options.id);
+            break;
+        case 'settlementbyid':
+            utils = path(fun);
+            utils.settlementbyid(baseURL, token, options.id, options.format);
+            break;    
+        case 'settlementsbyoperator':
+            utils = path(fun);
+            utils.settlementsbyoperator(baseURL, token, options.op1, options.format);
             break;
         default:
-            console.log("Error: Wrong scope input");
+            axios.get(`${baseURL}/${fun}`, {
+                headers: {
+                    'X-OBSERVATORY-AUTH': `${token}`
+                }
+            }).then((response) => {
+                console.log(response.data);
+            }).catch((error) => {
+                console.log(`Error(${error.response.status}): ` + error.response.data);
+                console.log("Found at: Scope");
+            });
             break;
     }
-    return code;
 }
 
 function path(fun) {
     let utils = require(`./../utils/${fun}`);
     return utils;
+}
+
+function admin_path(fun) {
+    let admin = require(`./../admin/${fun}`);
+    return admin;
 }
