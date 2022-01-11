@@ -2,7 +2,6 @@ module.exports = { passescost: passescost };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
-const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
 
 async function promptMissingOperator() {
     const question = [];
@@ -14,7 +13,7 @@ async function promptMissingOperator() {
     });
 
     const answer = await inquirer.prompt(question);
-    return answer.station;
+    return answer.operator;
 }
 
 async function promptMissingDateFrom() {
@@ -23,7 +22,7 @@ async function promptMissingDateFrom() {
     question.push({
         type: 'input',
         name: 'DateFrom',
-        message: 'Type a starting Date(YYYYMMDD)',
+        message: 'Type the earliest date of pass records to be fetched in YYYYMMDD format',
     });
 
     const answer = await inquirer.prompt(question);
@@ -36,14 +35,14 @@ async function promptMissingDateTo() {
     question.push({
         type: 'input',
         name: 'DateTo',
-        message: 'Type a last Date(YYYYMMDD)',
+        message: 'The latest date of pass records to be fetched in YYYYMMDD format',
     });
 
     const answer = await inquirer.prompt(question);
     return answer.DateTo;
 }
 
-async function passescost(op1, op2, datefrom, dateto, format) {
+async function passescost(baseURL, token, op1, op2, datefrom, dateto, format) {
     if (op1 == undefined) {
         console.log("Error: operator one is missing");
         op1 = await promptMissingOperator();
@@ -61,12 +60,14 @@ async function passescost(op1, op2, datefrom, dateto, format) {
         dateto = await promptMissingDateTo();
     }
 
-    const res = await axios.get(`${baseURL}/PassesCost/${op1}/${op2}/${datefrom}/${dateto}?format=${format}`);
-    if (res.data == undefined) {
-        console.log("Error 500: Internal server error");
-        console.log("Found at: passescost");
-        return [res.status];
-    }
-    console.log(res.data);
-
+    axios.get(`${baseURL}/PassesCost/${op1}/${op2}/${datefrom}/${dateto}?format=${format}`, {
+        headers: {
+            'X-OBSERVATORY-AUTH': `${token}`
+        }
+    }).then((response) => {
+        console.log(response.data);
+    }).catch((error) => {
+        console.log(`Error(${error.response.status}): ` + error.response.data);
+        console.log("Found at: PassesCost");
+    });
 }

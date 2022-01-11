@@ -2,7 +2,7 @@ module.exports = { login: login };
 
 const inquirer = require('inquirer');
 const axios = require('axios');
-const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
+const fs = require('fs');
 
 async function promptMissingUsr() {
     const question = [];
@@ -30,7 +30,7 @@ async function promptMissingPsw() {
     return answer.password;
 }
 
-async function login(usr, pswd) {
+async function login(baseURL, usr, pswd) {
 
     if (usr == undefined) {
         console.log("Error: Username is missing");
@@ -40,11 +40,14 @@ async function login(usr, pswd) {
         console.log("Error: Password is missing");
         pswd = await promptMissingPsw();
     }
-    const res = await axios.post(`${baseURL}/login`, { username: `${usr}`, password: `${pswd}` });
-    if (res.data == undefined) {
-        console.log("Error 500: Internal server error");
+
+    axios.post(`${baseURL}/login`, `username=${usr}&password=${pswd}`
+    ).then((response) => {
+        fs.writeFile('./bin/token.txt', response.data.token, 'utf8', function (err) {
+            if (err) console.log(err)
+        });
+    }).catch((error) => {
+        console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: login");
-        return [res.status];
-    }
-    else return [res.status, false, res.data];
+    });
 }

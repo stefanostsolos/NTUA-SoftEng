@@ -1,12 +1,7 @@
-module.exports = { settlementbyid : settlementbyid };
+module.exports = { settlementbyid: settlementbyid };
 
-const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
-const https = require('https')
-const axios = require('axios')
-const inquirer = require('inquirer');
-const usage = ("\nUsage: ");
-
-axios.defaults.httpsAgent = new https.Agent()
+const inquirer = require("inquirer");
+const axios = require('axios');
 
 async function promptMissingID() {
     const question = [];
@@ -14,27 +9,27 @@ async function promptMissingID() {
     question.push({
         type: 'input',
         name: 'id',
-        message: 'Please choose the id',
+        message: 'Please type a settlement ID',
     });
 
     const answer = await inquirer.prompt(question);
     return answer.id;
 }
 
-async function settlementbyid(id) {
-    console.log(usage + "Fetches a settlement record with the provided ID. This resource may be accessed by any payment user and any admin user.");
-   
-    if (id == undefined) { 
-        console.log("Error: id is missing");
-        station = await promptMissingID();
+async function settlementbyid(baseURL, token, id, format) {
+    if (id == undefined) {
+        console.log("Error: settlement ID is missing");
+        id = await promptMissingID();
     }
 
-    const res = await axios.get(`${baseURL}/SettlementByID/${id}?format=${format}`)
-
-    if (res.data == undefined) {
-        console.log("Error 500: Internal server error");
-        console.log("Found at: settlementbyid");
-        return [res.status];
-    }
-    console.log(res.data);
+    axios.get(`${baseURL}/SettlementByID/${id}?format=${format}`, {
+        headers: {
+            'X-OBSERVATORY-AUTH': `${token}`
+        }
+    }).then((response) => {
+        console.log(response.data);
+    }).catch((error) => {
+        console.log(`Error(${error.response.status}): ` + error.response.data);
+        console.log("Found at: SettlementByID");
+    });
 }

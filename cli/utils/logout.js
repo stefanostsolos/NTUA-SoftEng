@@ -1,14 +1,19 @@
 module.exports = { logout: logout };
 
 const axios = require('axios');
-const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
+const fs = require('fs');
 
-async function logout() {
-    const res = await axios.post(`${baseURL}/logout`);
-    if (res.data == undefined) {
-        console.log("Error 500: Internal server error");
+function logout(baseURL, token) {
+    axios.post(`${baseURL}/logout`, {}, {
+        headers: {
+            'X-OBSERVATORY-AUTH': `${token}`
+        }
+    }).then(() => {
+        fs.writeFile('./bin/token.txt', "", 'utf8', function (err) {
+            if (err) console.log(err);
+        });
+    }).catch((error) => {
+        console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: logout");
-        return [res.status];
-    }
-    else return [res.status, false, res.data];
+    });
 }

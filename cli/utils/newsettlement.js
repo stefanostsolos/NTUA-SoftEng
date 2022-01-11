@@ -1,37 +1,19 @@
-module.exports = { newsettlement : newsettlement };
+module.exports = { newsettlement: newsettlement };
 
-const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
-const https = require('https')
-const axios = require('axios')
-const inquirer = require('inquirer');
-const usage = ("\nUsage: ");
+const inquirer = require("inquirer");
+const axios = require('axios');
 
-axios.defaults.httpsAgent = new https.Agent()
-
-async function promptMissingOp1() {
+async function promptMissingOperator() {
     const question = [];
 
     question.push({
         type: 'input',
-        name: 'op1',
-        message: 'Please choose the 1st operator',
+        name: 'operator',
+        message: 'Please type an operator of your choice',
     });
 
     const answer = await inquirer.prompt(question);
-    return answer.op1;
-}
-
-async function promptMissingOp2() {
-    const question = [];
-
-    question.push({
-        type: 'input',
-        name: 'op2',
-        message: 'Please choose the 2nd operator',
-    });
-
-    const answer = await inquirer.prompt(question);
-    return answer.op2;
+    return answer.operator;
 }
 
 async function promptMissingDateTo() {
@@ -39,37 +21,36 @@ async function promptMissingDateTo() {
 
     question.push({
         type: 'input',
-        name: 'dateto',
-        message: 'Type a last Date',
+        name: 'DateTo',
+        message: 'Type the latest date of pass records to be fetched in YYYYMMDD format',
     });
 
     const answer = await inquirer.prompt(question);
-    return answer.dateto;
+    return answer.DateTo;
 }
 
-async function newsettlement(op1, op2, dateto) {        
-    console.log(usage + "Creates a new settlement record in the database for the debts between the two given operators. The settlement accounts for the debts created between the last settlement date and the provided date. This resource may be accessed by any operator user whose ID matches either of the operator IDs in the request, as well as by any admin user.");
-    
-    if (op1 == undefined) { 
-        console.log("Error: operator 1 is missing");
-        station = await promptMissingOp1();
+async function newsettlement(baseURL, token, op1, op2, dateto) {
+    if (op1 == undefined) {
+        console.log("Error: operator one is missing");
+        op1 = await promptMissingOperator();
     }
-    if (op2 == undefined) { 
-        console.log("Error: operator 2 is missing");
-        station = await promptMissingOp2();
+    if (op2 == undefined) {
+        console.log("Error: operator two is missing");
+        op2 = await promptMissingOperator();
     }
-
     if (dateto == undefined) {
         console.log("Error: dateto is missing");
         dateto = await promptMissingDateTo();
     }
 
-    const res = await axios.post(`${baseURL}/NewSettlement/${op1}/${op2}/${dateto}?format=${format}`)
-
-    if (res.data == undefined) {
-        console.log("Error 500: Internal server error");
-        console.log("Found at: newsettlement");
-        return [res.status];
-    }
-    console.log(res.data);
+    axios.post(`${baseURL}/NewSettlement`, `op1=${op1}&op2=${op2}&dateto=${dateto}`, {
+        headers: {
+            'X-OBSERVATORY-AUTH': `${token}`
+        }
+    }).then((response) => {
+        console.log(response.data);
+    }).catch((error) => {
+        console.log(`Error(${error.response.status}): ` + error.response.data);
+        console.log("Found at: NewSettlement");
+    });
 }

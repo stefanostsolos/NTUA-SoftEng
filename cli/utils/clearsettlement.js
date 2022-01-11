@@ -1,12 +1,7 @@
-module.exports = { clearsettlement : clearsettlement };
+module.exports = { clearsettlement: clearsettlement };
 
-const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
-const https = require('https')
-const axios = require('axios')
 const inquirer = require('inquirer');
-const usage = ("\nUsage: ");
-
-axios.defaults.httpsAgent = new https.Agent()
+const axios = require('axios');
 
 async function promptMissingID() {
     const question = [];
@@ -14,27 +9,28 @@ async function promptMissingID() {
     question.push({
         type: 'input',
         name: 'id',
-        message: 'Please choose the id',
+        message: 'Please type an id',
     });
 
     const answer = await inquirer.prompt(question);
     return answer.id;
 }
 
-async function clearsettlement(id) {        
-    console.log(usage + "Mark an existing settlement record as cleared in the database. This resource may be accessed by any payment or admin user.");
+async function clearsettlement(baseURL, token, id,) {
 
-    if (id == undefined) { 
-        console.log("Error: id is missing");
-        station = await promptMissingID();
+    if (id == undefined) {
+        console.log("Error: ID is missing");
+        dateto = await promptMissingID();
     }
 
-    const res = await axios.post(`${baseURL}/ClearSettlement/${id}?format=${format}`)
-
-    if (res.data == undefined) {
-        console.log("Error 500: Internal server error");
-        console.log("Found at: clearsettlement");
-        return [res.status];
-    }
-    console.log(res.data);
+    axios.post(`${baseURL}/ClearSettlement/${id}`, {
+        headers: {
+            'X-OBSERVATORY-AUTH': `${token}`
+        }
+    }).then((response) => {
+        console.log(response.data);
+    }).catch((error) => {
+        console.log(`Error(${error.response.status}): ` + error.response.data);
+        console.log("Found at: ClearSettlement");
+    });
 }

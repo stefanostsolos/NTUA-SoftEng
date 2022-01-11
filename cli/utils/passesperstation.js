@@ -2,7 +2,6 @@ module.exports = { passesperstation: passesperstation };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
-const baseURL = 'https://virtserver.swaggerhub.com/N8775/TOLLS/1.0.0';
 
 async function promptMissingStation() {
     const question = [];
@@ -43,7 +42,7 @@ async function promptMissingDateTo() {
     return answer.DateTo;
 }
 
-async function passesperstation(station, datefrom, dateto, format) {
+async function passesperstation(baseURL, token, station, datefrom, dateto, format) {
 
     if (station == undefined) {
         console.log("Error: station is missing");
@@ -58,11 +57,14 @@ async function passesperstation(station, datefrom, dateto, format) {
         dateto = await promptMissingDateTo();
     }
 
-    const res = await axios.get(`${baseURL}/PassesPerStation/${station}/${datefrom}/${dateto}?format=${format}`);
-    if (res.data == undefined) {
-        console.log("Error 500: Internal server error");
-        console.log("Found at: passesperstation");
-        return [res.status];
-    }
-    console.log(res.data);
+    axios.get(`${baseURL}/PassesPerStation/${station}/${datefrom}/${dateto}?format=${format}`, {
+        headers: {
+            'X-OBSERVATORY-AUTH': `${token}`
+        }
+    }).then((response) => {
+        console.log(response.data);
+    }).catch((error) => {
+        console.log(`Error(${error.response.status}): ` + error.response.data);
+        console.log("Found at: PassesPerStation");
+    });
 }

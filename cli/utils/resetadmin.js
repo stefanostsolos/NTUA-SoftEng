@@ -7,7 +7,7 @@ const axios = require('axios')
 axios.defaults.httpsAgent = new https.Agent()
 
 async function resetadmin() {
-    console.log(usage + "Resets the administrator user account to default (username: admin,  password: freepasses4all).")
+    console.log(usage + "Resets the administrator user account to default (username: admin, password: freepasses4all).")
     
     const res = await axios.post(`${baseURL}/admin/resetadmin`, { username: 'admin', password: `freepasses4all` });
     if (res.status != 200) {
