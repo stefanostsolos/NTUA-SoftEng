@@ -21,6 +21,9 @@ app.use(function(req, res, next) {
    next();
  });
 
+
+app.use(cors(corsOptions))
+
 // Logger middleware
 app.use(morgan('dev'));
 
