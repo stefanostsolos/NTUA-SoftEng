@@ -5,10 +5,21 @@ const morgan = require('morgan');
 const db = require('./db');
 const bcrypt = require('bcrypt');
 const aux = require('./helper');
+const cors = require('cors');
 
 const app = express();
 const port = 9103;
 const baseURL = `/interoperability/api`;
+
+const corsOptions = {
+    origin: ' http://localhost:3000',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+   next();
+ });
 
 // Logger middleware
 app.use(morgan('dev'));
