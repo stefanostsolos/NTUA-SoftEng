@@ -1,86 +1,82 @@
 import "./App.css";
 import React from "react";
-import SubmitButton from "./SubmitButton";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import jwt_decode from "jwt-decode";
-import login from './login';
-//import { Redirect, useHistory } from "react-router-dom"; 
+import login from "./Login";
+//import { Redirect, useHistory } from "react-router-dom";
 
-class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function Header({ token, setToken }) {
+  const doLogout = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:9103/interoperability/api/logout`,
+        {
+          method: "post",
+          mode: "cors",
+          headers: {
+            "x-observatory-auth": token,
+          },
+        }
+      );
 
-  async doLogout() {
-    document.cookie = "token=";
-    document.cookie = "flag=false";
-    this.props.history.push("/");
-    window.location.reload(false);
-  }
+      const status = await res.status;
 
-  render() {
-    let x = document.cookie.split(";").reduce((res, c) => {
-      const [key, val] = c.trim().split("=").map(decodeURIComponent);
-      const allNumbers = (str) => /^\d+$/.test(str);
-      try {
-        return Object.assign(res, {
-          [key]: allNumbers(val) ? val : JSON.parse(val),
-        });
-      } catch (e) {
-        return Object.assign(res, { [key]: val });
+      if (status === 200) {
+        setToken(undefined);
+        localStorage.removeItem("token");
       }
-    }, {});
-
-    if (x.flag === true) {
-      let decodedToken = jwt_decode(x.token);
-      console.log("ne");
-      console.log(decodedToken);
-      return (
-        <header>
-          <nav>
-            <div className="something">
-              <a href="/" className="header-brand">
-              Toll-Interoperability Website
-              </a>
-            </div>
-            <ul>
-              <div className="username">
-                <li>Welcome, {decodedToken.username}!</li>
-              </div>
-              <div className="logoutbutton">
-                <li>
-                  <SubmitButton
-                    text="Log out"
-                    onClick={() => {
-                      this.doLogout();
-                    }}
-                  />
-                </li>
-              </div>
-            </ul>
-          </nav>
-        </header>
-      );
-    } else {
-      return (
-        <header>
-          <nav>
-            <div className="something">
-              <a href="/" className="header-brand">
-                Softeng 2021-2022-Team 18: Toll-Interoperability Website 
-              </a>
-            </div>
-              <div>
-                <Link  className="login-button" to="/login">
-                  Sign in
-                </Link>
-              </div>
-          </nav>
-        </header>
-      );
+    } catch (e) {
+      console.log(e);
     }
+  };
+
+  if (token) {
+    const decodedToken = jwt_decode(token);
+    return (
+      <header>
+        <nav>
+          <div className="something">
+            <a href="/" className="header-brand">
+              Toll-Interoperability Website
+            </a>
+          </div>
+          <ul>
+            <div className="username">
+              <li>Welcome, {decodedToken.username}!</li>
+            </div>
+            <div className="logoutbutton">
+              <li>
+                <button
+                  text="Log out"
+                  onClick={() => {
+                    console.log("logout")
+                    doLogout();
+                  }}
+                />
+              </li>
+            </div>
+          </ul>
+        </nav>
+      </header>
+    );
+  } else {
+    return (
+      <header>
+        <nav>
+          <div className="something">
+            <a href="/" className="header-brand">
+              Softeng 2021-2022-Team 18: Toll-Interoperability Website
+            </a>
+          </div>
+          <div>
+            <Link className="login-button" to="/login">
+              Sign in
+            </Link>
+          </div>
+        </nav>
+      </header>
+    );
   }
 }
 

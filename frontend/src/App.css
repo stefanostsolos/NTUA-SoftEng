@@ -437,11 +437,6 @@ footer ul li a {
     0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
 }
 
-.loginbox input {
-  width: 200px;
-  margin-bottom: 30px;
-}
-
 .email {
   margin: 0;
   padding: 0;
@@ -468,25 +463,6 @@ footer ul li a {
   font-family: Helvetica, sans-serif;
   font-size: 18px;
   color: #111;
-}
-
-.loginbox button {
-  border: none;
-  outline: none;
-  height: 40px;
-  width: 200px;
-  color: #f3f3f3;
-  background: #111;
-  font-family: Helvetica, sans-serif;
-  font-size: 18px;
-  border-radius: 5px;
-  margin-top: 5px;
-  margin-bottom: 3px;
-}
-
-.loginbox button:hover {
-  background: #202020;
-  cursor: pointer;
 }
 
 .loginbox a {
@@ -860,6 +836,32 @@ footer ul li a {
   margin-left: 610px;
   position: relative;
   top: -6px;
+}
+
+.navigation-button:hover {
+  background: #4f4b48;
+  cursor: pointer;
+}
+
+.login-button {
+  list-style-type: none;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 100%;
+  height: 80px;
+  border: solid;
+  border-color: #f3f3f3;
+  color: #f3f3f3;
+  background: #111;
+  font-family: Helvetica, sans-serif;
+  font-size: 20px;
+  border-radius: 5px;
+  margin-bottom: 160px;
+}
+
+.login-button:hover {
+  background: #4f4b48;
+  cursor: pointer;
 }
 
 .list-container {

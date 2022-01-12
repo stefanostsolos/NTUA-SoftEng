@@ -42,7 +42,7 @@ const fetchOperators = async () => {
   return data.OperatorIDList;
 };
 
-function Charges() {
+function Charges({ token }) {
   const [operators, setOperators] = useState([]);
   const [operator, setOperator] = useState("");
   const [datefrom, setDatefrom] = useState(null);

@@ -20,8 +20,10 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 /* import {Link} from "react-router-dom";
 import SubmitButton from './SubmitButton';
 import { SelectChangeEvent } from "@mui/material/Select"; */
@@ -43,54 +45,46 @@ ChartJS.register(
   Legend
 );
 
-const fetchStations = async () => {
-  const res = await fetch(
-    "http://localhost:9103/interoperability/api/GetStationIDs", {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'x-observatory-auth': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwib3BlcmF0b3JJRCI6bnVsbCwiaWF0IjoxNjQxOTIxNzUyLCJleHAiOjE2NDE5MjUzNTJ9.aNIfDI5LxIiAkzrb6Dkd1zu58Vu9wb3pDmDMGePd_TM'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    }
-  );
-  const data = await res.json();
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
-  return data.StationIDList;
-};
-
-function PassesPerStation() {
+function PassesPerStation({ token }) {
   const [stations, setStations] = useState([]);
   const [station, setStation] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
+  const [open, setOpen] = React.useState(false);
 
   const canSubmit = [station, datefrom, dateto].every(Boolean);
 
   let result = {};
 
-  if(requestedData) {
+  if (requestedData) {
+    const onlyDates = requestedData.PassesList.map(
+      (element) => new Date(element.PassTimeStamp)
+    );
 
-    const onlyDates = requestedData.PassesList.map(element => new Date(element.PassTimeStamp));
+    const sortedDates = onlyDates.sort((a, b) => a.getTime() - b.getTime());
 
-    const sortedDates = onlyDates.sort((a,b)=>a.getTime()-b.getTime());
+    const stringDates = sortedDates.map((element) =>
+      element.toLocaleDateString()
+    );
 
-    const stringDates = sortedDates.map(element => element.toLocaleDateString());
-  
-    //Group by dates and count 
-    result = stringDates.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), {});
+    //Group by dates and count
+    result = stringDates.reduce((a, c) => ((a[c] = (a[c] || 0) + 1), a), {});
   }
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
-        text: 'Passes Per Station Analysis',
+        text: "Passes Per Station Analysis",
       },
     },
   };
@@ -99,10 +93,10 @@ function PassesPerStation() {
     labels: Object.keys(result),
     datasets: [
       {
-        label: 'Number of Passes',
+        label: "Number of Passes",
         data: Object.values(result),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      }
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
     ],
   };
 
@@ -127,6 +121,35 @@ function PassesPerStation() {
     setDateto(newdate);
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const fetchStations = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:9103/interoperability/api/GetStationIDs",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "x-observatory-auth": token,
+          },
+        }
+      );
+      const data = await res.json();
+
+      return data.StationIDList;
+    } catch (error) {
+      setOpen(true);
+      return;
+    }
+  };
+
   const fetchResults = async (stationid, datefrom, dateto) => {
     const datefromstr = `${datefrom.getFullYear()}${String(
       datefrom.getMonth() + 1
@@ -137,13 +160,20 @@ function PassesPerStation() {
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
     const res = await fetch(
-      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesPerStation/${stationid}/${datefromstr}/${datetostr}`
+      `http://localhost:9103/interoperability/api/PassesPerStation/${stationid}/${datefromstr}/${datetostr}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "x-observatory-auth": token,
+        },
+      }
     );
 
     const data = await res.json();
 
     setRequestedData(data);
-    console.log(data)
+    console.log(data);
   };
 
   return (
@@ -165,9 +195,12 @@ function PassesPerStation() {
                   onChange={handleStationChange}
                   className="form-input"
                 >
-                  {stations.map((elem) => (
-                    <MenuItem key={elem} value={elem}>{elem}</MenuItem>
-                  ))}
+                  {stations &&
+                    stations.map((elem) => (
+                      <MenuItem key={elem} value={elem}>
+                        {elem}
+                      </MenuItem>
+                    ))}
                 </Select>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <div className="form-input">
@@ -201,16 +234,23 @@ function PassesPerStation() {
             >
               Search
             </Button>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                Failed to fetch stations from server!
+              </Alert>
+            </Snackbar>
           </Stack>
         </div>
         <div className="chart">
-        {requestedData ? (
-          <Paper>
-            <Bar options={options} data={chartData}>
-            </Bar>
-          </Paper> ) : (
-            null
-          )}
+          {requestedData ? (
+            <Paper>
+              <Bar options={options} data={chartData}></Bar>
+            </Paper>
+          ) : null}
         </div>
       </section>
     </main>

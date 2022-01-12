@@ -62,7 +62,7 @@ const fetchOperators = async () => {
   return data.OperatorIDList;
 };
 
-function PassesAnalysis() {
+function PassesAnalysis({ token }) {
   const [operators, setOperators] = useState([]);
   const [op1, setOp1] = useState("");
   const [op2, setOp2] = useState("");
