@@ -41,7 +41,8 @@ async function login(baseURL, usr, pswd) {
         pswd = await promptMissingPsw();
     }
 
-    axios.post(`${baseURL}/login`, `username=${usr}&password=${pswd}`
+    axios.post(`${baseURL}/login`, `username=${usr}&password=${pswd}`, 
+               {headers: {'Content-Type': 'application/x-www-form-urlencoded',}}
     ).then((response) => {
         fs.writeFile('./bin/token.txt', response.data.token, 'utf8', function (err) {
             if (err) console.log(err)
