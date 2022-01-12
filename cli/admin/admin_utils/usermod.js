@@ -1,3 +1,5 @@
+
+
 module.exports = { usermod: usermod };
 
 const inquirer = require('inquirer');
@@ -46,9 +48,18 @@ async function promptMissingOperatorID() {
     const question = [];
 
     question.push({
-        type: 'input',
+        type: 'list',
         name: 'operatorID',
-        message: 'Please type an operatorID',
+        message: 'Please select an operatorID',
+        choices: [
+            'AO',
+            'EG',
+            'GF',
+            'KO',
+            'MR',
+            'NE',
+            'OO',
+        ]
     });
 
     const answer = await inquirer.prompt(question);
@@ -62,22 +73,22 @@ async function usermod(baseURL, token, username, passw, type, operatorID) {
         username = await promptMissingUsername();
     }
     if (passw == undefined) {
-        console.log("Error: username one is missing");
+        console.log("Error: password is missing");
         passw = await promptMissingPassw();
     }
     if (type == undefined) {
-        console.log("Error: username one is missing");
+        console.log("Error: type is missing");
         type = await promptMissingType();
     }
     if (operatorID == undefined) {
-        if (username == 'admin') operatorID = null;
+        if ((username == 'admin') || (type == 'payment')) operatorID = null;
         else {
-            console.log("Error: username one is missing");
+            console.log("Error: operatorID is missing");
             operatorID = await promptMissingOperatorID();
         }
     }
 
-    axios.post(`${baseURL}/admin/usermod`, `username=${username}&passw=${passw}&type=${type}&operatorID=${operatorID}`, {
+    axios.post(`${baseURL}/admin/usermod`, { username: `${username}`, password: `${passw}`, type: `${type}`, operatorID: `${operatorID}` }, {
         headers: {
             'X-OBSERVATORY-AUTH': `${token}`,
         }
@@ -88,3 +99,4 @@ async function usermod(baseURL, token, username, passw, type, operatorID) {
         console.log("Found at: usermod");
     });
 }
+
