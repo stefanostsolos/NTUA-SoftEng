@@ -1,5 +1,3 @@
-
-
 module.exports = { usermod: usermod };
 
 const inquirer = require('inquirer');
