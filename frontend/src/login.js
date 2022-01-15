@@ -15,8 +15,7 @@ import { white, grey } from "@mui/material/colors";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import FormGroup from '@mui/material/FormGroup';
-//import { Redirect, useHistory } from "react-router-dom";
-//import { withCookies, Cookies } from 'react-cookie';
+import { useLocation, useHistory } from "react-router-dom";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
@@ -38,6 +37,9 @@ function Login({ setToken }) {
   const [buttonDisabled, setDisabled] = useState(false);
   const [internalError, setInternalError] = useState(false);
   const [communicationError, setCommunicationError] = useState(false);
+
+  const location = useLocation();
+  const history = useHistory();
 
   const canSubmit = [username, password].every(Boolean);
 
@@ -82,6 +84,8 @@ function Login({ setToken }) {
         console.log(data);
         console.log(typeof(setToken))
         setToken(data.token);
+        if(location.pathname === '/login')
+          history.push('/')
       } else if (status === 401) {
         console.log("Unauthorized")
         setWrongCredentials(true);
@@ -229,11 +233,13 @@ function Login({ setToken }) {
                 label="Password"
               />
             </FormControl>
-            {wrongCredentials ? (<p  style={{color:"red"}}>Wrong credentials</p>) : null}
-            <ColorButton
+            {wrongCredentials ? (<p className="wrongcredentials">Wrong credentials</p>) : null}
+            <ColorButton 
               variant="contained"
               disabled={buttonDisabled || !canSubmit}
               type="submit"
+              className="login"
+              
             >
               Login
             </ColorButton>

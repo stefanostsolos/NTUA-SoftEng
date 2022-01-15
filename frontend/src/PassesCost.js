@@ -11,6 +11,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { MenuItem, Select, TextField } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 /* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import login from './login';
 import Signup from './signup';
@@ -26,22 +28,9 @@ const FormControl = styled(FormControlSpacing)`
   border-color: "4px solid #ffffff";
 `;
 
-
-const fetchOperators = async () => {
-  const res = await fetch(
-    "http://localhost:9103/interoperability/api/GetOperatorIDs", {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'x-observatory-auth': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwib3BlcmF0b3JJRCI6bnVsbCwiaWF0IjoxNjQxOTIxNzUyLCJleHAiOjE2NDE5MjUzNTJ9.aNIfDI5LxIiAkzrb6Dkd1zu58Vu9wb3pDmDMGePd_TM'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    }
-  );
-  const data = await res.json();
-
-  return data.OperatorIDList;
-};
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function PassesCost({ token }) {
   const [operators, setOperators] = useState([]);
@@ -50,6 +39,7 @@ function PassesCost({ token }) {
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
+  const [open, setOpen] = React.useState(false);
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
 
   useEffect(() => {
@@ -77,6 +67,35 @@ function PassesCost({ token }) {
     setDateto(newdate);
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const fetchOperators = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:9103/interoperability/api/GetOperatorIDs",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "x-observatory-auth": token,
+          },
+        }
+      );
+      const data = await res.json();
+
+      return data.OperatorIDList;
+    } catch (error) {
+      setOpen(true);
+      return;
+    }
+  };
+
   const fetchResults = async (operatorid1, operatorid2, datefrom, dateto) => {
     const datefromstr = `${datefrom.getFullYear()}${String(
       datefrom.getMonth() + 1
@@ -87,12 +106,20 @@ function PassesCost({ token }) {
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
     const res = await fetch(
-      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesCost/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
+      `http://localhost:9103/interoperability/api/PassesCost/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "x-observatory-auth": token,
+        },
+      }
     );
 
     const data = await res.json();
 
     setRequestedData(data);
+    console.log(data);
   };
 
   return (
@@ -115,11 +142,12 @@ function PassesCost({ token }) {
                     label="Operator1"
                     onChange={handleOp1Change}
                   >
-                    {operators.map((element) => (
-                      <MenuItem key={element} value={element}>
-                        {element}
-                      </MenuItem>
-                    ))}
+                    {operators &&
+                      operators.map((element) => (
+                        <MenuItem key={element} value={element}>
+                          {element}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
                 <FormControl fullWidth>
@@ -134,11 +162,12 @@ function PassesCost({ token }) {
                     label="Operator2"
                     onChange={handleOp2Change}
                   >
-                    {operators.map((element) => (
-                      <MenuItem key={element} value={element}>
-                        {element}
-                      </MenuItem>
-                    ))}
+                    {operators &&
+                      operators.map((elem) => (
+                        <MenuItem key={elem} value={elem}>
+                          {elem}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
 
@@ -173,6 +202,15 @@ function PassesCost({ token }) {
             >
               Search
             </Button>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                Failed to fetch operators from server!
+              </Alert>
+            </Snackbar>
           </Stack>
         </div>
         {requestedData ? (
@@ -190,7 +228,14 @@ function PassesCost({ token }) {
                   <td>{requestedData.PassesCost} Euros </td>
                   <td>{requestedData.NumberOfPasses} Times</td>
                   <td>
-                    {(~Math.round(requestedData.PassesCost / requestedData.NumberOfPasses * 100)/100 ).toFixed(2)} Euros
+                    {(
+                      ~Math.round(
+                        (requestedData.PassesCost /
+                          requestedData.NumberOfPasses) *
+                          100
+                      ) / 100
+                    ).toFixed(2)}{" "}
+                    Euros
                   </td>
                 </tr>
               </tbody>

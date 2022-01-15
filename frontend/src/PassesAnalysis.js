@@ -20,8 +20,10 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 /* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import login from './login';
 import Signup from './signup';
@@ -46,21 +48,9 @@ ChartJS.register(
   Legend
 );
 
-const fetchOperators = async () => {
-  const res = await fetch(
-    "http://localhost:9103/interoperability/api/GetOperatorIDs", {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'x-observatory-auth': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwib3BlcmF0b3JJRCI6bnVsbCwiaWF0IjoxNjQxOTIxNzUyLCJleHAiOjE2NDE5MjUzNTJ9.aNIfDI5LxIiAkzrb6Dkd1zu58Vu9wb3pDmDMGePd_TM'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    }
-  );
-  const data = await res.json();
-
-  return data.OperatorIDList;
-};
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function PassesAnalysis({ token }) {
   const [operators, setOperators] = useState([]);
@@ -69,32 +59,35 @@ function PassesAnalysis({ token }) {
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
+  const [open, setOpen] = React.useState(false);
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
 
-  
   let result = {};
 
-  if(requestedData) {
+  if (requestedData) {
+    const onlyDates = requestedData.PassesList.map(
+      (element) => new Date(element.TimeStamp)
+    );
 
-    const onlyDates = requestedData.PassesList.map(element => new Date(element.TimeStamp));
+    const sortedDates = onlyDates.sort((a, b) => a.getTime() - b.getTime());
 
-    const sortedDates = onlyDates.sort((a,b)=>a.getTime()-b.getTime());
+    const stringDates = sortedDates.map((element) =>
+      element.toLocaleDateString()
+    );
 
-    const stringDates = sortedDates.map(element => element.toLocaleDateString());
-  
-    //Group by dates and count 
-    result = stringDates.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), {});
+    //Group by dates and count
+    result = stringDates.reduce((a, c) => ((a[c] = (a[c] || 0) + 1), a), {});
   }
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
-        text: 'Bar Chart',
+        text: "Passes Analysis Chart",
       },
     },
   };
@@ -103,10 +96,10 @@ function PassesAnalysis({ token }) {
     labels: Object.keys(result),
     datasets: [
       {
-        label: 'Number of Passes',
+        label: "Number of Passes",
         data: Object.values(result),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      }
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
     ],
   };
 
@@ -135,6 +128,35 @@ function PassesAnalysis({ token }) {
     setDateto(newdate);
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const fetchOperators = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:9103/interoperability/api/GetOperatorIDs",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "x-observatory-auth": token,
+          },
+        }
+      );
+      const data = await res.json();
+
+      return data.OperatorIDList;
+    } catch (error) {
+      setOpen(true);
+      return;
+    }
+  };
+
   const fetchResults = async (operatorid1, operatorid2, datefrom, dateto) => {
     const datefromstr = `${datefrom.getFullYear()}${String(
       datefrom.getMonth() + 1
@@ -145,7 +167,7 @@ function PassesAnalysis({ token }) {
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
     const res = await fetch(
-      `https://virtserver.swaggerhub.com/VikentiosVitalis/RESTAPI-Toll-Interoperability/1.1.0/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
+      `http://localhost:9103/interoperability/api/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
     );
 
     const data = await res.json();
@@ -174,11 +196,12 @@ function PassesAnalysis({ token }) {
                     label="Operator1"
                     onChange={handleOp1Change}
                   >
-                    {operators.map((element) => (
-                      <MenuItem key={element} value={element}>
-                        {element}
-                      </MenuItem>
-                    ))}
+                    {operators &&
+                      operators.map((element) => (
+                        <MenuItem key={element} value={element}>
+                          {element}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
 
@@ -194,11 +217,12 @@ function PassesAnalysis({ token }) {
                     label="Operator2"
                     onChange={handleOp2Change}
                   >
-                    {operators.map((element) => (
-                      <MenuItem key={element} value={element}>
-                        {element}
-                      </MenuItem>
-                    ))}
+                    {operators &&
+                      operators.map((elem) => (
+                        <MenuItem key={elem} value={elem}>
+                          {elem}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
 
@@ -234,16 +258,23 @@ function PassesAnalysis({ token }) {
             >
               Search
             </Button>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                Failed to fetch operators from server!
+              </Alert>
+            </Snackbar>
           </Stack>
         </div>
         <div className="chart">
-        {requestedData ? (
-          <Paper>
-            <Bar options={options} data={chartData}>
-            </Bar>
-          </Paper> ) : (
-            null
-          )}
+          {requestedData ? (
+            <Paper>
+              <Bar options={options} data={chartData}></Bar>
+            </Paper>
+          ) : null}
         </div>
       </section>
     </main>

@@ -86,16 +86,11 @@ details,
 figcaption,
 figure,
 footer,
-header,
 hgroup,
 menu,
 nav,
 section {
   display: block;
-}
-
-nav ul {
-  list-style: none;
 }
 
 blockquote,
@@ -181,28 +176,11 @@ header {
   padding-left: 1%;
 }
 
-.header-brand {
-  font-family:  Helvetica, sans-serif;
-  font-size: 35px;
-  font-weight: 900;
-  color: #111;
-}
-
 .username {
+  padding-top: 12px;
   font-family: Helvetica, sans-serif;
   color: #111;
-  margin-left: 77%;
-  padding-right: 10%;
-}
-
-header nav div {
-  display: inline-block;
-}
-
-header nav div a {
-  font-family: Helvetica, sans-serif;
   font-size: 22px;
-  color: #111;
 }
 
 header .header-cases {
@@ -231,7 +209,6 @@ header .header-cases {
   font-style: italic;
   line-height: 70px;
   color: #fff;
-  padding-left: 85px;
   justify-content: center;
   display: flex;
   text-shadow: 2px 2px 8px #111
@@ -267,57 +244,6 @@ header .header-cases {
   background-color: #f2f2f2;
 }
 
-.signinbutton {
-  position: absolute;
-  padding-right: 140px;
-  margin-left: 0%;
-  right: 0;
-}
-
-.signinbutton button {
-  border: none;
-  outline: none;
-  height: 35px;
-  width: 80px;
-  color: #f3f3f3;
-  background: #35312e;
-  font-family: Helvetica, sans-serif;
-  font-size: 15px;
-  border-radius: 5px;
-  margin-top: -5px;
-  margin-bottom: 5px;
-}
-
-.signinbutton button:hover {
-  background: #4f4b48;
-  cursor: pointer;
-}
-
-.logoutbutton {
-  position: absolute;
-  padding-right: 40px;
-  right: 0;
-}
-
-.logoutbutton button {
-  border: none;
-  outline: none;
-  height: 35px;
-  width: 80px;
-  color: #f3f3f3;
-  background: #35312e;
-  font-family: Helvetica, sans-serif;
-  font-size: 15px;
-  border-radius: 5px;
-  margin-top: -2px;
-}
-
-.logoutbutton button:hover {
-  background: #4f4b48;
-  cursor: pointer;
-}
-
-
 .list {
   padding-top: 12px;
   padding-left: 100px;
@@ -329,7 +255,6 @@ footer {
   background-color: #111;
   overflow: hidden;
 }
-
 
 footer ul {
   width: fit-content;
@@ -425,8 +350,8 @@ footer ul li a {
 }
 
 .loginbox {
-  width: 350px;
-  height: 420px;
+  width: 360px;
+  height: 320px;
   background: #fff;
   color: #fff;
   margin: auto;
@@ -469,10 +394,14 @@ footer ul li a {
   text-decoration: none;
   font-family: Helvetica, sans-serif;
   color: #111;
+  justify-content: center;
+  display: flex;
 }
 
 .loginbox a:hover {
   color: #c2c2c2;
+  justify-content: center;
+  display: flex;
 }
 
 .loginbox form {
@@ -597,100 +526,6 @@ footer ul li a {
   text-align: center;
 }
 
-.question {
-  color: #000;
-  width: 100%;
-  padding-top: 20px;
-  padding-bottom: 10px;
-  background-color: transparent;
-  border-bottom: 1px solid #fff;
-  border-left: transparent;
-  border-top: transparent;
-  border-right: transparent;
-}
-
-.question p {
-  font-family: Helvetica, sans-serif;
-  color: #f0932b;
-  font-size: 20px;
-  text-align: left;
-  padding-bottom: 10px;
-}
-
-.question:hover {
-  background-color: #7f8c8d;
-}
-.question:hover p {
-  color: #130f40;
-}
-.question:hover .keywordtable td {
-  background-color: #f6e58d;
-}
-.question:hover .keywordtable th {
-  color: #000;
-}
-
-.question-to-answer {
-  color: #000;
-  width: 100%;
-  padding-top: 20px;
-  padding-bottom: 25px;
-  background-color: transparent;
-  border-bottom: 1px solid #f0932b;
-  border-left: transparent;
-  border-top: transparent;
-  border-right: transparent;
-}
-
-.question-to-answer h2 {
-  font-family: Helvetica, sans-serif;
-  color: #f0932b;
-  font-size: 22px;
-  text-align: left;
-  padding-bottom: 10px;
-}
-
-.question-to-answer p {
-  font-family: Helvetica, sans-serif;
-  color: #fff;
-  font-size: 17px;
-  text-align: left;
-  padding-bottom: 10px;
-  margin-left: 15px;
-}
-
-.answer {
-  color: #000;
-  width: 100%;
-  padding-top: 50px;
-  padding-bottom: 35px;
-  background-color: transparent;
-  border-bottom: 1px solid #fff;
-  border-left: transparent;
-  border-top: transparent;
-  border-right: transparent;
-}
-
-.answer p {
-  font-family: Helvetica, sans-serif;
-  color: #fff;
-  font-size: 17px;
-  text-align: left;
-  padding-bottom: 10px;
-  margin-left: 15px;
-}
-
-.answer-list {
-  margin-top: 20px;
-}
-
-.answersection {
-  color: #fff;
-  font-family: Helvetica, sans-serif;
-  font-size: 25px;
-  margin-left: 15px;
-}
-
 .date {
   font-size: 10px;
   float: right;
@@ -807,83 +642,11 @@ footer ul li a {
   border-radius: 5px;
 }
 
-.navigation-button {
-  list-style-type: none;
-  box-sizing: border-box;
-  padding: 10px;
-  width: 100%;
-  height: 80px;
-  border: solid;
-  border-color: #f3f3f3;
-  color: #f3f3f3;
-  background: #111;
-  font-family: Helvetica, sans-serif;
-  font-size: 20px;
-  border-radius: 15px;
-}
-
-.login-button {
-  list-style-type: none;
-  box-sizing: border-box;
-  padding: 20px;
-  border: solid;
-  border-color: #f3f3f3;
-  color: #f3f3f3;
-  background: #111;
-  font-family: Helvetica, sans-serif;
-  font-size: 20px;
-  border-radius: 15px;
-  margin-left: 610px;
-  position: relative;
-  top: -6px;
-}
-
-.navigation-button:hover {
-  background: #4f4b48;
-  cursor: pointer;
-}
-
-.login-button {
-  list-style-type: none;
-  box-sizing: border-box;
-  padding: 10px;
-  width: 100%;
-  height: 80px;
-  border: solid;
-  border-color: #f3f3f3;
-  color: #f3f3f3;
-  background: #111;
-  font-family: Helvetica, sans-serif;
-  font-size: 20px;
-  border-radius: 5px;
-  margin-bottom: 160px;
-}
-
-.login-button:hover {
-  background: #4f4b48;
-  cursor: pointer;
-}
-
 .list-container {
   display: flex;
   justify-content: center;
   width: 100%;
-}
-
-.list-container li {
-  display: flex;
-  justify-content: center;
-  padding: 15% 1% 5% 15%;
-  width: 100%;
-  height: 20%;
-}
-
-.list-container li a {
-  display: flex;
-  justify-content: center;
-  padding-top: 7.5%; 
-  width: 100%;
-  height: 80%;
+  padding-top: 20px;
 }
 
 .form-container {
@@ -896,12 +659,6 @@ footer ul li a {
   border-radius: 8px;
   background-color: white;
 }
-
-/* .horizontal-list {
-  width: 50%;
-  display: table;
-  margin: 0;
-} */
 
 .footer-links {
   padding: 0%;
@@ -930,6 +687,23 @@ footer ul li a {
   width: 750px;
 }
 
+.wrongcredentials{
+color:red;
+padding-left: 50px;
+padding-bottom: 10px;
+}
+
+.login-button {
+  padding-left: 600px;
+  padding-right: 20px;
+}
+
+@media screen and (max-width: 1050px) and (min-width: 768px){
+  .login-button {
+    padding-left: 220px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .horizontal-list {
     flex-wrap: wrap;
@@ -945,84 +719,9 @@ footer ul li a {
     width: 50%;
     height: 50%;
   }
-  .signinbutton {
-    position: absolute;
-    padding-right: 2%;
-    margin-left: 10%;
-    right: 0;
-  }
-  .signupbutton,
-  .logoutbutton {
-    position: absolute;
-    padding-right: 2%;
-    padding-left: 1%;
-    right: 0;
-  }
-  .signinbutton button {
-    border: none;
-    outline: none;
-    height: 35px;
-    width: 80px;
-    color: #f3f3f3;
-    background: #35312e;
-    font-family: Helvetica, sans-serif;
-    font-size: 15px;
-    border-radius: 5px;
-    margin-top: -5px;
-    margin-bottom: 5px;
-  }
-  .logoutbutton button {
-    border: none;
-    outline: none;
-    height: 35px;
-    width: 80px;
-    color: #f3f3f3;
-    background: #35312e;
-    font-family: Helvetica, sans-serif;
-    font-size: 15px;
-    border-radius: 5px;
-    margin-top: 16px;
-    margin-bottom: 5px;
-  }
-
-  .signupbutton button {
-    border: none;
-    outline: none;
-    height: 35px;
-    width: 80px;
-    color: #f3f3f3;
-    background: #35312e;
-    font-family: Helvetica, sans-serif;
-    font-size: 15px;
-    border-radius: 5px;
-    margin-top: 16px;
-    margin-bottom: 5px;
-  }
-  header nav ul .signinbutton {
-    display: block;
-    margin: 0 auto;
-    margin-top: -20px;
-    margin-left: 200px;
-  }
-  header nav ul .signupbutton .logoutbutton {
-    display: block;
-    margin: 0 auto;
-    margin-top: -1px;
-    margin-left: 200px;
-  }
-  .username {
-    font-family: Helvetica, sans-serif;
-    color: #111;
-    padding-right: 10%;
-    height: 30px;
-    width: 80px;
-  }
-
-  header nav ul .username {
-    display: block;
-    margin-top: -50px;
-    margin-bottom: -10px;
-    margin-left: 25%;
+  
+  .button {
+    margin-left: 2px;
   }
 
   body {

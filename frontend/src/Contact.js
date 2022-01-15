@@ -17,7 +17,7 @@ function Contact() {
             </p>
             <p>
               {" "}
-              <b>Αλέξανδος Ματζαφίνης:</b> el18xxx@mail.ntua.gr
+              <b>Αλέξανδος Μαντζαφίνης:</b> el18057@mail.ntua.gr
             </p>
             <p>
               {" "}

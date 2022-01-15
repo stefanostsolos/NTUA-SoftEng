@@ -11,14 +11,19 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { MenuItem, Select, TextField } from "@mui/material";
+import Paper from "@material-ui/core/Paper";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-/* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import login from './login';
-import Signup from './signup';
-import HomeNavButton from './HomeNavButton';
-import { Link } from 'react-router-dom';
-import InputField from './InputField'; */
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -28,18 +33,68 @@ const FormControl = styled(FormControlSpacing)`
   border-color: "4px solid #ffffff";
 `;
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function Charges({ token }) {
+function Settlements({ token }) {
   const [operators, setOperators] = useState([]);
   const [operator, setOperator] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
   const [open, setOpen] = React.useState(false);
-  const canSubmit = [operator, datefrom, dateto].every(Boolean);
+  const canSubmit = [operators, datefrom, dateto].every(Boolean);
+
+  let result = {};
+
+  if (requestedData) {
+    const onlyDates = requestedData.PassesList.map(
+      (element) => new Date(element.PassTimeStamp)
+    );
+
+    const sortedDates = onlyDates.sort((a, b) => a.getTime() - b.getTime());
+
+    const stringDates = sortedDates.map((element) =>
+      element.toLocaleDateString()
+    );
+
+    //Group by dates and count
+    result = stringDates.reduce((a, c) => ((a[c] = (a[c] || 0) + 1), a), {});
+  }
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Passes Per Station Analysis",
+      },
+    },
+  };
+
+  const chartData = {
+    labels: Object.keys(result),
+    datasets: [
+      {
+        label: "Number of Passes",
+        data: Object.values(result),
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
 
   useEffect(() => {
     const getOperators = async () => {
@@ -91,7 +146,7 @@ function Charges({ token }) {
     }
   };
 
-  const fetchResults = async (operatorid, datefrom, dateto) => {
+  const fetchResults = async (operatorid) => {
     const datefromstr = `${datefrom.getFullYear()}${String(
       datefrom.getMonth() + 1
     ).padStart(2, "0")}${String(datefrom.getDate()).padStart(2, "0")}`;
@@ -101,7 +156,7 @@ function Charges({ token }) {
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
     const res = await fetch(
-      `http://localhost:9103/interoperability/api//ChargesBy/${operatorid}/${datefromstr}/${datetostr}`,
+      `http://localhost:9103/interoperability/api/SettlementsByOperator/${operatorid}`,
       {
         method: "GET",
         mode: "cors",
@@ -114,12 +169,13 @@ function Charges({ token }) {
     const data = await res.json();
 
     setRequestedData(data);
+    console.log(data);
   };
 
   return (
     <main>
       <section className="index-banner">
-        <h2>Charges</h2>
+        <h2>Settlements By Operator</h2>
         <div className="form-container">
           <Stack spacing={3}>
             <Box sx={{ minWidth: 120 }}>
@@ -131,18 +187,17 @@ function Charges({ token }) {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={operator}
-                  label="Operator"
+                  label="Station"
                   onChange={handleOperatorChange}
                   className="form-input"
                 >
                   {operators &&
-                    operators.map((element) => (
-                      <MenuItem key={element} value={element}>
-                        {element}
+                    operators.map((elem) => (
+                      <MenuItem key={elem} value={elem}>
+                        {elem}
                       </MenuItem>
                     ))}
                 </Select>
-
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <div className="form-input">
                     <DesktopDatePicker
@@ -169,8 +224,8 @@ function Charges({ token }) {
               variant="contained"
               disabled={!canSubmit}
               onClick={() => {
-                fetchResults(operator, datefrom, dateto);
-                console.log(operator);
+                fetchResults(operators, datefrom, dateto);
+                console.log(operators);
               }}
             >
               Search
@@ -181,34 +236,21 @@ function Charges({ token }) {
                 severity="error"
                 sx={{ width: "100%" }}
               >
-                Failed to fetch operators from server!
+                Failed to fetch operator from server!
               </Alert>
             </Snackbar>
           </Stack>
         </div>
-        {requestedData ? (
-          <div className="data-presentation">
-            <table className="bigtable">
-              <thead>
-                <tr>
-                  <th scope="col">Total Passes Cost</th>
-                  <th scope="col">Total Number Of Passes</th>
-                  <th scope="col">Visiting Operator</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr key="data-row">
-                  <td>{requestedData.PassesCost} Euros </td>
-                  <td>{requestedData.NumberOfPasses} Times</td>
-                  <td>{requestedData.VisitingOperator} </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        ) : null}
+        <div className="chart">
+          {requestedData ? (
+            <Paper>
+              <Bar options={options} data={chartData}></Bar>
+            </Paper>
+          ) : null}
+        </div>
       </section>
     </main>
   );
 }
 
-export default Charges;
+export default Settlements; 

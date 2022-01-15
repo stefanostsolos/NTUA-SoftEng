@@ -11,7 +11,6 @@ function Footer() {
   return (
     <footer>
       <ul ul className="footer-links">
-        {/* <li><a href="#">About</a></li>   */}
         < li >
           <a href="/contact">Project creators</a>
         </li>
