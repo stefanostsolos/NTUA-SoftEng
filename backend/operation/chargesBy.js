@@ -27,8 +27,8 @@ router.get('/:op_ID/:date_from/:date_to',
             // Get path parameters
             const [op_ID, date_from, date_to] = [
                 req.params.op_ID,
-                aux.convert_date_param(req.params.date_from),
-                aux.convert_date_param(req.params.date_to)
+                aux.convert_date_param(req.params.date_from) + ' 00:00:00',
+                aux.convert_date_param(req.params.date_to) + ' 23:59:59'
             ];
 
             // Check if user can access resource. This resource can be accessed by any

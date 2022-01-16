@@ -74,12 +74,12 @@ router.get('/:stationID/:date_from/:date_to',
             let PassesList = [];
             for (const [idx, row] of rows.entries()) {
                 PassesList.push({
-                    PassesIndex: idx,
+                    PassIndex: idx,
                     PassID: row.passID,
                     PassTimeStamp: aux.convert_date_object(row.timestamp),
                     VehicleID: row.vehicleID,
                     TagProvider: row.tag_opName,
-                    PassType: row.tag_opID === station_opID ? "home" : "away",
+                    PassType: row.tag_opID === station_opID ? "home" : "visitor",
                     PassCharge: parseFloat(row.charge)
                 });
             }

@@ -37,7 +37,8 @@ router.post('/',
             }
             
             // If an invalid file has been uploaded, throw 400
-            if (!validate_file(req.file.path)) {
+            const valid = await validate_file(req.file.path);
+            if (!valid) {
                 const err = new Error("Invalid file uploaded");
                 err.status = 400;
                 throw(err);
@@ -79,9 +80,6 @@ router.post('/',
             
             await db.query('COMMIT');
 
-            // Delete uploaded file
-            await fs.rm(req.file.path);
-
             res.status(200).send({
                 PassesInUploadedFile : uploaded,
                 PassesImported : imported,
@@ -89,6 +87,9 @@ router.post('/',
             });
         } catch (err) {
             next(err);
+        } finally {
+            // Delete uploaded file
+            await fs.rm(req.file.path);
         }
     }
 );
