@@ -1,0 +1,2822 @@
+{
+	"info": {
+		"_postman_id": "49ed5a2a-d3c3-4cef-8d55-8a5d747e5577",
+		"name": "API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login (Valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"token\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "freepasses4all",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/login",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Missing Password)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "foo",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/login",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Invalid Username)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "adm in",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "freepasses4all",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/login",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "foo",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "bar",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/login",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"item": [
+				{
+					"name": "Logout (Valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout (Unauthorised Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout (Missing Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usermod",
+			"item": [
+				{
+					"name": "Usermod (Valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const resBody = pm.response.json();",
+									"const reqBody = JSON.parse(request.data);",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Request body contains correct user data\", () => {",
+									"    pm.expect(resBody).to.be.an(\"object\");",
+									"    for (const property of [\"username\", \"password\", \"type\", \"operatorID\"]) {",
+									"        pm.expect(resBody[property]).to.eql(reqBody[property]);",
+									"    }",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"aodos\",\n    \"password\": \"password\",\n    \"type\": \"operator\",\n    \"operatorID\": \"AO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/usermod",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"usermod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usermod (Invalid Username)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ao dos\",\n    \"password\": \"password\",\n    \"type\": \"operator\",\n    \"operatorID\": \"AO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/usermod",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"usermod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usermod (Invalid Type)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"aodos\",\n    \"password\": \"password\",\n    \"type\": \"foo\",\n    \"operatorID\": \"AO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/usermod",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"usermod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usermod (Invalid OperatorID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"aodos\",\n    \"password\": \"password\",\n    \"type\": \"operator\",\n    \"operatorID\": \"AA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/usermod",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"usermod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usermod (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"aodos\",\n    \"password\": \"password\",\n    \"type\": \"operator\",\n    \"operatorID\": \"AO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/usermod",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"usermod"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Username",
+					"item": [
+						{
+							"name": "Username (Valid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const schema = {",
+											"    type: \"object\",",
+											"    parameters: {",
+											"        username: {",
+											"            type: \"string\"",
+											"        },",
+											"        type: {",
+											"            type: \"string\"",
+											"        },",
+											"        operatorID: {",
+											"            type: [\"string\", \"null\"]",
+											"        }",
+											"    }",
+											"}",
+											"",
+											"pm.test(\"Status code is 200\", () => {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"pm.test(\"Response has correct data type\", () => {",
+											"    pm.response.to.have.jsonSchema(schema);",
+											"})",
+											"pm.test(\"Response body contains correct user\", () => {",
+											"    const resBody = pm.response.json();",
+											"    pm.expect(resBody.username).to.eql(pm.request.url.path[4]);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9103/interoperability/api/admin/users/admin",
+									"host": [
+										"localhost"
+									],
+									"port": "9103",
+									"path": [
+										"interoperability",
+										"api",
+										"admin",
+										"users",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Username (Invalid Username)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", () => {",
+											"    pm.response.to.have.status(400);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9103/interoperability/api/admin/users/adm in",
+									"host": [
+										"localhost"
+									],
+									"port": "9103",
+									"path": [
+										"interoperability",
+										"api",
+										"admin",
+										"users",
+										"adm in"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Username (Nonexistent user)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 402\", () => {",
+											"    pm.response.to.have.status(402);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9103/interoperability/api/admin/users/nonexistentuser",
+									"host": [
+										"localhost"
+									],
+									"port": "9103",
+									"path": [
+										"interoperability",
+										"api",
+										"admin",
+										"users",
+										"nonexistentuser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Username (Unauthorised)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", () => {",
+											"    pm.response.to.have.status(401);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "foo",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "X-OBSERVATORY-AUTH",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:9103/interoperability/api/admin/users/admin",
+									"host": [
+										"localhost"
+									],
+									"port": "9103",
+									"path": [
+										"interoperability",
+										"api",
+										"admin",
+										"users",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users (Valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"array\",",
+									"    \"items\": [{",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"username\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"password\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"operatorID\": {",
+									"                \"type\": [\"string\", \"null\"]",
+									"            }",
+									"        }",
+									"    }]",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/users",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/users",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PassesUpload",
+			"item": [
+				{
+					"name": "PassesUpload (Valid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"parameters\": {",
+									"        \"PassesInUploadedFile\": {",
+									"            \"type\": \"integer\"",
+									"        },",
+									"        \"PassesImported\": {",
+									"            \"type\": \"integer\"",
+									"        },",
+									"        \"TotalPassesInDatabase\": {",
+									"            \"type\": \"integer\"",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Response body has correct number of passes uploaded\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesInUploadedFile).to.eql(2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/alex/Desktop/ECE/softeng/sample_imports.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/passesupd",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"passesupd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesUpload (Invalid File)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/alex/Desktop/ECE/softeng/invalid_imports.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/passesupd",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"passesupd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesUpload (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/alex/Desktop/ECE/softeng/sample_imports.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/passesupd",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"passesupd"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "HealthCheck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"status\": {",
+									"            \"type\": \"string\",",
+									"            \"enum\": [\"OK\", \"failed\"]",
+									"        },",
+									"        \"dbconnection\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/healthcheck",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"healthcheck"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetAdmin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"status\": {",
+									"            \"type\": \"string\",",
+									"            \"enum\": [\"OK\", \"failed\"]",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/resetadmin",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"resetadmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetStations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"status\": {",
+									"            \"type\": \"string\",",
+									"            \"enum\": [\"OK\", \"failed\"]",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/resetstations",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"resetstations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetTags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"status\": {",
+									"            \"type\": \"string\",",
+									"            \"enum\": [\"OK\", \"failed\"]",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/resettags",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"resettags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetVehicles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"status\": {",
+									"            \"type\": \"string\",",
+									"            \"enum\": [\"OK\", \"failed\"]",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/resetvehicles",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"resetvehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetPasses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"status\": {",
+									"            \"type\": \"string\",",
+									"            \"enum\": [\"OK\", \"failed\"]",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/resetpasses",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"resetpasses"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PassesPerStation",
+			"item": [
+				{
+					"name": "PassesPerStation (JSON)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"",
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"Station\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"StationOperator\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"RequestTimestamp\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodFrom\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodTo\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"NumberOfPasses\": {",
+									"            \"type\": \"integer\"",
+									"        },",
+									"        \"PassesList\": {",
+									"            \"type\": \"array\",",
+									"            \"items\": {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"PassIndex\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"PassID\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"PassTimeStamp\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"VehicleID\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"TagProvider\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"PassType\": {",
+									"                        \"type\": \"string\",",
+									"                        \"enum\": [\"home\", \"visitor\"]",
+									"                    },",
+									"                    \"PassCharge\": {",
+									"                        \"type\": \"number\"",
+									"                    }",
+									"                }",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test(\"Response body contains correct metadata\", () => {",
+									"    const resBody = pm.response.json();",
+									"    const [stationID, dateFrom, dateTo] = [",
+									"        pm.request.url.path[3],",
+									"        pm.request.url.path[4],",
+									"        pm.request.url.path[5] ",
+									"    ]",
+									"    const [yearFrom, monthFrom, dayFrom] = [",
+									"        dateFrom.slice(0, 4), dateFrom.slice(4, 6), dateFrom.slice(6, 8)",
+									"    ];",
+									"    const [yearTo, monthTo, dayTo] = [",
+									"        dateTo.slice(0, 4), dateTo.slice(4, 6), dateTo.slice(6, 8)",
+									"    ];",
+									"    pm.expect(resBody.Station).to.eql(stationID);",
+									"    pm.expect(resBody.PeriodFrom).to.eql(",
+									"        `${yearFrom}-${monthFrom}-${dayFrom} 00:00:00`",
+									"    );",
+									"    pm.expect(resBody.PeriodTo).to.eql(",
+									"        `${yearTo}-${monthTo}-${dayTo} 23:59:59`",
+									"    );",
+									"    pm.expect(resBody.NumberOfPasses).to.eql(resBody.PassesList.length);",
+									"",
+									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+									"    // than the actual request time",
+									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+									"    resMoment.subtract(1, 'seconds');",
+									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"pm.globals.set(\"reqMoment\", moment());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesPerStation/AO01/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesPerStation",
+								"AO01",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesPerStation (CSV)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"array\",",
+									"    \"items\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"PassIndex\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PassID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PassTimeStamp\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"VehicleID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"TagProvider\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PassType\": {",
+									"                \"type\": \"string\",",
+									"                \"enum\": [\"home\", \"visitor\"]",
+									"            },",
+									"            \"PassCharge\": {",
+									"                \"type\": \"string\",",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    const parse = require('csv-parse/lib/sync');",
+									"    const responseJson = parse(pm.response.text(), {columns: true});",
+									"    pm.expect(responseJson).to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesPerStation/AO01/20200101/20200131?format=csv",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesPerStation",
+								"AO01",
+								"20200101",
+								"20200131"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesPerStation (Invalid StationID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesPerStation/foo/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesPerStation",
+								"foo",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesPerStation (Invalid Dates)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesPerStation/AO01/20200141/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesPerStation",
+								"AO01",
+								"20200141",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesPerStation (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesPerStation/AO01/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesPerStation",
+								"AO01",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesPerStation (No Data)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", () => {",
+									"    pm.response.to.have.status(402);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesPerStation/AO01/20200103/20200103",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesPerStation",
+								"AO01",
+								"20200103",
+								"20200103"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PassesAnalysis",
+			"item": [
+				{
+					"name": "PassesAnalysis (JSON)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"op1_ID\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"op2_ID\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"RequestTimestamp\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodFrom\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodTo\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"NumberOfPasses\": {",
+									"            \"type\": \"integer\"",
+									"        },",
+									"        \"PassesList\": {",
+									"            \"type\": \"array\",",
+									"            \"items\": {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"PassIndex\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"PassID\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"StationID\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"TimeStamp\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"VehicleID\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"PassCharge\": {",
+									"                        \"type\": \"number\"",
+									"                    }",
+									"                }",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"const moment = require('moment');",
+									"",
+									"pm.test(\"Response body contains correct metadata\", () => {",
+									"    const resBody = pm.response.json();",
+									"    const [op1_ID, op2_ID, dateFrom, dateTo] = [",
+									"        pm.request.url.path[3],",
+									"        pm.request.url.path[4],",
+									"        pm.request.url.path[5],",
+									"        pm.request.url.path[6] ",
+									"    ]",
+									"    const [yearFrom, monthFrom, dayFrom] = [",
+									"        dateFrom.slice(0, 4), dateFrom.slice(4, 6), dateFrom.slice(6, 8)",
+									"    ];",
+									"    const [yearTo, monthTo, dayTo] = [",
+									"        dateTo.slice(0, 4), dateTo.slice(4, 6), dateTo.slice(6, 8)",
+									"    ];",
+									"    pm.expect(resBody.op1_ID).to.eql(op1_ID);",
+									"    pm.expect(resBody.op2_ID).to.eql(op2_ID);",
+									"    pm.expect(resBody.PeriodFrom).to.eql(",
+									"        `${yearFrom}-${monthFrom}-${dayFrom} 00:00:00`",
+									"    );",
+									"    pm.expect(resBody.PeriodTo).to.eql(",
+									"        `${yearTo}-${monthTo}-${dayTo} 23:59:59`",
+									"    );",
+									"    pm.expect(resBody.NumberOfPasses).to.eql(resBody.PassesList.length);",
+									"",
+									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+									"    // than the actual request time",
+									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+									"    resMoment.subtract(1, 'seconds');",
+									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"pm.globals.set(\"reqMoment\", moment());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesAnalysis/AO/EG/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesAnalysis",
+								"AO",
+								"EG",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesAnalysis (CSV)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"array\",",
+									"    \"items\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"PassIndex\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PassID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"StationID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"TimeStamp\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"VehicleID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PassCharge\": {",
+									"                \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    const parse = require('csv-parse/lib/sync');",
+									"    const responseJson = parse(pm.response.text(), {columns: true});",
+									"    pm.expect(responseJson).to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesAnalysis/AO/EG/20200101/20200131?format=csv",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesAnalysis",
+								"AO",
+								"EG",
+								"20200101",
+								"20200131"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesAnalysis (Invalid OperatorID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesAnalysis/AO/EO/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesAnalysis",
+								"AO",
+								"EO",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesAnalysis (Invalid Dates)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesAnalysis/AO/EG/20200101/20200141",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesAnalysis",
+								"AO",
+								"EG",
+								"20200101",
+								"20200141"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesAnalysis (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesAnalysis/AO/EG/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesAnalysis",
+								"AO",
+								"EG",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesAnalysis (No Data)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", () => {",
+									"    pm.response.to.have.status(402);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesAnalysis/AO/EG/20200101/20200101",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesAnalysis",
+								"AO",
+								"EG",
+								"20200101",
+								"20200101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PassesCost",
+			"item": [
+				{
+					"name": "PassesCost (JSON)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"op1_ID\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"op2_ID\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"RequestTimestamp\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodFrom\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodTo\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"NumberOfPasses\": {",
+									"            \"type\": \"integer\"",
+									"        },",
+									"        \"PassesCost\": {",
+									"            \"type\": \"number\"",
+									"        },",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"const moment = require('moment');",
+									"",
+									"pm.test(\"Response body contains correct metadata\", () => {",
+									"    const resBody = pm.response.json();",
+									"    const [op1_ID, op2_ID, dateFrom, dateTo] = [",
+									"        pm.request.url.path[3],",
+									"        pm.request.url.path[4],",
+									"        pm.request.url.path[5],",
+									"        pm.request.url.path[6] ",
+									"    ]",
+									"    const [yearFrom, monthFrom, dayFrom] = [",
+									"        dateFrom.slice(0, 4), dateFrom.slice(4, 6), dateFrom.slice(6, 8)",
+									"    ];",
+									"    const [yearTo, monthTo, dayTo] = [",
+									"        dateTo.slice(0, 4), dateTo.slice(4, 6), dateTo.slice(6, 8)",
+									"    ];",
+									"    pm.expect(resBody.op1_ID).to.eql(op1_ID);",
+									"    pm.expect(resBody.op2_ID).to.eql(op2_ID);",
+									"    pm.expect(resBody.PeriodFrom).to.eql(",
+									"        `${yearFrom}-${monthFrom}-${dayFrom} 00:00:00`",
+									"    );",
+									"    pm.expect(resBody.PeriodTo).to.eql(",
+									"        `${yearTo}-${monthTo}-${dayTo} 23:59:59`",
+									"    );",
+									"",
+									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+									"    // than the actual request time",
+									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+									"    resMoment.subtract(1, 'seconds');",
+									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"pm.globals.set(\"reqMoment\", moment());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/EG/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"EG",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesCost (CSV)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"array\",",
+									"    \"items\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"op1_ID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"op2_ID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"RequestTimestamp\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PeriodFrom\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PeriodTo\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"NumberOfPasses\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PassesCost\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    const parse = require('csv-parse/lib/sync');",
+									"    const responseJson = parse(pm.response.text(), {columns: true});",
+									"    pm.expect(responseJson).to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/EG/20200101/20200131?format=csv",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"EG",
+								"20200101",
+								"20200131"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesCost (Invalid OperatorID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/EO/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"EO",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesPerStation (Invalid Dates)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/EG/20200101/20200141",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"EG",
+								"20200101",
+								"20200141"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassesPerStation (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/EG/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"EG",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ChargesBy",
+			"item": [
+				{
+					"name": "ChargesBy (JSON)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"op_ID\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"RequestTimestamp\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodFrom\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PeriodTo\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"PPOList\": {",
+									"            \"type\": \"array\",",
+									"            \"items\": {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"VisitingOperator\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"NumberOfPasses\": {",
+									"                        \"type\": \"integer\"",
+									"                    },",
+									"                    \"PassesCost\" : {",
+									"                        \"type\": \"number\"",
+									"                    }",
+									"                }",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"const moment = require('moment');",
+									"",
+									"pm.test(\"Response body contains correct metadata\", () => {",
+									"    const resBody = pm.response.json();",
+									"    const [op_ID, dateFrom, dateTo] = [",
+									"        pm.request.url.path[3],",
+									"        pm.request.url.path[4],",
+									"        pm.request.url.path[5]",
+									"    ]",
+									"    const [yearFrom, monthFrom, dayFrom] = [",
+									"        dateFrom.slice(0, 4), dateFrom.slice(4, 6), dateFrom.slice(6, 8)",
+									"    ];",
+									"    const [yearTo, monthTo, dayTo] = [",
+									"        dateTo.slice(0, 4), dateTo.slice(4, 6), dateTo.slice(6, 8)",
+									"    ];",
+									"    pm.expect(resBody.op_ID).to.eql(op_ID);",
+									"    pm.expect(resBody.PeriodFrom).to.eql(",
+									"        `${yearFrom}-${monthFrom}-${dayFrom} 00:00:00`",
+									"    );",
+									"    pm.expect(resBody.PeriodTo).to.eql(",
+									"        `${yearTo}-${monthTo}-${dayTo} 23:59:59`",
+									"    );",
+									"",
+									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+									"    // than the actual request time",
+									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+									"    resMoment.subtract(1, 'seconds');",
+									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"pm.globals.set(\"reqMoment\", moment());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/AO/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"AO",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChargesBy (CSV)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"array\",",
+									"    \"items\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"VisitingOperator\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"NumberOfPasses\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"PassesCost\" : {",
+									"                \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    const parse = require('csv-parse/lib/sync');",
+									"    const responseJson = parse(pm.response.text(), {columns: true});",
+									"    pm.expect(responseJson).to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/AO/20200101/20200131?format=csv",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"AO",
+								"20200101",
+								"20200131"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChargesBy (Invalid OperatorID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/AG/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"AG",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChargesBy (Invalid Dates)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/AO/20200101/20200141",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"AO",
+								"20200101",
+								"20200141"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChargesBy (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/AO/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"AO",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwib3BlcmF0b3JJRCI6bnVsbCwiaWF0IjoxNjQyMzUzNjgwLCJleHAiOjE2NDIzNTcyODB9.rCBNiqhZ4wRctxb8rIpStjfs7LMITB7syhmWg-0mxDg",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-OBSERVATORY-AUTH",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
