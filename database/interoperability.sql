@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 09, 2022 at 05:40 PM
+-- Generation Time: Jan 16, 2022 at 07:56 PM
 -- Server version: 8.0.27
 -- PHP Version: 7.4.3
 
@@ -36149,7 +36149,8 @@ CREATE TABLE `settlement` (
 INSERT INTO `settlement` (`ID`, `operatorCredited`, `operatorDebited`, `dateFrom`, `dateTo`, `amount`, `cleared`) VALUES
 ('8X01WHCZ11', 'AO', 'EG', '2019-01-31 22:00:00', '2019-04-01 20:59:59', '38.80', 1),
 ('QICNZQ8NYG', 'AO', 'EG', '2018-12-31 22:00:00', '2019-01-31 21:59:59', '16.40', 1),
-('WGSI08TUQL', 'EG', 'GF', '2018-12-31 22:00:00', '2019-02-01 21:59:59', '17.10', 0);
+('WGSI08TUQL', 'EG', 'GF', '2018-12-31 22:00:00', '2019-02-01 21:59:59', '17.10', 0),
+('ZLOMQ7A0GB', 'AO', 'EG', '2019-04-01 21:00:00', '2020-08-31 20:59:59', '310.75', 0);
 
 -- --------------------------------------------------------
 
@@ -36188,7 +36189,6 @@ INSERT INTO `station` (`ID`, `operatorID`, `stationName`) VALUES
 ('AO17', 'AO', 'aodos tolls station 17'),
 ('AO18', 'AO', 'aodos tolls station 18'),
 ('AO19', 'AO', 'aodos tolls station 19'),
-('BOUF', 'AO', 'BOUFBAF'),
 ('EG00', 'EG', 'egnatia tolls station 00'),
 ('EG01', 'EG', 'egnatia tolls station 01'),
 ('EG02', 'EG', 'egnatia tolls station 02'),
@@ -36390,8 +36390,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `password`, `type`, `operatorID`) VALUES
-('admin', '$2b$10$bp5jipg6LqO56xX8YF3jFOvYowqKwxXxAl0v1zhFMDBQbQXpgOrKG', 'admin', NULL),
-('aodos', '$2b$10$2GsQkfTmkmsfRqfJxzdlx.DQk1TkDlnh8OQ4hPkS.EAVG0zwklP8O', 'operator', 'AO'),
+('admin', '$2b$10$D1HKCpJ7.iV0naVYzgv4NeSEkIH19reZ4WDVuW/jWKA1q223kVI3q', 'admin', NULL),
+('aodos', '$2b$10$GYUYDZPvqcGQlU8AhxnQJ.DC.RGzNeTqYG0w.Q4VOA8NKnyzwRo4i', 'operator', 'AO'),
 ('egnatia', '$2b$10$XTzAZFLUzvHw56dEEuSIjuvfv67gWqdbcJiiDNA7EPlqSWe6oHhEa', 'operator', 'EG'),
 ('gefyra', '$2b$10$fvkjbLY4C.UW5sy4GKDXquAIKDz7g.OTjy4PSojTwhKNFvcscOIty', 'operator', 'GF'),
 ('kentriki_odos', '$2b$10$3Hwg4VDuckmZU8kmuBMV4eJpsVKLvkkEaaAe57TIywFaTmVG5N7rK', 'operator', 'KO'),
@@ -36579,34 +36579,34 @@ ALTER TABLE `vehicle`
 -- Constraints for table `pass`
 --
 ALTER TABLE `pass`
-  ADD CONSTRAINT `pass_stationID` FOREIGN KEY (`stationID`) REFERENCES `station` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `pass_tagID` FOREIGN KEY (`tagID`) REFERENCES `tag` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `pass_stationID` FOREIGN KEY (`stationID`) REFERENCES `station` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pass_tagID` FOREIGN KEY (`tagID`) REFERENCES `tag` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `settlement`
 --
 ALTER TABLE `settlement`
-  ADD CONSTRAINT `settlement_operatorCredited` FOREIGN KEY (`operatorCredited`) REFERENCES `operator` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `settlement_operatorDebited` FOREIGN KEY (`operatorDebited`) REFERENCES `operator` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `settlement_operatorCredited` FOREIGN KEY (`operatorCredited`) REFERENCES `operator` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `settlement_operatorDebited` FOREIGN KEY (`operatorDebited`) REFERENCES `operator` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `station`
 --
 ALTER TABLE `station`
-  ADD CONSTRAINT `station_operatorID` FOREIGN KEY (`operatorID`) REFERENCES `operator` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `station_operatorID` FOREIGN KEY (`operatorID`) REFERENCES `operator` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tag`
 --
 ALTER TABLE `tag`
-  ADD CONSTRAINT `tag_operatorID` FOREIGN KEY (`operatorID`) REFERENCES `operator` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `tag_vehicleID` FOREIGN KEY (`vehicleID`) REFERENCES `vehicle` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `tag_operatorID` FOREIGN KEY (`operatorID`) REFERENCES `operator` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tag_vehicleID` FOREIGN KEY (`vehicleID`) REFERENCES `vehicle` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_operatorID` FOREIGN KEY (`operatorID`) REFERENCES `operator` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `user_operatorID` FOREIGN KEY (`operatorID`) REFERENCES `operator` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
