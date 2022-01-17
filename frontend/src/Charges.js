@@ -13,12 +13,6 @@ import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { MenuItem, Select, TextField } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-/* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import login from './login';
-import Signup from './signup';
-import HomeNavButton from './HomeNavButton';
-import { Link } from 'react-router-dom';
-import InputField from './InputField'; */
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 

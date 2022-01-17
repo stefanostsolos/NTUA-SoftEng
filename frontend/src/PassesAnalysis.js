@@ -24,12 +24,6 @@ import {
 import { Bar } from "react-chartjs-2";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-/* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import login from './login';
-import Signup from './signup';
-import HomeNavButton from './HomeNavButton';
-import { Link } from 'react-router-dom';
-import InputField from './InputField'; */
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -167,13 +161,19 @@ function PassesAnalysis({ token }) {
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
     const res = await fetch(
-      `http://localhost:9103/interoperability/api/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`
+      `http://localhost:9103/interoperability/api/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "x-observatory-auth": token,
+        },
+      }
     );
-
     const data = await res.json();
 
     setRequestedData(data);
-    //console.log(data)
+    console.log(data);
   };
 
   return (

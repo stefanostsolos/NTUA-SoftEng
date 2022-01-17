@@ -11,6 +11,9 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { MenuItem, Select, TextField } from "@mui/material";
+import { Bar } from "react-chartjs-2";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import Paper from "@material-ui/core/Paper";
 import {
   Chart as ChartJS,
@@ -21,12 +24,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-/* import {Link} from "react-router-dom";
-import SubmitButton from './SubmitButton';
-import { SelectChangeEvent } from "@mui/material/Select"; */
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 

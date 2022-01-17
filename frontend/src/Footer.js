@@ -4,8 +4,6 @@ import youtube from "./images/youtube-icon.png";
 import fb from "./images/facebook-icon.png";
 import twitter from "./images/twitter-icon.png";
 import instagram from "./images/instagram-icon.png";
-/* import {withRouter} from "react-router-dom";
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; */
 
 function Footer() {
   return (

@@ -9,7 +9,7 @@ export default function useToken() {
       console.log(tokenString)
       console.log(typeof(tokenString))
       const decodedToken = jwt_decode(tokenString);
-      const  now = new Date().getTime();
+      const now = new Date().getTime();
       const expiresIn = decodedToken.exp*1000 - now;
 
       if (expiresIn <= 0) {

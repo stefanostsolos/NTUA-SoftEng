@@ -15,6 +15,7 @@ import { white, grey } from "@mui/material/colors";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import FormGroup from '@mui/material/FormGroup';
+import Box from "@mui/material/Box";
 import { useLocation, useHistory } from "react-router-dom";
 
 const ColorButton = styled(Button)(({ theme }) => ({
@@ -109,96 +110,18 @@ function Login({ setToken }) {
     setInternalError(false);
     setCommunicationError(false);
   };
-  /*
-  async doLogin() {
-      let status = await res.status;
-
-      console.log(status);
-      if (status === 200) {
-        console.log("yaaass");
-        document.cookie = `token = ${result.token}`;
-        document.cookie = "flag=true";
-        let x = document.cookie.split(";").reduce((res, c) => {
-          const [key, val] = c.trim().split("=").map(decodeURIComponent);
-          const allNumbers = (str) => /^\d+$/.test(str);
-          try {
-            return Object.assign(res, {
-              [key]: allNumbers(val) ? val : JSON.parse(val),
-            });
-          } catch (e) {
-            return Object.assign(res, { [key]: val });
-          }
-        }, {});
-        console.log(x);
-        this.props.history.push("/");
-        window.location.reload(false);
-      } else {
-        this.resetForm();
-        alert(result.msg);
-      }
-    } catch (e) {
-      console.log(e);
-      this.resetForm();
-    }
-  }*/
-  /*
-  async componentDidMount() {
-    try {
-      let res = await fetch("/isLoggedIn", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      let result = await res.json();
-
-      if (result && result.success) {
-        UserStore.loading = false;
-        UserStore.isLoggedIn = true;
-        UserStore.username = result.username;
-      } else {
-        UserStore.loading = false;
-        UserStore.isLoggedIn = false;
-      }
-    } catch (e) {
-      UserStore.loading = false;
-      UserStore.isLoggedIn = false;
-    }
-  }*/
-  /*
-  async doLogout() {
-    try {
-      let res = await fetch("https://localhost:8765/evcharge/api/logout", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      let result = await res.json();
-
-      if (result && result.success) {
-        UserStore.isLoggedIn = false;
-        UserStore.username = "";
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }*/
 
   return (
     <main>
       <section className="index-banner">
         <div className="loginbox">
-          <Stack spacing={3}>
+          <div className="form-container2">
             <form onSubmit={(event) => {
               event.preventDefault();
                 doLogin(username, password);
               }}>
-            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                <Stack spacing={3}>
+            <FormControl fullWidth variant="outlined">
               <TextField
                 error={wrongCredentials}
                 id="username"
@@ -208,7 +131,7 @@ function Login({ setToken }) {
                 value={username}
               ></TextField>
             </FormControl>
-            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
               </InputLabel>
@@ -243,6 +166,7 @@ function Login({ setToken }) {
             >
               Login
             </ColorButton>
+            </Stack>
             </form>
             <Snackbar
               open={internalError}
@@ -266,7 +190,7 @@ function Login({ setToken }) {
                 Communication with server failed
               </Alert>
             </Snackbar>
-          </Stack>
+          </div>
         </div>
       </section>
     </main>

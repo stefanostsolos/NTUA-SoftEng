@@ -1,7 +1,5 @@
 import React from "react";
 import "./App.css";
-//import contact from './contact';
-//import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function Contact() {
   return (
@@ -10,7 +8,6 @@ function Contact() {
         <div class="vartical-center">
           <div class="about-box">
             <h1>Toll-Interoperability Creators</h1>
-            <p> You can contact us through our personal emails:</p>
             <p>
               {" "}
               <b>Αλέξανδρος Κουριδάκης:</b> el18008@mail.ntua.gr{" "}

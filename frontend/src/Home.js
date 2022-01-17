@@ -5,12 +5,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { styled } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
-/* import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import login from './login';
-import Signup from './signup';
-import { Link } from 'react-router-dom';
-import HomeNavButton from './HomeNavButton';
-import { Bar } from "react-chartjs-2"; //this line is for chart */
+import jwt_decode from "jwt-decode";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
@@ -22,7 +17,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
   height: '70px'
 }));
 
-function Home() {
+function Home({ token }) {
+  let decodedToken;
+  if(token)
+    decodedToken = jwt_decode(token)
   return (
     <main>
       <section className="index-banner">
@@ -48,9 +46,11 @@ function Home() {
               <StyledButton variant="contained">Stats for Charges</StyledButton>
               </Link>
             
-              <Link to="/settlements">
-              <StyledButton variant="contained">Settlements By Operator</StyledButton>
-              </Link> 
+              {decodedToken?.type === 'operator' ? (
+                <Link to="/settlements">
+                  <StyledButton variant="contained">My Settlements</StyledButton>
+                </Link>
+                ) : null}
             
           </Stack>
         </div>
