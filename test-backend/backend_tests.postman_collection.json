@@ -1,0 +1,2413 @@
+{
+	"info": {
+		"_postman_id": "fce4724b-d5e8-4112-9df3-ba162c096647",
+		"name": "Backend Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PassesCost",
+			"item": [
+				{
+					"name": "Test 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 1\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(19.6);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/EG/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"EG",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 2\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(10.9);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/EG/AO/20200101/20200131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"EG",
+								"AO",
+								"20200101",
+								"20200131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 3\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(22.4);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/GF/20200201/20200229",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"GF",
+								"20200201",
+								"20200229"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 4\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(13.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/GF/AO/20200201/20200229",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"GF",
+								"AO",
+								"20200201",
+								"20200229"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 5\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(28.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/KO/20200301/20200331",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"KO",
+								"20200301",
+								"20200331"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 6\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(12.85);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/KO/AO/20200301/20200331",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"KO",
+								"AO",
+								"20200301",
+								"20200331"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 7",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 7\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(28);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/MR/20200401/20200430",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"MR",
+								"20200401",
+								"20200430"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 8",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 8\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(8.75);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/MR/AO/20200401/20200430",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"MR",
+								"AO",
+								"20200401",
+								"20200430"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 9",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 9\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(25.2);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/NE/20200501/20200531",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"NE",
+								"20200501",
+								"20200531"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 10\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(16.4);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/NE/AO/20200501/20200531",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"NE",
+								"AO",
+								"20200501",
+								"20200531"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 11",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 11\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(28);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/AO/OO/20200601/20200630",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"AO",
+								"OO",
+								"20200601",
+								"20200630"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 12",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 12\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(11.5);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/OO/AO/20200601/20200630",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"OO",
+								"AO",
+								"20200601",
+								"20200630"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 13",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 13\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(21.7);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/EG/GF/20200701/20200731",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"EG",
+								"GF",
+								"20200701",
+								"20200731"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 14",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 14\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(0.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/GF/EG/20200701/20200731",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"GF",
+								"EG",
+								"20200701",
+								"20200731"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 15",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 15\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(20.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/EG/KO/20200801/20200831",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"EG",
+								"KO",
+								"20200801",
+								"20200831"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 16",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 16\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(7.7);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/KO/EG/20200801/20200831",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"KO",
+								"EG",
+								"20200801",
+								"20200831"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 17",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 17\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(5.2);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/EG/MR/20200901/20200930",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"EG",
+								"MR",
+								"20200901",
+								"20200930"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 18",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 18\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(6.5);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/MR/EG/20200901/20200930",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"MR",
+								"EG",
+								"20200901",
+								"20200930"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 19",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 19\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(14.75);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/EG/NE/20201001/20201031",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"EG",
+								"NE",
+								"20201001",
+								"20201031"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 20",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 20\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(9.15);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/NE/EG/20201001/20201031",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"NE",
+								"EG",
+								"20201001",
+								"20201031"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 21",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 21\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(16.2);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/EG/OO/20201101/20201130",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"EG",
+								"OO",
+								"20201101",
+								"20201130"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 22",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 22\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(13.75);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/OO/EG/20201101/20201130",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"OO",
+								"EG",
+								"20201101",
+								"20201130"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 23",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 23\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(13.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/GF/KO/20201201/20201231",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"GF",
+								"KO",
+								"20201201",
+								"20201231"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 24",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 24\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(11.7);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/KO/GF/20201201/20201231",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"KO",
+								"GF",
+								"20201201",
+								"20201231"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 25",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 25\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(0.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/GF/MR/20210101/20210131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"GF",
+								"MR",
+								"20210101",
+								"20210131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 26",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 26\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(3.2);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/MR/GF/20210101/20210131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"MR",
+								"GF",
+								"20210101",
+								"20210131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 27",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 27\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(0.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/GF/NE/20210201/20210228",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"GF",
+								"NE",
+								"20210201",
+								"20210228"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 28",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 28\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(17.3);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/NE/GF/20210201/20210228",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"NE",
+								"GF",
+								"20210201",
+								"20210228"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 29",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 29\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(13.0);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/GF/OO/20210301/20210331",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"GF",
+								"OO",
+								"20210301",
+								"20210331"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 30",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 30\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(4.25);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/OO/GF/20210301/20210331",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"OO",
+								"GF",
+								"20210301",
+								"20210331"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 31",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 31\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(9.7);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/KO/MR/20210401/20210430",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"KO",
+								"MR",
+								"20210401",
+								"20210430"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 32",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 32\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(6.05);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/MR/KO/20210401/20210430",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"MR",
+								"KO",
+								"20210401",
+								"20210430"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 33",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 33\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(9.7);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/KO/NE/20210501/20210531",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"KO",
+								"NE",
+								"20210501",
+								"20210531"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 34",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 34\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(24.45);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/NE/KO/20210501/20210531",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"NE",
+								"KO",
+								"20210501",
+								"20210531"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 35",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 35\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(2.5);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/KO/OO/20210601/20210630",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"KO",
+								"OO",
+								"20210601",
+								"20210630"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 36",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 36\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(15.7);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/OO/KO/20210601/20210630",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"OO",
+								"KO",
+								"20210601",
+								"20210630"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 37",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 37\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(4.5);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/MR/NE/20210701/20210731",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"MR",
+								"NE",
+								"20210701",
+								"20210731"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 38",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 38\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(3.7);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/NE/MR/20210701/20210731",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"NE",
+								"MR",
+								"20210701",
+								"20210731"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 39",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 39\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(13.05);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/MR/OO/20210801/20210831",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"MR",
+								"OO",
+								"20210801",
+								"20210831"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 40",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 40\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(9.85);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/OO/MR/20210801/20210831",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"OO",
+								"MR",
+								"20210801",
+								"20210831"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 41",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 41\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(17.15);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/NE/OO/20210901/20210930",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"NE",
+								"OO",
+								"20210901",
+								"20210930"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 42",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test 42\", () => {",
+									"    const resBody = pm.response.json();",
+									"    pm.expect(resBody.PassesCost).to.eql(5.3);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/PassesCost/OO/NE/20210901/20210930",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"PassesCost",
+								"OO",
+								"NE",
+								"20210901",
+								"20210930"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ChargesBy",
+			"item": [
+				{
+					"name": "Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'EG': 22.4,",
+									"    'GF': 11.2,",
+									"    'KO': 25.2,",
+									"    'MR': 11.2,",
+									"    'NE': 28.0,",
+									"    'OO': 14.0",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 1', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/AO/20190101/20190131",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"AO",
+								"20190101",
+								"20190131"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 8.5,",
+									"    'GF': 16.9,",
+									"    'KO': 9.0,",
+									"    'MR': 17.25,",
+									"    'NE': 9.5,",
+									"    'OO': 11.4",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 2', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/EG/20190201/20190228",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"EG",
+								"20190201",
+								"20190228"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 0.0,",
+									"    'EG': 0.0,",
+									"    'KO': 0.0,",
+									"    'MR': 0.0,",
+									"    'NE': 0.0,",
+									"    'OO': 13.0",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 3', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/GF/20190301/20190331",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"GF",
+								"20190301",
+								"20190331"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 3.75,",
+									"    'EG': 1.25,",
+									"    'GF': 6.3,",
+									"    'MR': 3.45,",
+									"    'NE': 7.55,",
+									"    'OO': 11.9",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 4', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/KO/20190401/20190430",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"KO",
+								"20190401",
+								"20190430"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 4.7,",
+									"    'EG': 11.65,",
+									"    'GF': 18.15,",
+									"    'KO': 0.0,",
+									"    'NE': 9.4,",
+									"    'OO': 2.8",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 5', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/MR/20190501/20190531",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"MR",
+								"20190501",
+								"20190531"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 12.1,",
+									"    'EG': 5.4,",
+									"    'GF': 12.85,",
+									"    'KO': 10.75,",
+									"    'MR': 9.7,",
+									"    'OO': 10.2",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 6', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/NE/20190601/20190630",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"NE",
+								"20190601",
+								"20190630"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 7",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 4.25,",
+									"    'EG': 8.85,",
+									"    'GF': 16.0,",
+									"    'KO': 10.2,",
+									"    'MR': 21.7,",
+									"    'NE': 2.2",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 7', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/OO/20190701/20190731",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"OO",
+								"20190701",
+								"20190731"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 8",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'EG': 16.8,",
+									"    'GF': 19.6,",
+									"    'KO': 19.6,",
+									"    'MR': 22.4,",
+									"    'NE': 8.4,",
+									"    'OO': 28.0,",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 8', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/AO/20190801/20190831",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"AO",
+								"20190801",
+								"20190831"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 9",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 12.25,",
+									"    'GF': 21.55,",
+									"    'KO': 9.0,",
+									"    'MR': 7.75,",
+									"    'NE': 12.8,",
+									"    'OO': 16.8,",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 9', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/EG/20190901/20190930",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"EG",
+								"20190901",
+								"20190930"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 13.0,",
+									"    'EG': 0.0,",
+									"    'KO': 13.0,",
+									"    'MR': 13.0,",
+									"    'NE': 0.0,",
+									"    'OO': 0.0,",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 10', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/GF/20191001/20191031",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"GF",
+								"20191001",
+								"20191031"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 11",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 14.05,",
+									"    'EG': 10.55,",
+									"    'GF': 11.5,",
+									"    'MR': 5.05,",
+									"    'NE': 8.5,",
+									"    'OO': 3.5,",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 11', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/KO/20191101/20191130",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"KO",
+								"20191101",
+								"20191130"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 12",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 9.5,",
+									"    'EG': 4.3,",
+									"    'GF': 8.75,",
+									"    'KO': 6.9,",
+									"    'NE': 10.15,",
+									"    'OO': 4.8,",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 12', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/MR/20191201/20191231",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"MR",
+								"20191201",
+								"20191231"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 13",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 15.6,",
+									"    'EG': 15.35,",
+									"    'GF': 16.95,",
+									"    'KO': 18.3,",
+									"    'MR': 19.0,",
+									"    'OO': 12.1,",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 13', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/NE/20211001/20211031",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"NE",
+								"20211001",
+								"20211031"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test 14",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const check = {",
+									"    'AO': 8.35,",
+									"    'EG': 1.0,",
+									"    'GF': 8.85,",
+									"    'KO': 5.5,",
+									"    'MR': 9.15,",
+									"    'NE': 2.2,",
+									"}",
+									"",
+									"const resBody = pm.response.json();",
+									"",
+									"pm.test('Test 14', () => {",
+									"    for (const elem of resBody.PPOList) {",
+									"        pm.expect(elem.PassesCost).to.eql(check[elem.VisitingOperator])",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/ChargesBy/OO/20211101/20211130",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"ChargesBy",
+								"OO",
+								"20211101",
+								"20211130"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const usernames = [",
+							"    'aodos', 'egnatia', 'gefyra', 'kentriki_odos', ",
+							"    'moreas', 'nea_odos', 'olympia_odos'",
+							"];",
+							"const operatorIDs = ['AO', 'EG', 'GF', 'KO', 'MR', 'NE', 'OO'];",
+							"",
+							"var check = [{",
+							"    username: 'admin',",
+							"    type: 'admin',",
+							"    operatorID: null",
+							"}]",
+							"",
+							"for (const [i, username] of usernames.entries()){",
+							"    check.push({",
+							"        username: username,",
+							"        type: 'operator',",
+							"        operatorID: operatorIDs[i]",
+							"    });",
+							"}",
+							"",
+							"pm.test(\"List of users is correct\", () => {",
+							"    const resBody = pm.response.json();",
+							"    for (const [i, user] of resBody.entries()) {",
+							"        pm.expect(user.username).to.eql(check[i].username);",
+							"        pm.expect(user.type).to.eql(check[i].type);",
+							"        pm.expect(user.operatorID).to.eql(check[i].operatorID);",
+							"    }",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9103/interoperability/api/admin/users",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"interoperability",
+						"api",
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-OBSERVATORY-AUTH",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const loginRequest = {",
+					"  url: 'localhost:9103/interoperability/api/login',",
+					"  method: 'POST',",
+					"  header: {",
+					"      'Content-Type': 'application/x-www-form-urlencoded'",
+					"  },",
+					"  body: {",
+					"    mode: 'urlencoded',",
+					"    urlencoded: [",
+					"        {key: 'username', value: 'admin'},",
+					"        {key: 'password', value: 'freepasses4all'}",
+					"    ]",
+					"  }",
+					"};",
+					"",
+					"pm.sendRequest(loginRequest, (err, res) => {",
+					"    pm.environment.set('TOKEN', res.json().token);",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
