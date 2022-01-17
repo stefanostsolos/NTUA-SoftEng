@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "49ed5a2a-d3c3-4cef-8d55-8a5d747e5577",
+		"_postman_id": "bc8549e3-3100-4a2e-a828-df9fc6941d13",
 		"name": "API Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -958,7 +958,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/alex/Desktop/ECE/softeng/sample_imports.csv"
+									"src": "/home/alex/Desktop/ECE/softeng/TL21-18/test-api/sample_imports.csv"
 								}
 							]
 						},
@@ -1002,7 +1002,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/alex/Desktop/ECE/softeng/invalid_imports.csv"
+									"src": "/home/alex/Desktop/ECE/softeng/TL21-18/test-api/invalid_imports.csv"
 								}
 							]
 						},
@@ -1493,7 +1493,7 @@
 									"",
 									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
 									"    // than the actual request time",
-									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const reqMoment = pm.environment.get(\"reqMoment\");",
 									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
 									"    resMoment.subtract(1, 'seconds');",
 									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
@@ -1508,7 +1508,7 @@
 							"script": {
 								"exec": [
 									"const moment = require('moment');",
-									"pm.globals.set(\"reqMoment\", moment());"
+									"pm.environment.set(\"reqMoment\", moment());"
 								],
 								"type": "text/javascript"
 							}
@@ -1869,7 +1869,7 @@
 									"",
 									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
 									"    // than the actual request time",
-									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const reqMoment = pm.environment.get(\"reqMoment\");",
 									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
 									"    resMoment.subtract(1, 'seconds');",
 									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
@@ -1883,7 +1883,7 @@
 							"script": {
 								"exec": [
 									"const moment = require('moment');",
-									"pm.globals.set(\"reqMoment\", moment());"
+									"pm.environment.set(\"reqMoment\", moment());"
 								],
 								"type": "text/javascript"
 							}
@@ -2222,7 +2222,7 @@
 									"",
 									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
 									"    // than the actual request time",
-									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const reqMoment = pm.environment.get(\"reqMoment\");",
 									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
 									"    resMoment.subtract(1, 'seconds');",
 									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
@@ -2236,7 +2236,7 @@
 							"script": {
 								"exec": [
 									"const moment = require('moment');",
-									"pm.globals.set(\"reqMoment\", moment());"
+									"pm.environment.set(\"reqMoment\", moment());"
 								],
 								"type": "text/javascript"
 							}
@@ -2547,7 +2547,7 @@
 									"",
 									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
 									"    // than the actual request time",
-									"    const reqMoment = pm.globals.get(\"reqMoment\");",
+									"    const reqMoment = pm.environment.get(\"reqMoment\");",
 									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
 									"    resMoment.subtract(1, 'seconds');",
 									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
@@ -2561,7 +2561,7 @@
 							"script": {
 								"exec": [
 									"const moment = require('moment');",
-									"pm.globals.set(\"reqMoment\", moment());"
+									"pm.environment.set(\"reqMoment\", moment());"
 								],
 								"type": "text/javascript"
 							}
@@ -2784,7 +2784,7 @@
 		"apikey": [
 			{
 				"key": "value",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidHlwZSI6ImFkbWluIiwib3BlcmF0b3JJRCI6bnVsbCwiaWF0IjoxNjQyMzUzNjgwLCJleHAiOjE2NDIzNTcyODB9.rCBNiqhZ4wRctxb8rIpStjfs7LMITB7syhmWg-0mxDg",
+				"value": "{{TOKEN}}",
 				"type": "string"
 			},
 			{
@@ -2805,7 +2805,24 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"const loginRequest = {",
+					"  url: 'localhost:9103/interoperability/api/login',",
+					"  method: 'POST',",
+					"  header: {",
+					"      'Content-Type': 'application/x-www-form-urlencoded'",
+					"  },",
+					"  body: {",
+					"    mode: 'urlencoded',",
+					"    urlencoded: [",
+					"        {key: 'username', value: 'admin'},",
+					"        {key: 'password', value: 'freepasses4all'}",
+					"    ]",
+					"  }",
+					"};",
+					"",
+					"pm.sendRequest(loginRequest, (err, res) => {",
+					"    pm.environment.set('TOKEN', res.json().token);",
+					"});"
 				]
 			}
 		},

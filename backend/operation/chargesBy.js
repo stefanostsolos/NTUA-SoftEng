@@ -41,24 +41,33 @@ router.get('/:op_ID/:date_from/:date_to',
                 throw new createError(401);
             }
 
+            const PPOList = [];
+
+            // Fetch operator IDs and initialise PPOList
+            const sql_aux = `SELECT ID FROM operator WHERE ID <> ?`;
+            const [id_rows] = await db.execute(sql_aux, [op_ID]);
+            for (const id_row of id_rows) {
+                PPOList.push({
+                    VisitingOperator: id_row.ID,
+                    NumberOfPasses: 0,
+                    PassesCost: 0.0
+                });
+            }
+
             // Fetch number of passes and total cost per visiting operator
             const sql = 
                 `SELECT tag.operatorID AS op_ID, COUNT(*) AS num, SUM(pass.charge) AS cost
-                FROM pass JOIN tag ON pass.tagID = tag.ID JOIN station ON pass.stationID = station.ID
-                WHERE station.operatorID = ? AND NOT tag.operatorID = ?
-                    AND pass.timestamp BETWEEN ? AND ?
-                GROUP BY tag.operatorID`;
+                 FROM pass JOIN tag ON pass.tagID = tag.ID JOIN station ON pass.stationID = station.ID
+                 WHERE station.operatorID = ? AND NOT tag.operatorID = ?
+                       AND pass.timestamp BETWEEN ? AND ?
+                 GROUP BY tag.operatorID`;
             const [rows] = await db.execute(sql, [op_ID, op_ID, date_from, date_to]);
 
-            const PPOList = [];
-
-            // Create an element of PPO list for each fetched row
+            // Update the corresponding element of PPO list for each fetched row
             for (const row of rows) {
-                PPOList.push({
-                    VisitingOperator: row.op_ID,
-                    NumberOfPasses: row.num,
-                    PassesCost: parseFloat(row.cost)
-                });
+                const match = PPOList.find(elem => elem.VisitingOperator === row.op_ID);
+                match.NumberOfPasses = row.num;
+                match.PassesCost = parseFloat(row.cost);
             }
 
             // Check the format query parameter, then accordingly send either a JSON
