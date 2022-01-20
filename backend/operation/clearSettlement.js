@@ -7,7 +7,7 @@ const createError = require('http-errors');
 const router = express.Router();
 
 // {baseURL}/ClearSettlement
-router.get('/',
+router.post('/',
     express.json(),
     passport.authenticate('jwt', { session: false }),
     async function(req, res, next) {
