@@ -31,7 +31,7 @@ function Charges({ token }) {
   const [operator, setOperator] = useState("");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
-  const [requestedData, setRequestedData] = useState(null);
+  const [requestedData, setRequestedData] = useState([]);
   const [open, setOpen] = React.useState(false);
   const canSubmit = [operator, datefrom, dateto].every(Boolean);
 
@@ -95,7 +95,7 @@ function Charges({ token }) {
     ).padStart(2, "0")}${String(dateto.getDate()).padStart(2, "0")}`;
 
     const res = await fetch(
-      `http://localhost:9103/interoperability/api//ChargesBy/${operatorid}/${datefromstr}/${datetostr}`,
+      `http://localhost:9103/interoperability/api/ChargesBy/${operatorid}/${datefromstr}/${datetostr}`,
       {
         method: "GET",
         mode: "cors",
@@ -107,7 +107,9 @@ function Charges({ token }) {
 
     const data = await res.json();
 
-    setRequestedData(data);
+    console.log(data.PPOList)
+
+    setRequestedData(data.PPOList);
   };
 
   return (
@@ -180,9 +182,9 @@ function Charges({ token }) {
             </Snackbar>
           </Stack>
         </div>
-        {requestedData ? (
+        {requestedData.length > 0 ? (
           <div className="data-presentation">
-            <table className="bigtable">
+            <table className="bigtable2">
               <thead>
                 <tr>
                   <th scope="col">Total Passes Cost</th>
@@ -191,11 +193,13 @@ function Charges({ token }) {
                 </tr>
               </thead>
               <tbody>
-                <tr key="data-row">
-                  <td>{requestedData.PassesCost} Euros </td>
-                  <td>{requestedData.NumberOfPasses} Times</td>
-                  <td>{requestedData.VisitingOperator} </td>
-                </tr>
+                {requestedData.map((element, index) => (
+                  <tr key={index}>
+                    <td>{element.PassesCost} Euros </td>
+                    <td>{element.NumberOfPasses} Times</td>
+                    <td>{element.VisitingOperator} </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
