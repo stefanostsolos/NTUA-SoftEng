@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../db');
+const db = require('../misc/db');
 const multer = require('multer');
 const fs = require('fs/promises');
 const passport = require('passport');

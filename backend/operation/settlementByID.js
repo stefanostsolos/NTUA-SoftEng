@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
-const db = require('../db');
-const aux = require('../helper');
+const db = require('../misc/db');
+const aux = require('../misc/helper');
 const createError = require('http-errors');
 
 const router = express.Router();

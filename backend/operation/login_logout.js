@@ -3,7 +3,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
-const JWT_SECRET = require('./jwt-secret');
+const JWT_SECRET = require('../misc/jwt-secret');
 
 router.post('/login', 
     express.urlencoded({ extended: false }), 

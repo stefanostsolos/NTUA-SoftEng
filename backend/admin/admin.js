@@ -1,10 +1,10 @@
 const express = require('express');
-const db = require('../db');
+const db = require('../misc/db');
 const fs = require('fs/promises');
 
 
 const router = express.Router();
-const ADMIN = require('../default_admin');
+const ADMIN = require('../misc/default_admin');
 
 async function reset(table) {
     // Isolate each row from file of defaults

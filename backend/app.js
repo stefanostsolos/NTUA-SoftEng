@@ -2,9 +2,9 @@ const express = require('express');
 const passport = require('passport');
 const createError = require('http-errors');
 const morgan = require('morgan');
-const db = require('./db');
+const db = require('./misc/db');
 const bcrypt = require('bcrypt');
-const aux = require('./helper');
+const aux = require('./misc/helper');
 const cors = require('cors');
 
 const app = express();
@@ -67,7 +67,7 @@ passport.use(
 // Configure authentication strategy for authorised operations using JWT
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const JWT_SECRET = require('./jwt-secret');
+const JWT_SECRET = require('./misc/jwt-secret');
 const CUSTOM_HEADER = 'x-observatory-auth';
 
 passport.use(
@@ -85,7 +85,7 @@ passport.use(
 );
 
 // Routing middleware
-const login_logout = require('./login_logout');
+const login_logout = require('./operation/login_logout');
 const users = require('./admin/users');
 const usermod = require('./admin/usermod');
 const passesupd = require('./admin/passesupd');
