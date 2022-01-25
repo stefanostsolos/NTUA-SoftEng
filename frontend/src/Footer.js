@@ -8,7 +8,7 @@ import instagram from "./images/instagram-icon.png";
 function Footer() {
   return (
     <footer>
-      <ul ul className="footer-links">
+      <ul className="footer-links">
         < li >
           <a href="/contact">Project creators</a>
         </li>

@@ -209,7 +209,7 @@ function PassesCost({ token }) {
         </div>
         {requestedData ? (
           <div className="data-presentation">
-            <table className="bigtable">
+            <table className="bigtable2">
               <thead>
                 <tr>
                   <th scope="col">Total Passes Cost</th>
