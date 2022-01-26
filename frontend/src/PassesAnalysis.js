@@ -24,7 +24,16 @@ import {
 import { Bar } from "react-chartjs-2";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { CSVLink } from "react-csv";
+import { white, grey } from "@mui/material/colors";
 
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: "#ffffff",
+  backgroundColor: grey[900],
+  "&:hover": {
+    backgroundColor: grey[700],
+  },
+}));
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
 const FormControl = styled(FormControlSpacing)`
@@ -55,6 +64,7 @@ function PassesAnalysis({ token }) {
   const [requestedData, setRequestedData] = useState(null);
   const [open, setOpen] = React.useState(false);
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
+  const [requestedCSV, setRequestedCSV] = useState("");
 
   let result = {};
 
@@ -170,9 +180,23 @@ function PassesAnalysis({ token }) {
         },
       }
     );
+
+    const rescsv = await fetch(
+      `http://localhost:9103/interoperability/api/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}?format=csv`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "x-observatory-auth": token,
+        },
+      }
+    );
     const data = await res.json();
+    const datacsv = await rescsv.text();
 
     setRequestedData(data);
+    console.log(datacsv);
+    setRequestedCSV(String(datacsv));
     console.log(data);
   };
 
@@ -271,9 +295,22 @@ function PassesAnalysis({ token }) {
         </div>
         <div className="chart">
           {requestedData ? (
+            <>
             <Paper>
               <Bar options={options} data={chartData}></Bar>
             </Paper>
+            <div className="form-container3">
+            <ColorButton>  
+              <CSVLink
+                style = {{color: "white"}}
+                filename="PassesAnalysisReport.csv"
+                data={requestedCSV}
+              >
+                Download All Data
+              </CSVLink>
+            </ColorButton> 
+            </div>
+            </>
           ) : null}
         </div>
       </section>

@@ -24,6 +24,16 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { CSVLink } from "react-csv";
+import { white, grey } from "@mui/material/colors";
+
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: "#ffffff",
+  backgroundColor: grey[900],
+  "&:hover": {
+    backgroundColor: grey[700],
+  },
+}));
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -52,7 +62,8 @@ function PassesPerStation({ token }) {
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [requestedCSV, setRequestedCSV] = useState("");
 
   const canSubmit = [station, datefrom, dateto].every(Boolean);
 
@@ -167,10 +178,25 @@ function PassesPerStation({ token }) {
       }
     );
 
+    const rescsv = await fetch(
+      `http://localhost:9103/interoperability/api/PassesPerStation/${stationid}/${datefromstr}/${datetostr}?format=csv`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "x-observatory-auth": token,
+        },
+      }
+    );
+
     const data = await res.json();
+    const datacsv = await rescsv.text();
 
     setRequestedData(data);
+    console.log(datacsv);
+    setRequestedCSV(String(datacsv));
     console.log(data);
+    
   };
 
   return (
@@ -244,9 +270,22 @@ function PassesPerStation({ token }) {
         </div>
         <div className="chart">
           {requestedData ? (
+            <>
             <Paper>
               <Bar options={options} data={chartData}></Bar>
             </Paper>
+            <div className="form-container3">
+            <ColorButton>  
+              <CSVLink
+                style = {{color: "white"}}
+                filename="PassesPerStationReport.csv"
+                data={requestedCSV}
+              >
+                Download All Data
+              </CSVLink>
+            </ColorButton> 
+            </div>
+            </>
           ) : null}
         </div>
       </section>

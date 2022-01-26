@@ -13,6 +13,16 @@ import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { MenuItem, Select, TextField } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { CSVLink } from "react-csv";
+import { white, grey } from "@mui/material/colors";
+
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: "#ffffff",
+  backgroundColor: grey[900],
+  "&:hover": {
+    backgroundColor: grey[700],
+  },
+}));
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -35,6 +45,7 @@ function PassesCost({ token }) {
   const [requestedData, setRequestedData] = useState(null);
   const [open, setOpen] = React.useState(false);
   const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
+  const [requestedCSV, setRequestedCSV] = useState("");
 
   useEffect(() => {
     const getOperators = async () => {
@@ -110,9 +121,23 @@ function PassesCost({ token }) {
       }
     );
 
+    const rescsv = await fetch(
+      `http://localhost:9103/interoperability/api/PassesCost/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}?format=csv`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "x-observatory-auth": token,
+        },
+      }
+    );
+
     const data = await res.json();
+    const datacsv = await rescsv.text();
 
     setRequestedData(data);
+    console.log(datacsv);
+    setRequestedCSV(String(datacsv));
     console.log(data);
   };
 
@@ -208,6 +233,7 @@ function PassesCost({ token }) {
           </Stack>
         </div>
         {requestedData ? (
+          <>
           <div className="data-presentation">
             <table className="bigtable2">
               <thead>
@@ -234,7 +260,19 @@ function PassesCost({ token }) {
                 </tr>
               </tbody>
             </table>
+            <div className="form-container3">
+            <ColorButton>  
+              <CSVLink
+                style = {{color: "white"}}
+                filename="PassesCostReport.csv"
+                data={requestedCSV}
+              >
+                Download All Data
+              </CSVLink>
+            </ColorButton> 
+            </div>
           </div>
+          </>
         ) : null}
       </section>
     </main>

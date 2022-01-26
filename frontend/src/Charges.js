@@ -13,6 +13,16 @@ import { FormControl as MuiFormControl, InputLabel } from "@mui/material";
 import { MenuItem, Select, TextField } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { CSVLink } from "react-csv";
+import { white, grey } from "@mui/material/colors";
+
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: "#ffffff",
+  backgroundColor: grey[900],
+  "&:hover": {
+    backgroundColor: grey[700],
+  },
+}));
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -34,6 +44,7 @@ function Charges({ token }) {
   const [requestedData, setRequestedData] = useState([]);
   const [open, setOpen] = React.useState(false);
   const canSubmit = [operator, datefrom, dateto].every(Boolean);
+  const [requestedCSV, setRequestedCSV] = useState("");
 
   useEffect(() => {
     const getOperators = async () => {
@@ -105,11 +116,24 @@ function Charges({ token }) {
       }
     );
 
-    const data = await res.json();
+    const rescsv = await fetch(
+      `http://localhost:9103/interoperability/api/ChargesBy/${operatorid}/${datefromstr}/${datetostr}?format=csv`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "x-observatory-auth": token,
+        },
+      }
+    );
 
-    console.log(data.PPOList)
+    const data = await res.json();
+    const datacsv = await rescsv.text();
 
     setRequestedData(data.PPOList);
+    console.log(datacsv.PPOList);
+    setRequestedCSV(String(datacsv.PPOList));
+    console.log(data.PPOList)
   };
 
   return (
@@ -183,6 +207,7 @@ function Charges({ token }) {
           </Stack>
         </div>
         {requestedData.length > 0 ? (
+          <>
           <div className="data-presentation">
             <table className="bigtable2">
               <thead>
@@ -202,7 +227,19 @@ function Charges({ token }) {
                 ))}
               </tbody>
             </table>
+            <div className="form-container3">
+            <ColorButton>  
+              <CSVLink
+                style = {{color: "white"}}
+                filename="ChargesReport.csv"
+                data={requestedCSV}
+              >
+                Download All Data
+              </CSVLink>
+            </ColorButton> 
+            </div>
           </div>
+          </>
         ) : null}
       </section>
     </main>
