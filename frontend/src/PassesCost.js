@@ -14,7 +14,7 @@ import { MenuItem, Select, TextField } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { CSVLink } from "react-csv";
-import { white, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",

@@ -15,6 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { CSVLink } from "react-csv";
 import { white, grey } from "@mui/material/colors";
+import jwt_decode from "jwt-decode";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
@@ -37,8 +38,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 function Charges({ token }) {
+  const decodedToken = jwt_decode(token);
+
   const [operators, setOperators] = useState([]);
-  const [operator, setOperator] = useState("");
+  const [operator, setOperator] = useState(decodedToken.type === "operator" ? decodedToken.operatorID : "");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState([]);
@@ -131,8 +134,8 @@ function Charges({ token }) {
     const datacsv = await rescsv.text();
 
     setRequestedData(data.PPOList);
-    console.log(datacsv.PPOList);
-    setRequestedCSV(String(datacsv.PPOList));
+    console.log(datacsv);
+    setRequestedCSV(String(datacsv));
     console.log(data.PPOList)
   };
 
@@ -144,24 +147,29 @@ function Charges({ token }) {
           <Stack spacing={3}>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Operator ID
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={operator}
-                  label="Operator"
-                  onChange={handleOperatorChange}
-                  className="form-input"
-                >
-                  {operators &&
-                    operators.map((element) => (
-                      <MenuItem key={element} value={element}>
-                        {element}
-                      </MenuItem>
-                    ))}
-                </Select>
+                {decodedToken?.type === 'admin' ? (
+                  <>
+                    <InputLabel id="demo-simple-select-label">
+                      Operator ID
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={operator}
+                      label="Operator"
+                      onChange={handleOperatorChange}
+                      className="form-input"
+                    >
+                      {operators &&
+                        operators.map((element) => (
+                          <MenuItem key={element} value={element}>
+                            {element}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </>
+                ) : null}
+
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <div className="form-input">
@@ -208,37 +216,37 @@ function Charges({ token }) {
         </div>
         {requestedData.length > 0 ? (
           <>
-          <div className="data-presentation">
-            <table className="bigtable2">
-              <thead>
-                <tr>
-                  <th scope="col">Total Passes Cost</th>
-                  <th scope="col">Total Number Of Passes</th>
-                  <th scope="col">Visiting Operator</th>
-                </tr>
-              </thead>
-              <tbody>
-                {requestedData.map((element, index) => (
-                  <tr key={index}>
-                    <td>{element.PassesCost} Euros </td>
-                    <td>{element.NumberOfPasses} Times</td>
-                    <td>{element.VisitingOperator} </td>
+            <div className="data-presentation">
+              <table className="bigtable2">
+                <thead>
+                  <tr>
+                    <th scope="col">Total Passes Cost</th>
+                    <th scope="col">Total Number Of Passes</th>
+                    <th scope="col">Visiting Operator</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="form-container3">
-            <ColorButton>  
-              <CSVLink
-                style = {{color: "white"}}
-                filename="ChargesReport.csv"
-                data={requestedCSV}
-              >
-                Download All Data
-              </CSVLink>
-            </ColorButton> 
+                </thead>
+                <tbody>
+                  {requestedData.map((element, index) => (
+                    <tr key={index}>
+                      <td>{element.PassesCost} Euros </td>
+                      <td>{element.NumberOfPasses} Times</td>
+                      <td>{element.VisitingOperator} </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="form-container3">
+                <ColorButton>
+                  <CSVLink
+                    style={{ color: "white" }}
+                    filename="ChargesReport.csv"
+                    data={requestedCSV}
+                  >
+                    Download All Data
+                  </CSVLink>
+                </ColorButton>
+              </div>
             </div>
-          </div>
           </>
         ) : null}
       </section>

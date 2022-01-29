@@ -23,8 +23,8 @@ router.post('/',
             const id = req.body.ID;
 
             // Check if user can access resource. This resource can be accessed
-            // by any payment user and any admin user
-            if (!['payment', 'admin'].includes(req.user.type)) {
+            // by any payment user, any operator user and any admin user
+            if (!['payment', 'operator', 'admin'].includes(req.user.type)) {
                 throw new createError(401);
             }
 

@@ -25,7 +25,7 @@ import {
   Legend,
 } from "chart.js";
 import { CSVLink } from "react-csv";
-import { white, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",

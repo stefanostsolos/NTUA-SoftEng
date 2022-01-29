@@ -62,7 +62,6 @@ function Login({ setToken }) {
 
   const doLogin = async (username, password) => {
     setDisabled(true);
-
     try {
       const res = await fetch(
         `http://localhost:9103/interoperability/api/login`,

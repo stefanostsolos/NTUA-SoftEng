@@ -25,7 +25,7 @@ import { Bar } from "react-chartjs-2";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { CSVLink } from "react-csv";
-import { white, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
@@ -116,9 +116,9 @@ function PassesAnalysis({ token }) {
     console.log(operators);
   }, []);
 
-  const handleOp1Change = (event) => {
+  function handleOp1Change(event) {
     setOp1(event.target.value);
-  };
+  }
 
   const handleOp2Change = (event) => {
     setOp2(event.target.value);
