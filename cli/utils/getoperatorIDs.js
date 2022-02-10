@@ -2,15 +2,21 @@ module.exports = { getoperatorIDs: getoperatorIDs };
 
 const axios = require('axios');
 
-function getoperatorIDs(baseURL, token) {
-    axios.get(`${baseURL}/GetOperatorIDs`, {
+async function getoperatorIDs(baseURL, token) {
+    let res;
+
+    await axios.get(`${baseURL}/GetOperatorIDs`, {
         headers: {
             'X-OBSERVATORY-AUTH': `${token}`
         }
     }).then((response) => {
         console.log(response.data);
+        res = response.status;
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: GetOperatorIDs");
+        res = error.response.status;
     });
+
+    return res;
 }

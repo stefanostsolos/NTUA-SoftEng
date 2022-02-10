@@ -42,7 +42,22 @@ async function promptMissingDateTo() {
     return answer.DateTo;
 }
 
+async function promptMissingFormat() {
+    const question = [];
+
+    question.push({
+        type: 'list',
+        name: 'format',
+        message: 'Choose your answers format',
+        choices: ['json', 'csv'],
+    });
+
+    const answer = await inquirer.prompt(question);
+    return answer.format;
+}
+
 async function passesperstation(baseURL, token, station, datefrom, dateto, format) {
+    let res;
 
     if (station == undefined) {
         console.log("Error: station is missing");
@@ -56,15 +71,23 @@ async function passesperstation(baseURL, token, station, datefrom, dateto, forma
         console.log("Error: datefrom is missing");
         dateto = await promptMissingDateTo();
     }
+    if (format == undefined) {
+        console.log("Error: format is missing");
+        format = await promptMissingFormat();
+    }
 
-    axios.get(`${baseURL}/PassesPerStation/${station}/${datefrom}/${dateto}?format=${format}`, {
+    await axios.get(`${baseURL}/PassesPerStation/${station}/${datefrom}/${dateto}?format=${format}`, {
         headers: {
             'X-OBSERVATORY-AUTH': `${token}`
         }
     }).then((response) => {
         console.log(response.data);
+        res = response.status;
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: PassesPerStation");
+        res = error.response.status;
     });
+
+    return res;
 }

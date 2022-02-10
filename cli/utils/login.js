@@ -31,6 +31,7 @@ async function promptMissingPsw() {
 }
 
 async function login(baseURL, usr, pswd) {
+    let res;
 
     if (usr == undefined) {
         console.log("Error: Username is missing");
@@ -41,14 +42,20 @@ async function login(baseURL, usr, pswd) {
         pswd = await promptMissingPsw();
     }
 
-    axios.post(`${baseURL}/login`, `username=${usr}&password=${pswd}`, 
-               {headers: {'Content-Type': 'application/x-www-form-urlencoded',}}
-    ).then((response) => {
-        fs.writeFile('./bin/token.txt', response.data.token, 'utf8', function (err) {
+    await axios.post(`${baseURL}/login`, `username=${usr}&password=${pswd}`, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    }).then((response) => {
+        fs.writeFile('../CLI/bin/token.txt', response.data.token, 'utf8', function (err) {
             if (err) console.log(err)
         });
+        res = response.status;
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: login");
+        res = error.response.status;
     });
+
+    return res;
 }

@@ -42,7 +42,22 @@ async function promptMissingDateTo() {
     return answer.DateTo;
 }
 
+async function promptMissingFormat() {
+    const question = [];
+
+    question.push({
+        type: 'list',
+        name: 'format',
+        message: 'Choose your answers format',
+        choices: ['json', 'csv'],
+    });
+
+    const answer = await inquirer.prompt(question);
+    return answer.format;
+}
+
 async function chargesby(baseURL, token, op, datefrom, dateto, format) {
+    let res;
 
     if (op == undefined) {
         console.log("Error: operator one is missing");
@@ -56,15 +71,23 @@ async function chargesby(baseURL, token, op, datefrom, dateto, format) {
         console.log("Error: datefrom is missing");
         dateto = await promptMissingDateTo();
     }
+    if (format == undefined) {
+        console.log("Error: format is missing");
+        format = await promptMissingFormat();
+    }
 
-    axios.get(`${baseURL}/ChargesBy/${op}/${datefrom}/${dateto}?format=${format}`, {
+    await axios.get(`${baseURL}/ChargesBy/${op}/${datefrom}/${dateto}?format=${format}`, {
         headers: {
             'X-OBSERVATORY-AUTH': `${token}`
         }
     }).then((response) => {
         console.log(response.data);
+        res = response.status;
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: CargesBy");
+        res = error.response.status;
     });
+
+    return res;
 }

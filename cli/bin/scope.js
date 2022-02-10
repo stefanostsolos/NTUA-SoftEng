@@ -24,8 +24,8 @@ async function promptMissingScope() {
             'chargesby: Fetch the number of passes that were recorded between specified dates',
             'getstationIDs: Fetch a list of all station IDs',
             'getoperatorIDs: Fetch a list of all operator IDs',
-            'newsettlement: Creates a new settlement record in the database for the debts between the two given operators',
             'settlementbyid: Fetch a settlement record with the given ID',
+            'newsettlement: Creates a new settlement record in the database for the debts between the two given operators',
             'settlementsbyoperator: Fetch a list of settlement records concerning the given operator',
             'clearsettlement: Mark an existing settlement record as cleared in the database'
         ],

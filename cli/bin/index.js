@@ -6,9 +6,9 @@ const fun = require('./fun.js');
 const yargs = require('yargs');
 
 async function main() {
-    let scope;
-    scope = await cli_scope.scope(yargs.argv._[0]);
-    fun.switch_fun(scope, yargs.argv);
+    let scope = await cli_scope.scope(yargs.argv._[0]);
+    let res = await fun.switch_fun(scope, yargs.argv);
+    console.log(res);
 }
 
 main();

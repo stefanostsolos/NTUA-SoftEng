@@ -16,21 +16,26 @@ async function promptMissingID() {
     return answer.id;
 }
 
-async function clearsettlement(baseURL, token, id,) {
+async function clearsettlement(baseURL, token, id) {
+    let res;
 
     if (id == undefined) {
         console.log("Error: ID is missing");
-        dateto = await promptMissingID();
+        id = await promptMissingID();
     }
 
-    axios.post(`${baseURL}/ClearSettlement/${id}`, {
+    await axios.post(`${baseURL}/ClearSettlement`, { ID: `${id}` }, {
         headers: {
             'X-OBSERVATORY-AUTH': `${token}`
         }
     }).then((response) => {
         console.log(response.data);
+        res = response.status;
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: ClearSettlement");
+        res = error.response.status;
     });
+
+    return res;
 }
