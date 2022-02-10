@@ -953,14 +953,13 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/home/alex/Desktop/ECE/softeng/TL21-18/test-api/sample_imports.csv"
+							"mode": "raw",
+							"raw": "{\n    \"file\": \"GNO5910350,GF26E1328,AO01,2022-01-01 13:15:23,2.8\\nGBU5340350,NE74M0871,EG02,2022-01-02 15:17:42,3.1\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "localhost:9103/interoperability/api/admin/passesupd",
@@ -997,14 +996,13 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/home/alex/Desktop/ECE/softeng/TL21-18/test-api/invalid_imports.csv"
+							"mode": "raw",
+							"raw": "{\n    \"file\": \"GNO5910350,GF26E1328,AO01,202-01-01 13:15:23,2.8\\nGBU5340350,NE74M0871,G02,2022-01-02 15:17:42,3.1\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "localhost:9103/interoperability/api/admin/passesupd",
@@ -1056,14 +1054,13 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/home/alex/Desktop/ECE/softeng/sample_imports.csv"
+							"mode": "raw",
+							"raw": "{\n    \"file\": \"GNO5910350,GF26E1328,AO01,2022-01-01 13:15:23,2.8\\nGBU5340350,NE74M0871,EG02,2022-01-02 15:17:42,3.1\\n\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "localhost:9103/interoperability/api/admin/passesupd",
@@ -2777,6 +2774,740 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "SettlementByID",
+			"item": [
+				{
+					"name": "SettlementByID (JSON)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"pm.environment.set(\"reqMoment\", moment());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"",
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"RequestTimestamp\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"SettlementID\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"OperatorCredited\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"OperatorDebited\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"DateFrom\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"DateTo\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"Amount\": {",
+									"            \"type\": \"number\"",
+									"        },",
+									"        \"Cleared\": {",
+									"            \"type\": \"boolean\"",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Response body contains correct metadata\", () => {",
+									"    const resBody = pm.response.json();",
+									"    const settlementID = pm.request.url.path[3]",
+									"",
+									"    pm.expect(resBody.SettlementID).to.eql(settlementID);",
+									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+									"    // than the actual request time",
+									"    const reqMoment = pm.environment.get(\"reqMoment\");",
+									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+									"    resMoment.subtract(1, 'seconds');",
+									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementByID/QICNZQ8NYG",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementByID",
+								"QICNZQ8NYG"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementByID (CSV)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"array\",",
+									"    \"items\": {",
+									"        \"RequestTimestamp\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"SettlementID\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"OperatorCredited\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"OperatorDebited\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"DateFrom\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"DateTo\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"Amount\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"Cleared\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    const parse = require('csv-parse/lib/sync');",
+									"    const responseJson = parse(pm.response.text(), {columns: true});",
+									"    pm.expect(responseJson).to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementByID/QICNZQ8NYG?format=csv",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementByID",
+								"QICNZQ8NYG"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementByID (Invalid ID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementByID/QICNZ Q8NYG",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementByID",
+								"QICNZ Q8NYG"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementByID (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementByID/QICNZQ8NYG",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementByID",
+								"QICNZQ8NYG"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementByID (No Data)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", () => {",
+									"    pm.response.to.have.status(402);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementByID/DICNZQ8NYG",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementByID",
+								"DICNZQ8NYG"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SettlementsByOperator",
+			"item": [
+				{
+					"name": "SettlementsByOperator (JSON)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"pm.environment.set(\"reqMoment\", moment());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const moment = require('moment');",
+									"",
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"RequestTimestamp\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"SettlementList\": {",
+									"            \"type\": \"array\",",
+									"            \"items\": {",
+									"                \"type\": \"object\",",
+									"                \"properties\": {",
+									"                    \"SettlementID\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"OperatorCredited\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"OperatorDebited\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"DateFrom\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"DateTo\": {",
+									"                        \"type\": \"string\"",
+									"                    },",
+									"                    \"Amount\": {",
+									"                        \"type\": \"number\"",
+									"                    },",
+									"                    \"Cleared\": {",
+									"                        \"type\": \"boolean\"",
+									"                    }",
+									"                }",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Response body contains correct metadata\", () => {",
+									"    const resBody = pm.response.json();",
+									"    const opID = pm.request.url.path[3]",
+									"",
+									"    for (const stl of resBody.SettlementList) {",
+									"        pm.expect(stl.OperatorCredited === opID || stl.OperatorDebited === opID).to.eql(true);",
+									"    }",
+									"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+									"    // than the actual request time",
+									"    const reqMoment = pm.environment.get(\"reqMoment\");",
+									"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+									"    resMoment.subtract(1, 'seconds');",
+									"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementsByOperator/AO",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementsByOperator",
+								"AO"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementsByOperator (CSV)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\": \"array\",",
+									"    \"items\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"            \"SettlementID\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"OperatorCredited\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"OperatorDebited\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"DateFrom\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"DateTo\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"Amount\": {",
+									"                \"type\": \"string\"",
+									"            },",
+									"            \"Cleared\": {",
+									"                \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    const parse = require('csv-parse/lib/sync');",
+									"    const responseJson = parse(pm.response.text(), {columns: true});",
+									"    pm.expect(responseJson).to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementsByOperator/AO?format=csv",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementsByOperator",
+								"AO"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementsByOperator (Invalid ID)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementsByOperator/BO",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementsByOperator",
+								"BO"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementsByOperator (Unauthorised)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "foo",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementsByOperator/AO",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementsByOperator",
+								"AO"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SettlementsByOperator (No Data)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", () => {",
+									"    pm.response.to.have.status(402);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/SettlementsByOperator/MR",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"SettlementsByOperator",
+								"MR"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetStationIDs",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"pm.environment.set(\"reqMoment\", moment());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"const schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"        \"RequestTimestamp\": {",
+							"            \"type\": \"string\"",
+							"        },",
+							"        \"StationIDList\": {",
+							"            \"type\": \"array\",",
+							"            \"items\": {",
+							"                \"type\": \"string\"",
+							"            }",
+							"        }",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response has correct data type\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"pm.test(\"Response body contains correct metadata\", () => {",
+							"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+							"    // than the actual request time",
+							"    const resBody = pm.response.json();",
+							"    const reqMoment = pm.environment.get(\"reqMoment\");",
+							"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+							"    resMoment.subtract(1, 'seconds');",
+							"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+							"})",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9103/interoperability/api/GetStationIDs",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"interoperability",
+						"api",
+						"GetStationIDs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOperatorIDs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"const schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"        \"RequestTimestamp\": {",
+							"            \"type\": \"string\"",
+							"        },",
+							"        \"OperatorIDList\": {",
+							"            \"type\": \"array\",",
+							"            \"items\": {",
+							"                \"type\": \"string\"",
+							"            }",
+							"        }",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response has correct data type\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"pm.test(\"Response body contains correct metadata\", () => {",
+							"    // We consider the RequestTimestamp to be correct if it is at most one second later",
+							"    // than the actual request time",
+							"    const resBody = pm.response.json();",
+							"    const reqMoment = pm.environment.get(\"reqMoment\");",
+							"    const resMoment = moment(resBody.RequestTimestamp, 'YYYY-MM-DD hh:mm:ss');",
+							"    resMoment.subtract(1, 'seconds');",
+							"    pm.expect(resMoment.isBefore(reqMoment)).to.eql(true);",
+							"})",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"pm.environment.set(\"reqMoment\", moment());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9103/interoperability/api/GetOperatorIDs",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"interoperability",
+						"api",
+						"GetOperatorIDs"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
