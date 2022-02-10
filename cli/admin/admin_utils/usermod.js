@@ -65,36 +65,40 @@ async function promptMissingOperatorID() {
 }
 
 async function usermod(baseURL, token, username, passw, type, operatorID) {
+    let res;
 
     if (username == undefined) {
         console.log("Error: username one is missing");
         username = await promptMissingUsername();
     }
     if (passw == undefined) {
-        console.log("Error: password is missing");
+        console.log("Error: password one is missing");
         passw = await promptMissingPassw();
     }
     if (type == undefined) {
-        console.log("Error: type is missing");
+        console.log("Error: type one is missing");
         type = await promptMissingType();
     }
     if (operatorID == undefined) {
-        if ((username == 'admin') || (type == 'payment')) operatorID = null;
+        if (type != 'operator') operatorID = 'NULL';
         else {
-            console.log("Error: operatorID is missing");
+            console.log("Error: operatorID one is missing");
             operatorID = await promptMissingOperatorID();
         }
     }
 
-    axios.post(`${baseURL}/admin/usermod`, { username: `${username}`, password: `${passw}`, type: `${type}`, operatorID: `${operatorID}` }, {
+    await axios.post(`${baseURL}/admin/usermod`, { username: `${username}`, password: `${passw}`, type: `${type}`, operatorID: `${operatorID}` }, {
         headers: {
             'X-OBSERVATORY-AUTH': `${token}`,
         }
     }).then((response) => {
         console.log(response.data);
+        res = response.status;
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: usermod");
+        res = error.response.status;
     });
-}
 
+    return res;
+}
