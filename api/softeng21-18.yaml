@@ -324,6 +324,9 @@ paths:
                     items:
                       type: string
                       example: "AO10"
+        500:
+          description: >
+            Internal server error
 
   /GetOperatorIDs:
     get:
@@ -347,6 +350,9 @@ paths:
                     items:
                       type: string
                       example: "AO"
+        500:
+          description: >
+            Internal server error
 
   /PassesPerStation/{stationID}/{date_from}/{date_to}:
     get:
