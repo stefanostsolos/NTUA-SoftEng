@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const { Parser } = require('json2csv');
 const db = require('../misc/db');
 const aux = require('../misc/helper');
 const createError = require('http-errors');
