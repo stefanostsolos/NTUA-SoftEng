@@ -1,6 +1,3 @@
-# test-backend
+# Backend Tests
 
-Περιεχόμενα:
-
-- Backend tests
-
+Postman collection containing backend tests
