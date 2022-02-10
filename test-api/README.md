@@ -1,6 +1,4 @@
-# test-api
+# API Tests
 
-Περιεχόμενα:
-
-- API tests
+Postman collection containing API tests
 
