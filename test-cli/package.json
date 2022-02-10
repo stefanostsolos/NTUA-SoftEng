@@ -1,0 +1,24 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "Unit and functional Tests for CLI",
+  "main": "test.js",
+  "scripts": {
+    "test": "jest --coverage --detectOpenHandles"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "./_test_/unit_test_suites",
+      "./_test_/functional_test_suites",
+      "./_test_/unit_tests.test.js"
+    ],
+    "silent": false,
+    "maxWorkers": 1
+  },
+  "keywords": [],
+  "author": "sym && stef",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.5.0"
+  }
+}
