@@ -44,8 +44,8 @@ router.get('/:ID',
                 SettlementID: set.ID,
                 OperatorCredited: set.operatorCredited,
                 OperatorDebited: set.operatorDebited,
-                Date_from: aux.convert_date_object(set.dateFrom),
-                Date_to: aux.convert_date_object(set.dateTo),
+                DateFrom: aux.convert_date_object(set.dateFrom),
+                DateTo: aux.convert_date_object(set.dateTo),
                 Amount: parseFloat(set.amount),
                 Cleared: set.cleared === 1
             }

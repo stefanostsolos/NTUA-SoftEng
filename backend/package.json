@@ -4,7 +4,8 @@
   "description": "Backend source code for term project of Software Engineering course, 7th Semester, ECE NTUA",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Alexandros Kouridakis",
   "license": "ISC",
@@ -17,7 +18,6 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
-    "multer": "^1.4.4",
     "mysql2": "^2.3.3",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
