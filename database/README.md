@@ -1,6 +1,4 @@
-# database
+# Database
 
-Περιεχόμενα:
-
-- Database dump (sql ή json)
+MySQL database dump
 
