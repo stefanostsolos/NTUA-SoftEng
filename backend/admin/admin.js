@@ -38,6 +38,7 @@ async function reset(table) {
     await db.execute(`DELETE FROM ${table}`);
 
     // Read default data row by row and import
+    let params;
     for (const row of rows) {
         params = row.split(',');
         await db.execute(sql_insert, params);
