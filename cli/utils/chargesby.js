@@ -60,19 +60,19 @@ async function chargesby(baseURL, token, op, datefrom, dateto, format) {
     let res;
 
     if (op == undefined) {
-        console.log("Error: operator one is missing");
+        console.log("Operator is missing");
         op = await promptMissingOperator();
     }
     if (datefrom == undefined) {
-        console.log("Error: datefrom is missing");
+        console.log("datefrom is missing");
         datefrom = await promptMissingDateFrom();
     }
     if (dateto == undefined) {
-        console.log("Error: datefrom is missing");
+        console.log("dateto is missing");
         dateto = await promptMissingDateTo();
     }
     if (format == undefined) {
-        console.log("Error: format is missing");
+        console.log("format is missing");
         format = await promptMissingFormat();
     }
 
@@ -85,7 +85,7 @@ async function chargesby(baseURL, token, op, datefrom, dateto, format) {
         res = response.status;
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
-        console.log("Found at: CargesBy");
+        console.log("Found at: ChargesBy");
         res = error.response.status;
     });
 
