@@ -8,7 +8,7 @@ const yargs = require('yargs');
 async function main() {
     let scope = await cli_scope.scope(yargs.argv._[0]);
     let res = await fun.switch_fun(scope, yargs.argv);
-    console.log(res);
+    console.log("\nStatus code: " + res);
 }
 
 main();

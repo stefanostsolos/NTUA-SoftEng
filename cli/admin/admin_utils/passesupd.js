@@ -27,7 +27,6 @@ async function passesupd(baseURL, token, source) {
     }
 
     var stream;
-    console.log(source)
 
     try {
         stream = fs.readFileSync(source);
