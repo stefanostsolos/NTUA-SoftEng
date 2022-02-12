@@ -1,4 +1,8 @@
 require('./unit_test_suites/healthcheck.test.js');
+//require('./unit_test_suites/resetpasses.test.js');
+//require('./unit_test_suites/resettags.test.js');
+//require('./unit_test_suites/resetvehicles.test.js');
+//require('./unit_test_suites/resetstations.test.js');
 require('./unit_test_suites/login.test.js');
 require('./unit_test_suites/passesperstation.test.js');
 require('./unit_test_suites/passesanalysis.test.js');
@@ -12,8 +16,4 @@ require('./unit_test_suites/settlementsbyoperator.test.js');
 require('./unit_test_suites/clearsettlement.test.js');
 require('./unit_test_suites/users.test.js');
 require('./unit_test_suites/usermod.test.js');
-require('./unit_test_suites/resetpasses.test.js');
-require('./unit_test_suites/resetstations.test.js');
-require('./unit_test_suites/resettags.test.js');
-require('./unit_test_suites/resetvehicles.test.js');
-require('./unit_test_suites/logout.test.js');
+//require('./unit_test_suites/logout.test.js');

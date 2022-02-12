@@ -7,5 +7,3 @@ test('Unit Test for newsettlement function', async () => {
     const res = await newsettlement.newsettlement(baseURL, jwt, 'EG', 'AO', '20210919');
     expect(res).toBe(200)
 })
-
-//bad request

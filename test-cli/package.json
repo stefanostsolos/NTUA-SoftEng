@@ -4,15 +4,13 @@
   "description": "Unit and functional Tests for CLI",
   "main": "test.js",
   "scripts": {
-    "test": "jest --coverage --detectOpenHandles"
+    "test": "jest --coverage --detectOpenHandles --runInBand"
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "./_test_/unit_test_suites",
-      "./_test_/functional_test_suites",
-      "./_test_/unit_tests.test.js"
+      "./_test_"
     ],
-    "silent": false,
+    "silent": true,
     "maxWorkers": 1
   },
   "keywords": [],

@@ -43,7 +43,8 @@ test('login test', done => {
         }
     }
     os.execCommand('se2118 login --username admin --passw freepasses4all', function (retVal) {
-        callback(cases(retVal));
+        const last = retVal.slice(-4);
+        callback(cases(last));
     });
 });
 
@@ -57,7 +58,8 @@ test('logout test', done => {
         }
     }
     os.execCommand('se2118 logout', function (retVal) {
-        callback(cases(retVal));
+        const last = retVal.slice(-4);
+        callback(cases(last));
     });
 });
 
@@ -166,7 +168,7 @@ test('passesperstation test', done => {
     });
 });
 
-/*test('settlementbyid test', done => {
+test('settlementbyid test', done => {
     function callback(data) {
         try {
             expect(data).toEqual(401)
@@ -179,7 +181,7 @@ test('passesperstation test', done => {
         const last = retVal.slice(-4);
         callback(cases(last));
     });
-});*/
+});
 
 test('settlementsbyoperator test', done => {
     function callback(data) {
