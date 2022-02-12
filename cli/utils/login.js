@@ -34,11 +34,11 @@ async function login(baseURL, usr, pswd) {
     let res;
 
     if (usr == undefined) {
-        console.log("Error: Username is missing");
+        console.log("Username is missing");
         usr = await promptMissingUsr();
     }
     if (pswd == undefined) {
-        console.log("Error: Password is missing");
+        console.log("Password is missing");
         pswd = await promptMissingPsw();
     }
 
