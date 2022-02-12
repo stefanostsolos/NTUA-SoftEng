@@ -11,6 +11,7 @@ const app = express();
 const port = 9103;
 const baseURL = `/interoperability/api`;
 
+//CORS setup
 const corsOptions = {
     origin: ' http://localhost:3000',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204

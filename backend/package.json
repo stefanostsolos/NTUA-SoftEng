@@ -4,11 +4,11 @@
   "description": "Backend source code for term project of Software Engineering course, 7th Semester, ECE NTUA",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "dev": "NODE_ENV=development node app.js",
+    "prod": "NODE_ENV=production node app.js"
   },
-  "author": "Alexandros Kouridakis",
-  "license": "ISC",
+  "author": "Alexandros Kouridakis <alkouridakis@gmail.com>",
+  "repository": "github:https://github.com/ntua/TL21-18/tree/master/backend",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
