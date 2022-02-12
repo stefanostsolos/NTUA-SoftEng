@@ -8,7 +8,7 @@ async function promptMissingScope() {
     question.push({
         type: 'list',
         name: 'scope',
-        message: 'Please choose which scope you want',
+        message: 'Please choose which scope you want to use',
         choices: [
             'admin',
             'login: User login credentials (inputted by user in the login form) and perform identification',
