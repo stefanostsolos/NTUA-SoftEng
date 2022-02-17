@@ -6,7 +6,7 @@ function validate() {
     var stream;
 
     try {
-        stream = fs.readFileSync('../cli/bin/token.txt', 'utf8');
+        stream = fs.readFileSync(`${__dirname}/token.txt`, 'utf8');
     } catch (err) {
         console.log(err)
         res = 400;

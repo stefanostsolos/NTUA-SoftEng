@@ -22,7 +22,7 @@ async function promptMissingDateFrom() {
     question.push({
         type: 'input',
         name: 'DateFrom',
-        message: 'Type the earliest date to be fetched in YYYYMMDD format',
+        message: 'Type a starting Date(YYYYMMDD)',
     });
 
     const answer = await inquirer.prompt(question);
@@ -35,7 +35,7 @@ async function promptMissingDateTo() {
     question.push({
         type: 'input',
         name: 'DateTo',
-        message: 'Type the latest date to be fetched in YYYYMMDD format',
+        message: 'Type a last Date(YYYYMMDD)',
     });
 
     const answer = await inquirer.prompt(question);
@@ -60,19 +60,19 @@ async function passesperstation(baseURL, token, station, datefrom, dateto, forma
     let res;
 
     if (station == undefined) {
-        console.log("station is missing");
+        console.log("Error: station is missing");
         station = await promptMissingStation();
     }
     if (datefrom == undefined) {
-        console.log("datefrom is missing");
+        console.log("Error: datefrom is missing");
         datefrom = await promptMissingDateFrom();
     }
     if (dateto == undefined) {
-        console.log("dateto is missing");
+        console.log("Error: datefrom is missing");
         dateto = await promptMissingDateTo();
     }
     if (format == undefined) {
-        console.log("format is missing");
+        console.log("Error: format is missing");
         format = await promptMissingFormat();
     }
 

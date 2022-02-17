@@ -11,7 +11,7 @@ async function promptMissingSource() {
     question.push({
         type: 'input',
         name: 'source',
-        message: 'Please type a file source (skip " " from the path)',
+        message: 'Please type a file source (skip " from the path)',
     });
 
     const answer = await inquirer.prompt(question);
@@ -22,7 +22,7 @@ async function passesupd(baseURL, token, source) {
     let res;
 
     if (source == undefined) {
-        console.log("Source is missing");
+        console.log("Error: source is missing");
         source = await promptMissingSource();
     }
 

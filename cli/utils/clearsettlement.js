@@ -20,7 +20,7 @@ async function clearsettlement(baseURL, token, id) {
     let res;
 
     if (id == undefined) {
-        console.log("ID is missing");
+        console.log("Error: ID is missing");
         id = await promptMissingID();
     }
 

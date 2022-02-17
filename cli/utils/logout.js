@@ -11,7 +11,7 @@ async function logout(baseURL, token) {
             'X-OBSERVATORY-AUTH': `${token}`
         }
     }).then((response) => {
-        fs.writeFile('./../CLI/bin/token.txt', "", 'utf8', function (err) {
+        fs.writeFile(`${__dirname}/../bin/token.txt`, "", 'utf8', function (err) {
             if (err) console.log(err);
         });
         res = response.status;

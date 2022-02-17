@@ -34,11 +34,11 @@ async function login(baseURL, usr, pswd) {
     let res;
 
     if (usr == undefined) {
-        console.log("Username is missing");
+        console.log("Error: Username is missing");
         usr = await promptMissingUsr();
     }
     if (pswd == undefined) {
-        console.log("Password is missing");
+        console.log("Error: Password is missing");
         pswd = await promptMissingPsw();
     }
 
@@ -47,7 +47,7 @@ async function login(baseURL, usr, pswd) {
             'Content-Type': 'application/x-www-form-urlencoded',
         }
     }).then((response) => {
-        fs.writeFile('../CLI/bin/token.txt', response.data.token, 'utf8', function (err) {
+        fs.writeFile(`${__dirname}/../bin/token.txt`, response.data.token, 'utf8', function (err) {
             if (err) console.log(err)
         });
         res = response.status;

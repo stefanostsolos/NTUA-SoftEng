@@ -22,7 +22,7 @@ async function promptMissingPassw() {
     question.push({
         type: 'input',
         name: 'passw',
-        message: 'Please type a password',
+        message: 'Please type a passw',
     });
 
     const answer = await inquirer.prompt(question);
@@ -68,21 +68,21 @@ async function usermod(baseURL, token, username, passw, type, operatorID) {
     let res;
 
     if (username == undefined) {
-        console.log("Username is missing");
+        console.log("Error: username one is missing");
         username = await promptMissingUsername();
     }
     if (passw == undefined) {
-        console.log("Password is missing");
+        console.log("Error: password one is missing");
         passw = await promptMissingPassw();
     }
     if (type == undefined) {
-        console.log("Type is missing");
+        console.log("Error: type one is missing");
         type = await promptMissingType();
     }
     if (operatorID == undefined) {
         if (type != 'operator') operatorID = 'NULL';
         else {
-            console.log("operatorID is missing");
+            console.log("Error: operatorID one is missing");
             operatorID = await promptMissingOperatorID();
         }
     }
