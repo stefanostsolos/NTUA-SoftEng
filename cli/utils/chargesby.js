@@ -2,6 +2,7 @@ module.exports = { chargesby: chargesby };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
 async function promptMissingOperator() {
     const question = [];
@@ -56,7 +57,8 @@ async function promptMissingFormat() {
     return answer.format;
 }
 
-async function chargesby(baseURL, token, op, datefrom, dateto, format) {
+async function chargesby(baseURL, op, datefrom, dateto, format) {
+    const token = jwt.validate();
     let res;
 
     if (op == undefined) {

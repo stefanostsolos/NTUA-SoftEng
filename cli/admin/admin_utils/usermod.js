@@ -2,6 +2,7 @@ module.exports = { usermod: usermod };
 
 const inquirer = require('inquirer');
 const axios = require('axios');
+const jwt = require(`${__dirname}/../../bin/jwt.js`);
 
 async function promptMissingUsername() {
     const question = [];
@@ -64,7 +65,8 @@ async function promptMissingOperatorID() {
     return answer.operatorID;
 }
 
-async function usermod(baseURL, token, username, passw, type, operatorID) {
+async function usermod(baseURL, username, passw, type, operatorID) {
+    const token = jwt.validate();
     let res;
 
     if (username == undefined) {

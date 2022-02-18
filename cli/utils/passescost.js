@@ -2,6 +2,7 @@ module.exports = { passescost: passescost };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
 async function promptMissingOperator() {
     const question = [];
@@ -56,7 +57,8 @@ async function promptMissingFormat() {
     return answer.format;
 }
 
-async function passescost(baseURL, token, op1, op2, datefrom, dateto, format) {
+async function passescost(baseURL, op1, op2, datefrom, dateto, format) {
+    const token = jwt.validate();
     let res;
 
     if (op1 == undefined) {

@@ -11,7 +11,7 @@ async function promptMissingScope() {
         message: 'Please choose which scope you want',
         choices: [
             'admin',
-            'login: User login credentials (inputted by user in the login form) and perform identification',
+            'login: User login credentials and perform identification',
             'logout: Perform user logout',
             'healthcheck: Check end-to-end connectivity (between user and database)',
             'resetpasses: Deletes all pass records from the database and resets the administrator account to default',

@@ -2,6 +2,7 @@ module.exports = { settlementbyid: settlementbyid };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
 async function promptMissingID() {
     const question = [];
@@ -30,7 +31,8 @@ async function promptMissingFormat() {
     return answer.format;
 }
 
-async function settlementbyid(baseURL, token, id, format) {
+async function settlementbyid(baseURL, id, format) {
+    const token = jwt.validate();
     let res;
 
     if (id == undefined) {

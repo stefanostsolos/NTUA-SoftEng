@@ -1,8 +1,10 @@
 module.exports = { users: users };
 
 const axios = require('axios');
+const jwt = require(`${__dirname}/../../bin/jwt.js`);
 
-async function users(baseURL, token, username) {
+async function users(baseURL, username) {
+    const token = jwt.validate();
     let res;
 
     if (username == undefined) {

@@ -2,7 +2,7 @@ module.exports = { admin: admin };
 
 const admin_scope = require('./admin_scope.js');
 
-async function admin(baseURL, token, options) {
+async function admin(baseURL, options) {
     let fun, res;
     for (let x in options) {
         if (x == '_') continue;
@@ -15,15 +15,15 @@ async function admin(baseURL, token, options) {
     switch (fun) {
         case 'usermod':
             utils = path(fun);
-            res = await utils.usermod(baseURL, token, options.username, options.passw, options.type, options.operatorID);
+            res = await utils.usermod(baseURL, options.username, options.passw, options.type, options.operatorID);
             break;
         case 'passesupd':
             utils = path(fun);
-            res = await utils.passesupd(baseURL, token, options.source);
+            res = await utils.passesupd(baseURL, options.source);
             break;
         case 'users':
             utils = path(fun);
-            res = await utils.users(baseURL, token, options.username);
+            res = await utils.users(baseURL, options.username);
             break;
         default:
             console.log("Error 400: Bad request");

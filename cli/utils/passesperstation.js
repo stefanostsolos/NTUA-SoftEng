@@ -2,6 +2,7 @@ module.exports = { passesperstation: passesperstation };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
 async function promptMissingStation() {
     const question = [];
@@ -56,7 +57,8 @@ async function promptMissingFormat() {
     return answer.format;
 }
 
-async function passesperstation(baseURL, token, station, datefrom, dateto, format) {
+async function passesperstation(baseURL, station, datefrom, dateto, format) {
+    const token = jwt.validate();
     let res;
 
     if (station == undefined) {

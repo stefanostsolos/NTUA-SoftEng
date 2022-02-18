@@ -1,8 +1,10 @@
 module.exports = { resetpasses: resetpasses };
 
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
-async function resetpasses(baseURL, token) {
+async function resetpasses(baseURL) {
+    const token = jwt.validate();
     let res;
 
     await axios.post(`${baseURL}/admin/resetpasses`, {}, {

@@ -4,6 +4,7 @@ const axios = require('axios');
 const fs = require('fs');
 const { FormData } = require('formdata-node');
 const inquirer = require('inquirer');
+const jwt = require(`${__dirname}/../../bin/jwt.js`);
 
 async function promptMissingSource() {
     const question = [];
@@ -18,7 +19,8 @@ async function promptMissingSource() {
     return answer.source;
 }
 
-async function passesupd(baseURL, token, source) {
+async function passesupd(baseURL, source) {
+    const token = jwt.validate();
     let res;
 
     if (source == undefined) {

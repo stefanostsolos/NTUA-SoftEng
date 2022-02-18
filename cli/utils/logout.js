@@ -2,8 +2,10 @@ module.exports = { logout: logout };
 
 const axios = require('axios');
 const fs = require('fs');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
-async function logout(baseURL, token) {
+async function logout(baseURL) {
+    const token = jwt.validate();
     let res;
 
     await axios.post(`${baseURL}/logout`, {}, {
@@ -11,10 +13,13 @@ async function logout(baseURL, token) {
             'X-OBSERVATORY-AUTH': `${token}`
         }
     }).then((response) => {
-        fs.writeFile(`${__dirname}/../bin/token.txt`, "", 'utf8', function (err) {
-            if (err) console.log(err);
-        });
-        res = response.status;
+        try {
+            fs.writeFileSync(`${__dirname}/../bin/token.txt`, "");
+            res = response.status;
+        } catch (err) {
+            console.error(err);
+            res = 404;
+        }
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: logout");

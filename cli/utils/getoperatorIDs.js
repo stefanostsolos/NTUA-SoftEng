@@ -1,8 +1,10 @@
 module.exports = { getoperatorIDs: getoperatorIDs };
 
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
-async function getoperatorIDs(baseURL, token) {
+async function getoperatorIDs(baseURL) {
+    const token = jwt.validate();
     let res;
 
     await axios.get(`${baseURL}/GetOperatorIDs`, {

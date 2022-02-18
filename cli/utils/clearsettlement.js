@@ -2,6 +2,7 @@ module.exports = { clearsettlement: clearsettlement };
 
 const inquirer = require('inquirer');
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
 async function promptMissingID() {
     const question = [];
@@ -16,7 +17,8 @@ async function promptMissingID() {
     return answer.id;
 }
 
-async function clearsettlement(baseURL, token, id) {
+async function clearsettlement(baseURL, id) {
+    const token = jwt.validate();
     let res;
 
     if (id == undefined) {

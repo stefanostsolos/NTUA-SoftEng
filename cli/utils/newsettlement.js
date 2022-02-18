@@ -2,6 +2,7 @@ module.exports = { newsettlement: newsettlement };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
 async function promptMissingOperator() {
     const question = [];
@@ -29,7 +30,8 @@ async function promptMissingDateTo() {
     return answer.DateTo;
 }
 
-async function newsettlement(baseURL, token, op1, op2, dateto) {
+async function newsettlement(baseURL, op1, op2, dateto) {
+    const token = jwt.validate();
     let res;
 
     if (op1 == undefined) {

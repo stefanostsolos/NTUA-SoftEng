@@ -47,10 +47,13 @@ async function login(baseURL, usr, pswd) {
             'Content-Type': 'application/x-www-form-urlencoded',
         }
     }).then((response) => {
-        fs.writeFile(`${__dirname}/../bin/token.txt`, response.data.token, 'utf8', function (err) {
-            if (err) console.log(err)
-        });
-        res = response.status;
+        try {
+            fs.writeFileSync(`${__dirname}/../bin/token.txt`, response.data.token);
+            res = response.status;
+        } catch (err) {
+            console.error(err);
+            res = 404;
+        }
     }).catch((error) => {
         console.log(`Error(${error.response.status}): ` + error.response.data);
         console.log("Found at: login");

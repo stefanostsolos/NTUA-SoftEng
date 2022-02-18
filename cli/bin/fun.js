@@ -2,7 +2,7 @@ module.exports = { switch_fun: switch_fun };
 
 const baseURL = 'http://localhost:9103/interoperability/api';
 const axios = require('axios');
-const jwt = require('./jwt.js');
+const jwt = require('./jwt.js')
 
 async function switch_fun(fun, options) {
     const token = jwt.validate();
@@ -15,23 +15,23 @@ async function switch_fun(fun, options) {
             break;
         case 'resetpasses':
             admin = admin_path(fun);
-            res = await admin.resetpasses(baseURL, token);
+            res = await admin.resetpasses(baseURL);
             break;
         case 'resetstations':
             admin = admin_path(fun);
-            res = await admin.resetstations(baseURL, token);
+            res = await admin.resetstations(baseURL);
             break;
         case 'resetvehicles':
             admin = admin_path(fun);
-            res = await admin.resetvehicles(baseURL, token);
+            res = await admin.resetvehicles(baseURL);
             break;
         case 'resettags':
             admin = admin_path(fun);
-            res = await admin.resettags(baseURL, token);
+            res = await admin.resettags(baseURL);
             break;
         case 'admin':
             admin = admin_path(fun);
-            res = await admin.admin(baseURL, token, options);
+            res = await admin.admin(baseURL, options);
             break;
         case 'login':
             utils = path(fun);
@@ -39,47 +39,47 @@ async function switch_fun(fun, options) {
             break;
         case 'logout':
             utils = path(fun);
-            res = await utils.logout(baseURL, token);
+            res = await utils.logout(baseURL);
             break;
         case 'passesperstation':
             utils = path(fun);
-            res = await utils.passesperstation(baseURL, token, options.station, options.datefrom, options.dateto, options.format);
+            res = await utils.passesperstation(baseURL, options.station, options.datefrom, options.dateto, options.format);
             break;
         case 'passesanalysis':
             utils = path(fun);
-            res = await utils.passesanalysis(baseURL, token, options.op1, options.op2, options.datefrom, options.dateto, options.format);
+            res = await utils.passesanalysis(baseURL, options.op1, options.op2, options.datefrom, options.dateto, options.format);
             break;
         case 'passescost':
             utils = path(fun);
-            res = await utils.passescost(baseURL, token, options.op1, options.op2, options.datefrom, options.dateto, options.format);
+            res = await utils.passescost(baseURL, options.op1, options.op2, options.datefrom, options.dateto, options.format);
             break;
         case 'chargesby':
             utils = path(fun);
-            res = await utils.chargesby(baseURL, token, options.op1, options.datefrom, options.dateto, options.format);
+            res = await utils.chargesby(baseURL, options.op1, options.datefrom, options.dateto, options.format);
             break;
         case 'getstationIDs':
             utils = path(fun);
-            res = await utils.getstationIDs(baseURL, token);
+            res = await utils.getstationIDs(baseURL);
             break;
         case 'getoperatorIDs':
             utils = path(fun);
-            res = await utils.getoperatorIDs(baseURL, token);
+            res = await utils.getoperatorIDs(baseURL);
             break;
         case 'newsettlement':
             utils = path(fun);
-            res = await utils.newsettlement(baseURL, token, options.op1, options.op2, options.dateto);
+            res = await utils.newsettlement(baseURL, options.op1, options.op2, options.dateto);
             break;
         case 'clearsettlement':
             utils = path(fun);
-            res = await utils.clearsettlement(baseURL, token, options.id);
+            res = await utils.clearsettlement(baseURL, options.id);
             break;
         case 'settlementbyid':
             utils = path(fun);
-            res = await utils.settlementbyid(baseURL, token, options.id, options.format);
+            res = await utils.settlementbyid(baseURL, options.id, options.format);
             break;
         case 'settlementsbyoperator':
             utils = path(fun);
-            res = await utils.settlementsbyoperator(baseURL, token, options.op1, options.format);
+            res = await utils.settlementsbyoperator(baseURL, options.op1, options.format);
             break;
         default:
             await axios.get(`${baseURL}/${fun}`, {

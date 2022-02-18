@@ -1,8 +1,10 @@
 module.exports = { resettags: resettags };
 
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
-async function resettags(baseURL, token) {
+async function resettags(baseURL) {
+    const token = jwt.validate();
     let res;
 
     await axios.post(`${baseURL}/admin/resettags`, {}, {

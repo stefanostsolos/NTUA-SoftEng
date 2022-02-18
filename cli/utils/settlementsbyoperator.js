@@ -2,6 +2,7 @@ module.exports = { settlementsbyoperator: settlementsbyoperator };
 
 const inquirer = require("inquirer");
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
 async function promptMissingOperator() {
     const question = [];
@@ -30,7 +31,8 @@ async function promptMissingFormat() {
     return answer.format;
 }
 
-async function settlementsbyoperator(baseURL, token, op1, format) {
+async function settlementsbyoperator(baseURL, op1, format) {
+    const token = jwt.validate();
     let res;
 
     if (op1 == undefined) {

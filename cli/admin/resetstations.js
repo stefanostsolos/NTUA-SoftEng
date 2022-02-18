@@ -1,8 +1,10 @@
 module.exports = { resetstations: resetstations };
 
 const axios = require('axios');
+const jwt = require(`${__dirname}/../bin/jwt.js`);
 
-async function resetstations(baseURL, token) {
+async function resetstations(baseURL) {
+    const token = jwt.validate();
     let res;
 
     await axios.post(`${baseURL}/admin/resetstations`, {}, {
