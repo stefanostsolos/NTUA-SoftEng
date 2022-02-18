@@ -2,5 +2,8 @@
 
 Περιεχόμενα:
 
-- CLI tests
+- CLI tests with jest
 
+- Run npm install 
+
+- run npm test
