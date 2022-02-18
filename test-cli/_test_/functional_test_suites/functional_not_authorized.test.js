@@ -153,6 +153,21 @@ test('getstationIDs test', done => {
     });
 });
 
+test('NewSettlement test', done => {
+    function callback(data) {
+        try {
+            expect(data).toEqual(401)
+            done();
+        } catch (error) {
+            done(error);
+        }
+    }
+    os.execCommand('se2118 newsettlement --op1 AO --op2 EG --dateto 20210619', function (retVal) {
+        const last = retVal.slice(-4);
+        callback(cases(last));
+    });
+});
+
 test('passesanalysis test', done => {
     function callback(data) {
         try {

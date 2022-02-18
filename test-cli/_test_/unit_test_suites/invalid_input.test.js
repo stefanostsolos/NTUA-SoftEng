@@ -30,6 +30,11 @@ test('Unit Test for clearsettlement function (case: invalid input)', async () =>
     expect(res).toBe(400)
 })
 
+test('Unit Test for newsettlement function', async () => {
+    const res = await newsettlement.newsettlement(baseURL, 'not_valid', 'AO', '20210919');
+    expect(res).toBe(400)
+})
+
 test('Unit Test for passesanalysis function (case: invalid input)', async () => {
     const res = await passesanalysis.passesanalysis(baseURL, 'AE', 'EG', '20210419', '20210619', 'csv');
     expect(res).toBe(400)

@@ -51,10 +51,10 @@ test('Unit Test for Healthcheck function', async () => {
     expect(res).toBe(200)
 })
 
-/*test('Unit Test for newsettlement function', async () => {
+test('Unit Test for newsettlement function', async () => {
     const res = await newsettlement.newsettlement(baseURL, 'EG', 'AO', '20210919');
     expect(res).toBe(200)
-})*/
+})
 
 test('Unit Test for passesanalysis function (case: correct input)', async () => {
     const res = await passesanalysis.passesanalysis(baseURL, 'AO', 'EG', '20210419', '20210619', 'csv');
@@ -111,7 +111,7 @@ test('Unit Test for login function (case: correct input)', async () => {
     expect(res).toBe(200)
 })
 
-/*test('Unit Test for resetpasses function (case: correct input)', async () => {
+test('Unit Test for resetpasses function (case: correct input)', async () => {
     const res = await resetpasses.resetpasses(baseURL);
     expect(res).toBe(200)
 }, 20000)
@@ -129,4 +129,4 @@ test('Unit Test for resettags function (case: correct input)', async () => {
 test('Unit Test for resetvehicles function (case: correct input)', async () => {
     const res = await resetvehicles.resetvehicles(baseURL);
     expect(res).toBe(200)
-})*/
+})

@@ -45,6 +45,11 @@ test('Unit Test for getstationIDs function (case: not authorized user)', async (
     expect(res).toBe(401)
 })
 
+test('Unit Test for newsettlement function', async () => {
+    const res = await newsettlement.newsettlement(baseURL, 'EG', 'AO', '20210919');
+    expect(res).toBe(401)
+})
+
 test('Unit Test for passesanalysis function (case: not authorized user)', async () => {
     const res = await passesanalysis.passesanalysis(baseURL, 'AO', 'EG', '20210419', '20210619', 'csv');
     expect(res).toBe(401)
