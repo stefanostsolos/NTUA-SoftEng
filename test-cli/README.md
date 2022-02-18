@@ -4,6 +4,6 @@
 
 - CLI tests with jest
 
-- Run npm install 
+- run npm install to install dependencies
 
 - run npm test
