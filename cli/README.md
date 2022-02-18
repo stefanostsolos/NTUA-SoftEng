@@ -4,7 +4,7 @@
 
 - Command line interface (CLI).
 
--run npm install -g to install globally CLI
+- run npm install -g to install globally CLI
 
 - run npm install to install dependencies
 
