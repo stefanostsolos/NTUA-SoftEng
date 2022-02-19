@@ -4,8 +4,8 @@
 
 - Command line interface (CLI).
 
-- run npm install -g to install CLI globally
+- Run npm install -g to install CLI globally
 
-- run npm install to install dependencies
+- Run npm install to install dependencies
 
-- run se2118 to start the CLI 
+- Run se2118 to start the CLI 
