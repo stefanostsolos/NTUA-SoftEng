@@ -36,7 +36,7 @@ async function promptMissingDateTo() {
     question.push({
         type: 'input',
         name: 'DateTo',
-        message: 'The latest date of pass records to be fetched in YYYYMMDD format',
+        message: 'Type the latest date of pass records to be fetched in YYYYMMDD format',
     });
 
     const answer = await inquirer.prompt(question);
@@ -62,23 +62,23 @@ async function passesanalysis(baseURL, op1, op2, datefrom, dateto, format) {
     let res;
 
     if (op1 == undefined) {
-        console.log("Error: operator one is missing");
+        console.log("operator one is missing");
         op1 = await promptMissingOperator();
     }
     if (op2 == undefined) {
-        console.log("Error: operator two is missing");
+        console.log("operator two is missing");
         op2 = await promptMissingOperator();
     }
     if (datefrom == undefined) {
-        console.log("Error: datefrom is missing");
+        console.log("datefrom is missing");
         datefrom = await promptMissingDateFrom();
     }
     if (dateto == undefined) {
-        console.log("Error: datefrom is missing");
+        console.log("dateto is missing");
         dateto = await promptMissingDateTo();
     }
     if (format == undefined) {
-        console.log("Error: format is missing");
+        console.log("format is missing");
         format = await promptMissingFormat();
     }
 
