@@ -5,7 +5,6 @@ const clearsettlement = require(`${__dirname}/../../../cli/utils/clearsettlement
 const getoperatorIDs = require(`${__dirname}/../../../cli/utils/getoperatorIDs.js`)
 const getstationIDs = require(`${__dirname}/../../../cli/utils/getstationIDs.js`)
 const healthcheck = require(`${__dirname}/../../../cli/admin/healthcheck.js`)
-const newsettlement = require(`${__dirname}/../../../cli/utils/newsettlement.js`)
 const passesanalysis = require(`${__dirname}/../../../cli/utils/passesanalysis.js`)
 const passescost = require(`${__dirname}/../../../cli/utils/passescost.js`)
 const passesperstation = require(`${__dirname}/../../../cli/utils/passesperstation.js`)
@@ -48,11 +47,6 @@ test('Unit Test for getstationIDs function (case: correct input)', async () => {
 
 test('Unit Test for Healthcheck function', async () => {
     const res = await healthcheck.healthcheck(baseURL);
-    expect(res).toBe(200)
-})
-
-test('Unit Test for newsettlement function', async () => {
-    const res = await newsettlement.newsettlement(baseURL, 'EG', 'AO', '20210919');
     expect(res).toBe(200)
 })
 
@@ -111,13 +105,13 @@ test('Unit Test for login function (case: correct input)', async () => {
     expect(res).toBe(200)
 })
 
-test('Unit Test for resetpasses function (case: correct input)', async () => {
-    const res = await resetpasses.resetpasses(baseURL);
-    expect(res).toBe(200)
-}, 20000)
-
 test('Unit Test for resetstations function (case: correct input)', async () => {
     const res = await resetstations.resetstations(baseURL);
+    expect(res).toBe(200)
+})
+
+test('Unit Test for resetvehicles function (case: correct input)', async () => {
+    const res = await resetvehicles.resetvehicles(baseURL);
     expect(res).toBe(200)
 })
 
@@ -126,7 +120,7 @@ test('Unit Test for resettags function (case: correct input)', async () => {
     expect(res).toBe(200)
 })
 
-test('Unit Test for resetvehicles function (case: correct input)', async () => {
-    const res = await resetvehicles.resetvehicles(baseURL);
+test('Unit Test for resetpasses function (case: correct input)', async () => {
+    const res = await resetpasses.resetpasses(baseURL);
     expect(res).toBe(200)
-})
+}, 20000)
