@@ -36,11 +36,11 @@ async function settlementbyid(baseURL, id, format) {
     let res;
 
     if (id == undefined) {
-        console.log("Error: settlement ID is missing");
+        console.log("settlement ID is missing");
         id = await promptMissingID();
     }
     if (format == undefined) {
-        console.log("Error: format is missing");
+        console.log("format is missing");
         format = await promptMissingFormat();
     }
 
