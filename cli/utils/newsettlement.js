@@ -35,15 +35,15 @@ async function newsettlement(baseURL, op1, op2, dateto) {
     let res;
 
     if (op1 == undefined) {
-        console.log("Error: operator one is missing");
+        console.log("operator one is missing");
         op1 = await promptMissingOperator();
     }
     if (op2 == undefined) {
-        console.log("Error: operator two is missing");
+        console.log("operator two is missing");
         op2 = await promptMissingOperator();
     }
     if (dateto == undefined) {
-        console.log("Error: dateto is missing");
+        console.log("dateto is missing");
         dateto = await promptMissingDateTo();
     }
 
