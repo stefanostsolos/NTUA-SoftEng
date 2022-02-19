@@ -70,21 +70,21 @@ async function usermod(baseURL, username, passw, type, operatorID) {
     let res;
 
     if (username == undefined) {
-        console.log("Error: username one is missing");
+        console.log("username is missing");
         username = await promptMissingUsername();
     }
     if (passw == undefined) {
-        console.log("Error: password one is missing");
+        console.log("password is missing");
         passw = await promptMissingPassw();
     }
     if (type == undefined) {
-        console.log("Error: type one is missing");
+        console.log("type is missing");
         type = await promptMissingType();
     }
     if (operatorID == undefined) {
         if (type != 'operator') operatorID = 'NULL';
         else {
-            console.log("Error: operatorID one is missing");
+            console.log("operatorID is missing");
             operatorID = await promptMissingOperatorID();
         }
     }
