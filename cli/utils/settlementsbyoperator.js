@@ -36,11 +36,11 @@ async function settlementsbyoperator(baseURL, op1, format) {
     let res;
 
     if (op1 == undefined) {
-        console.log("Error: operator one is missing");
+        console.log("operator is missing");
         op1 = await promptMissingOperator();
     }
     if (format == undefined) {
-        console.log("Error: format is missing");
+        console.log("format is missing");
         format = await promptMissingFormat();
     }
 
