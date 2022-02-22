@@ -12,7 +12,7 @@
   "bin": {
     "se2118": "./bin/index.js"
   },
-  "author": "SimCity&&Gigachad",
+  "author": "Simos Porgiotis && Stefanos Tsolos",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.2",

@@ -1,11 +1,7 @@
 # CLI 
 
-Περιεχόμενα:
+- Run ```npm install -g``` to install CLI globally
 
-- Command line interface (CLI).
+- Run ```npm install``` to install dependencies
 
-- run npm install -g to install CLI globally
-
-- run npm install to install dependencies
-
-- run se2118 to start the CLI 
+- Run ```se2118``` to start the CLI 
