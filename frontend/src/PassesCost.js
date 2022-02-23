@@ -182,11 +182,11 @@ function PassesCost({ token }) {
                       <ToggleButton value="credited">2)Op.Credited</ToggleButton>
                     </ToggleButtonGroup>
                 ) : null}
-                {role === 'credited' ? (
+                {role === 'credited' || decodedToken.type === 'admin' ? (
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Operator Debited
-                  </InputLabel>
+                  </InputLabel> 
                   <Select
                     className="form-input"
                     labelId="demo-simple-select-label"
@@ -204,7 +204,7 @@ function PassesCost({ token }) {
                   </Select>
                 </FormControl>
                 ) : null}
-                {role === 'debited' ? (
+                {role === 'debited' || decodedToken.type === 'admin' ? (
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Op.Credited
