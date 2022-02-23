@@ -1,3 +1,4 @@
+/* All the needed components for the page are imported */
 import "./App.css";
 import React, { useState } from "react";
 import FormControl from "@mui/material/FormControl";
@@ -18,6 +19,8 @@ import FormGroup from '@mui/material/FormGroup';
 import Box from "@mui/material/Box";
 import { useLocation, useHistory } from "react-router-dom";
 
+/* This is the login page which the non logged-in user is directed.
+The Login Button is stated below */
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
   backgroundColor: grey[900],
@@ -26,11 +29,14 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+/* Ref forwarding is an opt-in feature that lets some components take a ref they receive, and pass it further down (in other words, “forward” it) to a child. */
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+/* The token is passed inside the function */
 function Login({ setToken }) {
+  /*  A Hook is a special function that lets you “hook into” React features. For example, useState is a Hook that lets you add React state to function components. */
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +50,7 @@ function Login({ setToken }) {
 
   const canSubmit = [username, password].every(Boolean);
 
+  /* Event handlers determine what action is to be taken whenever an event is fired. This could be a button click or a change in a text input. Essentially, event handlers are what make it possible for users to interact with your React app. */
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -60,6 +67,7 @@ function Login({ setToken }) {
     event.preventDefault();
   };
 
+  /* Log in is performed */
   const doLogin = async (username, password) => {
     setDisabled(true);
     try {
@@ -78,13 +86,13 @@ function Login({ setToken }) {
       );
 
       const status = await res.status;
-
+      /* Status check and case handling */
       if (status === 200) {
         const data = await res.json();
         console.log(data);
-        console.log(typeof(setToken))
+        console.log(typeof (setToken))
         setToken(data.token);
-        if(location.pathname === '/login')
+        if (location.pathname === '/login')
           history.push('/')
       } else if (status === 401) {
         console.log("Unauthorized")
@@ -117,56 +125,61 @@ function Login({ setToken }) {
           <div className="form-container2">
             <form onSubmit={(event) => {
               event.preventDefault();
-                doLogin(username, password);
-              }}>
-                <Stack spacing={3}>
-            <FormControl fullWidth variant="outlined">
-              <TextField
-                error={wrongCredentials}
-                id="username"
-                label="Username"
-                variant="outlined"
-                onChange={handleUsernameChange}
-                value={username}
-              ></TextField>
-            </FormControl>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-              error={wrongCredentials}
-                id="outlined-adornment-password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={handlePasswordChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
-            {wrongCredentials ? (<p className="wrongcredentials">Wrong credentials</p>) : null}
-            <ColorButton 
-              variant="contained"
-              disabled={buttonDisabled || !canSubmit}
-              type="submit"
-              className="login"
+              doLogin(username, password);
+            }}>
               
-            >
-              Login
-            </ColorButton>
-            </Stack>
+              <Stack spacing={3}>
+                <FormControl fullWidth variant="outlined">
+                  {/* In case of wrong credentials*/}
+                  <TextField
+                    error={wrongCredentials}
+                    id="username"
+                    label="Username"
+                    variant="outlined"
+                    onChange={handleUsernameChange}
+                    value={username}
+                  ></TextField>
+                </FormControl>
+                {/* Password is inserted here */}
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">
+                    Password
+                  </InputLabel>
+                  <OutlinedInput
+                    error={wrongCredentials}
+                    id="outlined-adornment-password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={handlePasswordChange}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                </FormControl>
+                {/* Login can be performed when the creadendtials are filled  */}
+                {wrongCredentials ? (<p className="wrongcredentials">Wrong credentials</p>) : null}
+                <ColorButton
+                  variant="contained"
+                  disabled={buttonDisabled || !canSubmit}
+                  type="submit"
+                  className="login"
+
+                >
+                  Login
+                </ColorButton>
+              </Stack>
             </form>
+            {/* In case of internal server error or communication fail the according warning is shown */}
             <Snackbar
               open={internalError}
               autoHideDuration={2000}

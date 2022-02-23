@@ -1,3 +1,4 @@
+/* All the needed components for the page are imported */
 import React from "react";
 import "./App.css";
 import youtube from "./images/youtube-icon.png";
@@ -5,6 +6,7 @@ import fb from "./images/facebook-icon.png";
 import twitter from "./images/twitter-icon.png";
 import instagram from "./images/instagram-icon.png";
 
+/* The footer of the webpage includes all the hyperlinks for our github repository, our NTUA-webmails and the mainstream social media platforms */
 function Footer() {
   return (
     <footer>

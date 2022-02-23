@@ -1,3 +1,4 @@
+/* All the needed components for the page are imported */
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,7 +27,9 @@ import {
 } from "chart.js";
 import { CSVLink } from "react-csv";
 import { grey } from "@mui/material/colors";
+import jwt_decode from "jwt-decode";
 
+/* The download button as csv file stylewise is available here */
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
   backgroundColor: grey[900],
@@ -35,6 +38,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+/* The form elements are spaced for visual and functional reasons */
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
 const FormControl = styled(FormControlSpacing)`
@@ -43,6 +47,7 @@ const FormControl = styled(FormControlSpacing)`
   border-color: "4px solid #ffffff";
 `;
 
+/* Chart class */
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -52,11 +57,15 @@ ChartJS.register(
   Legend
 );
 
+/* Ref forwarding is an opt-in feature that lets some components take a ref they receive, and pass it further down (in other words, “forward” it) to a child. */
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+/* The token is passed inside the function */
 function PassesPerStation({ token }) {
+  /*  A Hook is a special function that lets you “hook into” React features. For example, useState is a Hook that lets you add React state to function components. */
+  const decodedToken = jwt_decode(token);
   const [stations, setStations] = useState([]);
   const [station, setStation] = useState("");
   const [datefrom, setDatefrom] = useState(null);
@@ -69,6 +78,7 @@ function PassesPerStation({ token }) {
 
   let result = {};
 
+  /* Graph dates sorting */
   if (requestedData) {
     const onlyDates = requestedData.PassesList.map(
       (element) => new Date(element.PassTimeStamp)
@@ -80,7 +90,7 @@ function PassesPerStation({ token }) {
       element.toLocaleDateString()
     );
 
-    //Group by dates and count
+    /* Group by dates and count */
     result = stringDates.reduce((a, c) => ((a[c] = (a[c] || 0) + 1), a), {});
   }
 
@@ -97,6 +107,7 @@ function PassesPerStation({ token }) {
     },
   };
 
+  /* The data are graphed */
   const chartData = {
     labels: Object.keys(result),
     datasets: [
@@ -108,15 +119,19 @@ function PassesPerStation({ token }) {
     ],
   };
 
+  /* By using this Hook, you tell React that your component needs to do something after render. React will remember the function you passed (we refer to it as our “effect”), and call it later after performing the DOM updates. DOM stands for Document Object Model */
   useEffect(() => {
     const getStations = async () => {
       const stationsFromServer = await fetchStations();
-      setStations(stationsFromServer);
+      setStations(decodedToken.type === "operator" ?
+      stationsFromServer.filter(station => station.substring(0,2) === decodedToken.operatorID) :
+      stationsFromServer);
     };
     getStations();
     console.log(stations);
   }, []);
 
+  /* Event handlers determine what action is to be taken whenever an event is fired. This could be a button click or a change in a text input. Essentially, event handlers are what make it possible for users to interact with your React app. */
   const handleStationChange = (event) => {
     setStation(event.target.value);
   };
@@ -137,6 +152,7 @@ function PassesPerStation({ token }) {
     setOpen(false);
   };
 
+  /* The Station ID's are fetched */
   const fetchStations = async () => {
     try {
       const res = await fetch(
@@ -150,7 +166,7 @@ function PassesPerStation({ token }) {
         }
       );
       const data = await res.json();
-
+      /* The Station ID List is returned */
       return data.StationIDList;
     } catch (error) {
       setOpen(true);
@@ -158,6 +174,7 @@ function PassesPerStation({ token }) {
     }
   };
 
+  /* After the data fetch we get the Station ID, the date from and the date to in the string form */
   const fetchResults = async (stationid, datefrom, dateto) => {
     const datefromstr = `${datefrom.getFullYear()}${String(
       datefrom.getMonth() + 1
@@ -178,6 +195,7 @@ function PassesPerStation({ token }) {
       }
     );
 
+    /* The data are getting modified so that they can be downloaded from as a csv file. The ?format=csv link is used which gives the data in csv form directly from the backend  */
     const rescsv = await fetch(
       `http://localhost:9103/interoperability/api/PassesPerStation/${stationid}/${datefromstr}/${datetostr}?format=csv`,
       {
@@ -196,7 +214,7 @@ function PassesPerStation({ token }) {
     console.log(datacsv);
     setRequestedCSV(String(datacsv));
     console.log(data);
-    
+
   };
 
   return (
@@ -204,6 +222,7 @@ function PassesPerStation({ token }) {
       <section className="index-banner">
         <h2>Passes Per Station</h2>
         <div className="form-container">
+          {/* The 4-Form elements: Station ID, Date from, Date to and Search button */}
           <Stack spacing={3}>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
@@ -247,6 +266,7 @@ function PassesPerStation({ token }) {
                 </LocalizationProvider>
               </FormControl>
             </Box>
+            {/* The Search Button is clickable only when all the fields are filled */}
             <Button
               variant="contained"
               disabled={!canSubmit}
@@ -257,6 +277,7 @@ function PassesPerStation({ token }) {
             >
               Search
             </Button>
+            {/* In case of error an error-message appears */}
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
               <Alert
                 onClose={handleClose}
@@ -269,22 +290,23 @@ function PassesPerStation({ token }) {
           </Stack>
         </div>
         <div className="chart">
+          {/* The requested data are charted and they can also be downloaded as csv file */}
           {requestedData ? (
             <>
-            <Paper>
-              <Bar options={options} data={chartData}></Bar>
-            </Paper>
-            <div className="form-container3">
-            <ColorButton>  
-              <CSVLink
-                style = {{color: "white"}}
-                filename="PassesPerStationReport.csv"
-                data={requestedCSV}
-              >
-                Download All Data
-              </CSVLink>
-            </ColorButton> 
-            </div>
+              <Paper>
+                <Bar options={options} data={chartData}></Bar>
+              </Paper>
+              <div className="form-container3">
+                <ColorButton>
+                  <CSVLink
+                    style={{ color: "white" }}
+                    filename="PassesPerStationReport.csv"
+                    data={requestedCSV}
+                  >
+                    Download All Data
+                  </CSVLink>
+                </ColorButton>
+              </div>
             </>
           ) : null}
         </div>

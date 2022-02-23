@@ -1,3 +1,5 @@
+/* In this .css file you can find all the styling of the app */  
+
 html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,
 del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,
 legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,
@@ -45,19 +47,6 @@ a {
   background: transparent;
 }
 
-/* change colours to suit your needs / ins {
-  background-color: #ff9;
-  color: #000;
-  text-decoration: none;
-}
-
-change colours to suit your needs / mark {
-  background-color: #ff9;
-  color: #000;
-  font-style: italic;
-  font-weight: bold;
-} */
-
 del {
   text-decoration: line-through;
 }
@@ -73,7 +62,6 @@ table {
   border-spacing: 0;
 }
 
-/* change border colour to suit your needs */
 hr {
   display: block;
   height: 1px;
@@ -468,7 +456,6 @@ footer ul li a {
   height: 150px;
 }
 
-
 .form-input {
   margin-bottom: 10%;
   border-radius: 8px;
@@ -630,7 +617,7 @@ h1 {
 .pay-icon {
   color: #fff;
 }
-
+/* Basic style changes for responsive webpage */ 
 @media screen and (max-width: 1050px) and (min-width: 768px){
   .login-button {
     padding-left: 220px;

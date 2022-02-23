@@ -1,3 +1,4 @@
+/* All the needed components for the page are imported */
 import "./App.css";
 import React from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
@@ -11,7 +12,7 @@ import useWindowDimensions from './useWindowDimensions'
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 
-
+/* Logout button and hover style */
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
   backgroundColor: grey[900],
@@ -22,6 +23,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
   height: '40px',
 }));
 
+/* Home Icon and hover style */
 const ColorHomeIcon = styled(HomeIcon)(({ theme }) => ({
   color: "#000000",
   "&:hover": {
@@ -36,6 +38,7 @@ function Header({ token, setToken }) {
 
   console.log(width)
 
+  /* Logout procedure */
   const doLogout = async () => {
     try {
       const res = await fetch(
@@ -73,11 +76,13 @@ function Header({ token, setToken }) {
                   <ColorHomeIcon />
                 </IconButton> 
               </Link>
+              {/* The logged-in user is welcomed! */}
               <Stack direction="row" spacing={2}>
                 <div className="username">
                   Welcome,{decodedToken.username}!
                 </div>
                 <Link to="/">
+                  {/* When the logged-in user clicks the log-out button the log-out is performed */}
                   <ColorButton variant="contained" onClick={() => {
                     console.log("logout")
                     doLogout();

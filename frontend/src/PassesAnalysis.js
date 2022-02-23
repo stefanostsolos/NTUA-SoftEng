@@ -1,3 +1,4 @@
+/* All the needed components for the page are imported */
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,7 +27,9 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { CSVLink } from "react-csv";
 import { grey } from "@mui/material/colors";
+import jwt_decode from "jwt-decode";
 
+/* The download button as csv file stylewise is available here */
 const ColorButton = styled(Button)(({ theme }) => ({
   color: "#ffffff",
   backgroundColor: grey[900],
@@ -34,6 +37,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
     backgroundColor: grey[700],
   },
 }));
+
+/* The form elements are spaced for visual and functional reasons */
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
 const FormControl = styled(FormControlSpacing)`
@@ -41,7 +46,7 @@ const FormControl = styled(FormControlSpacing)`
   max-width: 300px;
   border-color: "4px solid #ffffff";
 `;
-
+/* Chart class */
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -51,23 +56,28 @@ ChartJS.register(
   Legend
 );
 
+/* Ref forwarding is an opt-in feature that lets some components take a ref they receive, and pass it further down (in other words, “forward” it) to a child. */
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+/* The token is passed inside the function */
 function PassesAnalysis({ token }) {
+  /*  A Hook is a special function that lets you “hook into” React features. For example, useState is a Hook that lets you add React state to function components. */
+  const decodedToken = jwt_decode(token);
   const [operators, setOperators] = useState([]);
   const [op1, setOp1] = useState("");
-  const [op2, setOp2] = useState("");
+  const [op2, setOp2] = useState(decodedToken.type === "operator" ? decodedToken.operatorID : "");
   const [datefrom, setDatefrom] = useState(null);
   const [dateto, setDateto] = useState(null);
   const [requestedData, setRequestedData] = useState(null);
   const [open, setOpen] = React.useState(false);
-  const canSubmit = [op1, op2, datefrom, dateto].every(Boolean);
+  const canSubmit = [op1, op2, datefrom, dateto, op1 !== op2].every(Boolean);
   const [requestedCSV, setRequestedCSV] = useState("");
 
   let result = {};
 
+  /* Graph dates sorting */
   if (requestedData) {
     const onlyDates = requestedData.PassesList.map(
       (element) => new Date(element.TimeStamp)
@@ -79,7 +89,7 @@ function PassesAnalysis({ token }) {
       element.toLocaleDateString()
     );
 
-    //Group by dates and count
+    /* Group by dates and count */
     result = stringDates.reduce((a, c) => ((a[c] = (a[c] || 0) + 1), a), {});
   }
 
@@ -96,6 +106,7 @@ function PassesAnalysis({ token }) {
     },
   };
 
+  /* The data are graphed */
   const chartData = {
     labels: Object.keys(result),
     datasets: [
@@ -107,6 +118,7 @@ function PassesAnalysis({ token }) {
     ],
   };
 
+  /* By using this Hook, you tell React that your component needs to do something after render. React will remember the function you passed (we refer to it as our “effect”), and call it later after performing the DOM updates. DOM stands for Document Object Model */
   useEffect(() => {
     const getOperators = async () => {
       const operatorsFromServer = await fetchOperators();
@@ -116,6 +128,7 @@ function PassesAnalysis({ token }) {
     console.log(operators);
   }, []);
 
+  /* Event handlers determine what action is to be taken whenever an event is fired. This could be a button click or a change in a text input. Essentially, event handlers are what make it possible for users to interact with your React app. */
   function handleOp1Change(event) {
     setOp1(event.target.value);
   }
@@ -140,6 +153,7 @@ function PassesAnalysis({ token }) {
     setOpen(false);
   };
 
+  /* The operator ID's are fetched */
   const fetchOperators = async () => {
     try {
       const res = await fetch(
@@ -153,14 +167,14 @@ function PassesAnalysis({ token }) {
         }
       );
       const data = await res.json();
-
+      /* The Operator ID List is returned */
       return data.OperatorIDList;
     } catch (error) {
       setOpen(true);
       return;
     }
   };
-
+  /* After the data fetch we get the Operator ID, the date from and the date to in the string form */
   const fetchResults = async (operatorid1, operatorid2, datefrom, dateto) => {
     const datefromstr = `${datefrom.getFullYear()}${String(
       datefrom.getMonth() + 1
@@ -181,6 +195,7 @@ function PassesAnalysis({ token }) {
       }
     );
 
+    /* The data are getting modified so that they can be downloaded from as a csv file. The ?format=csv link is used which gives the data in csv form directly from the backend */
     const rescsv = await fetch(
       `http://localhost:9103/interoperability/api/PassesAnalysis/${operatorid1}/${operatorid2}/${datefromstr}/${datetostr}?format=csv`,
       {
@@ -205,19 +220,20 @@ function PassesAnalysis({ token }) {
       <section className="index-banner">
         <h2>Passes Analysis</h2>
         <div className="form-container">
+          {/* The 5-Form elements: Tag Operator, Station Operator, Date from, Date to and Search button */}
           <Stack spacing={3}>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
-                    Operator 1
+                    Tag Operator
                   </InputLabel>
                   <Select
                     className="form-input"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={op1}
-                    label="Operator1"
+                    label="Tag Operator"
                     onChange={handleOp1Change}
                   >
                     {operators &&
@@ -229,16 +245,17 @@ function PassesAnalysis({ token }) {
                   </Select>
                 </FormControl>
 
+                {decodedToken?.type === 'admin' ? (
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
-                    Operator 2
+                    Station Operator
                   </InputLabel>
                   <Select
                     className="form-input"
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={op2}
-                    label="Operator2"
+                    label="Station Operator"
                     onChange={handleOp2Change}
                   >
                     {operators &&
@@ -249,6 +266,7 @@ function PassesAnalysis({ token }) {
                       ))}
                   </Select>
                 </FormControl>
+                ) : null}
 
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <div className="form-input">
@@ -272,6 +290,7 @@ function PassesAnalysis({ token }) {
                 </LocalizationProvider>
               </FormControl>
             </Box>
+            {/* The Search Button is clickable only when all the fields are filled */}
             <Button
               variant="contained"
               disabled={!canSubmit}
@@ -282,6 +301,7 @@ function PassesAnalysis({ token }) {
             >
               Search
             </Button>
+            {/* In case of error an error-message appears */}
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
               <Alert
                 onClose={handleClose}
@@ -294,22 +314,23 @@ function PassesAnalysis({ token }) {
           </Stack>
         </div>
         <div className="chart">
+          {/* The requested data are charted and they can also be downloaded as csv file */}
           {requestedData ? (
             <>
-            <Paper>
-              <Bar options={options} data={chartData}></Bar>
-            </Paper>
-            <div className="form-container3">
-            <ColorButton>  
-              <CSVLink
-                style = {{color: "white"}}
-                filename="PassesAnalysisReport.csv"
-                data={requestedCSV}
-              >
-                Download All Data
-              </CSVLink>
-            </ColorButton> 
-            </div>
+              <Paper>
+                <Bar options={options} data={chartData}></Bar>
+              </Paper>
+              <div className="form-container3">
+                <ColorButton>
+                  <CSVLink
+                    style={{ color: "white" }}
+                    filename="PassesAnalysisReport.csv"
+                    data={requestedCSV}
+                  >
+                    Download All Data
+                  </CSVLink>
+                </ColorButton>
+              </div>
             </>
           ) : null}
         </div>

@@ -1,3 +1,4 @@
+/* All the needed components for the page are imported */
 import { useState, useEffect } from 'react';
 
 function getWindowDimensions() {

@@ -1,6 +1,8 @@
+/* All the needed components for the page are imported */
 import React from "react";
 import "./App.css";
 
+/* This page belongs to the footer. It includes our university emails in case someone wants to contact the project creators  */
 function Contact() {
   return (
     <main>
