@@ -178,8 +178,8 @@ function PassesCost({ token }) {
                       exclusive
                       onChange={handleRoleChange}
                     >
-                      <ToggleButton value="debited">1)Op.Debited</ToggleButton>
-                      <ToggleButton value="credited">2)Op.Credited</ToggleButton>
+                      <ToggleButton value="debited">1)Oper.Debited</ToggleButton>
+                      <ToggleButton value="credited">2)Oper.Credited</ToggleButton>
                     </ToggleButtonGroup>
                 ) : null}
                 {role === 'credited' || decodedToken.type === 'admin' ? (
