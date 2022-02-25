@@ -14,7 +14,7 @@ async function promptMissingScope() {
             'login: User login credentials and perform identification',
             'logout: Perform user logout',
             'healthcheck: Check end-to-end connectivity (between user and database)',
-            'resetpasses: Deletes all pass records from the database and resets the administrator account to default',
+            'resetpasses: Reset the pass records in the database to default',
             'resetstations: Resets the station records in the database to default',
             'resettags: Resets the tag records in the database to default',
             'resetvehicles: Resets the vehicle records in the database to default',
