@@ -51,7 +51,7 @@ test('Unit Test for passesperstation function (case: invalid input)', async () =
 })
 
 test('Unit Test for settlementbyid function (case: invalid input)', async () => {
-    const res = await settlementbyid.settlementbyid(baseURL, '8X01WHCZ11', 'invalid format');
+    const res = await settlementbyid.settlementbyid(baseURL, '2LCQALYTFG', 'invalid format');
     expect(res).toBe(400)
 })
 

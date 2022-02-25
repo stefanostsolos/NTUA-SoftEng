@@ -87,7 +87,7 @@ test('ClearSettlement test', done => {
             done(error);
         }
     }
-    os.execCommand('se2118 clearsettlement --id WGSI08TUQL', function (retVal) {
+    os.execCommand('se2118 clearsettlement --id 2LCQALYTFG', function (retVal) {
         const last = retVal.slice(-4);
         callback(cases(last));
     });
@@ -177,7 +177,7 @@ test('settlementbyid test', done => {
             done(error);
         }
     }
-    os.execCommand('se2118 settlementbyid --id 8X01WHCZ11 --format csv', function (retVal) {
+    os.execCommand('se2118 settlementbyid --id 2LCQALYTFG --format csv', function (retVal) {
         const last = retVal.slice(-4);
         callback(cases(last));
     });

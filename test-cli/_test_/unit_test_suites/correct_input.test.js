@@ -31,7 +31,7 @@ test('Unit Test for chargesby function (casae: correct input)', async () => {
 })
 
 test('Unit Test for clearsettlement function (case: correct input)', async () => {
-    const res = await clearsettlement.clearsettlement(baseURL, 'WGSI08TUQL');
+    const res = await clearsettlement.clearsettlement(baseURL, '2LCQALYTFG');
     expect(res).toBe(200)
 })
 
@@ -66,7 +66,7 @@ test('Unit Test for passesperstation function (case: correct input)', async () =
 })
 
 test('Unit Test for settlementbyid function (case: correct input)', async () => {
-    const res = await settlementbyid.settlementbyid(baseURL, '8X01WHCZ11', 'json');
+    const res = await settlementbyid.settlementbyid(baseURL, '2LCQALYTFG', 'json');
     expect(res).toBe(200)
 })
 
