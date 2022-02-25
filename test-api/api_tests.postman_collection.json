@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bc8549e3-3100-4a2e-a828-df9fc6941d13",
+		"_postman_id": "44e6e385-32b9-4a88-8dd5-47b97d732712",
 		"name": "API Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1228,53 +1228,6 @@
 					"response": []
 				},
 				{
-					"name": "ResetTags",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"schema = {",
-									"    \"type\": \"object\",",
-									"    \"properties\": {",
-									"        \"status\": {",
-									"            \"type\": \"string\",",
-									"            \"enum\": [\"OK\", \"failed\"]",
-									"        }",
-									"    }",
-									"}",
-									"",
-									"pm.test(\"Status code is 200\", () => {",
-									"    pm.response.to.have.status(200);",
-									"})",
-									"pm.test(\"Response has correct data type\", () => {",
-									"    pm.response.to.have.jsonSchema(schema);",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "localhost:9103/interoperability/api/admin/resettags",
-							"host": [
-								"localhost"
-							],
-							"port": "9103",
-							"path": [
-								"interoperability",
-								"api",
-								"admin",
-								"resettags"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "ResetVehicles",
 					"event": [
 						{
@@ -1316,6 +1269,53 @@
 								"api",
 								"admin",
 								"resetvehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetTags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"status\": {",
+									"            \"type\": \"string\",",
+									"            \"enum\": [\"OK\", \"failed\"]",
+									"        }",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"pm.test(\"Response has correct data type\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9103/interoperability/api/admin/resettags",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"interoperability",
+								"api",
+								"admin",
+								"resettags"
 							]
 						}
 					},
@@ -2854,7 +2854,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:9103/interoperability/api/SettlementByID/QICNZQ8NYG",
+							"raw": "localhost:9103/interoperability/api/SettlementByID/2LCQALYTFG",
 							"host": [
 								"localhost"
 							],
@@ -2863,7 +2863,7 @@
 								"interoperability",
 								"api",
 								"SettlementByID",
-								"QICNZQ8NYG"
+								"2LCQALYTFG"
 							]
 						}
 					},
@@ -2923,7 +2923,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:9103/interoperability/api/SettlementByID/QICNZQ8NYG?format=csv",
+							"raw": "localhost:9103/interoperability/api/SettlementByID/2LCQALYTFG?format=csv",
 							"host": [
 								"localhost"
 							],
@@ -2932,7 +2932,7 @@
 								"interoperability",
 								"api",
 								"SettlementByID",
-								"QICNZQ8NYG"
+								"2LCQALYTFG"
 							],
 							"query": [
 								{
@@ -3320,40 +3320,6 @@
 								"api",
 								"SettlementsByOperator",
 								"AO"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "SettlementsByOperator (No Data)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 402\", () => {",
-									"    pm.response.to.have.status(402);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:9103/interoperability/api/SettlementsByOperator/MR",
-							"host": [
-								"localhost"
-							],
-							"port": "9103",
-							"path": [
-								"interoperability",
-								"api",
-								"SettlementsByOperator",
-								"MR"
 							]
 						}
 					},

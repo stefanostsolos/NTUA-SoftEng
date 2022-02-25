@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 22, 2022 at 05:34 PM
+-- Generation Time: Feb 25, 2022 at 07:20 PM
 -- Server version: 8.0.27
 -- PHP Version: 7.4.3
 
@@ -36160,7 +36160,7 @@ INSERT INTO `settlement` (`ID`, `operatorCredited`, `operatorDebited`, `dateFrom
 ('1KB81TPAAQ', 'OO', 'GF', '2019-03-31 21:00:00', '2019-06-30 20:59:59', '9.55', 0),
 ('2E8WEET051', 'OO', 'GF', '2020-09-30 21:00:00', '2020-12-31 21:59:59', '27.60', 0),
 ('2EYOB3243Z', 'MR', 'KO', '2018-12-31 22:00:00', '2019-03-31 20:59:59', '9.55', 0),
-('2LCQALYTFG', 'GF', 'MR', '2018-12-31 22:00:00', '2019-03-31 20:59:59', '4.55', 0),
+('2LCQALYTFG', 'GF', 'MR', '2018-12-31 22:00:00', '2019-03-31 20:59:59', '4.55', 1),
 ('2LWM4IH36H', 'AO', 'GF', '2019-12-31 22:00:00', '2020-03-31 20:59:59', '82.20', 0),
 ('2M1IKXVPN3', 'NE', 'MR', '2019-09-30 21:00:00', '2019-12-31 21:59:59', '9.70', 0),
 ('2PQURYFXRN', 'MR', 'KO', '2020-12-31 22:00:00', '2021-03-31 20:59:59', '0.00', 0),
@@ -36385,7 +36385,7 @@ INSERT INTO `settlement` (`ID`, `operatorCredited`, `operatorDebited`, `dateFrom
 ('YPT90G9QQ3', 'OO', 'MR', '2020-06-30 21:00:00', '2020-09-30 20:59:59', '8.05', 0),
 ('YUWRQP9SE1', 'EG', 'KO', '2021-09-30 21:00:00', '2021-12-31 21:59:59', '0.10', 0),
 ('ZA4SZVG3V7', 'OO', 'EG', '2019-03-31 21:00:00', '2019-06-30 20:59:59', '1.65', 0),
-('ZCV7BOUO4P', 'OO', 'EG', '2021-03-31 21:00:00', '2021-06-30 20:59:59', '3.15', 0),
+('ZCV7BOUO4P', 'OO', 'EG', '2021-03-31 21:00:00', '2021-06-30 20:59:59', '3.15', 1),
 ('ZH8YUBQAF7', 'OO', 'GF', '2020-12-31 22:00:00', '2021-03-31 20:59:59', '19.55', 0),
 ('ZHRBA0A20M', 'MR', 'EG', '2019-03-31 21:00:00', '2019-06-30 20:59:59', '3.50', 0),
 ('ZJTVH5TZ65', 'OO', 'KO', '2019-03-31 21:00:00', '2019-06-30 20:59:59', '19.55', 0),
@@ -36393,7 +36393,7 @@ INSERT INTO `settlement` (`ID`, `operatorCredited`, `operatorDebited`, `dateFrom
 ('ZMRDC7YLPH', 'AO', 'MR', '2018-12-31 22:00:00', '2019-03-31 20:59:59', '27.10', 0),
 ('ZNCP2KNF89', 'NE', 'MR', '2020-09-30 21:00:00', '2020-12-31 21:59:59', '28.50', 0),
 ('ZR1YU763B4', 'AO', 'OO', '2020-12-31 22:00:00', '2021-03-31 20:59:59', '37.90', 0),
-('ZRM95DN377', 'NE', 'EG', '2020-09-30 21:00:00', '2020-12-31 21:59:59', '8.30', 0),
+('ZRM95DN377', 'NE', 'EG', '2020-09-30 21:00:00', '2020-12-31 21:59:59', '8.30', 1),
 ('ZTBV9SSOGV', 'NE', 'KO', '2021-06-30 21:00:00', '2021-09-30 20:59:59', '26.15', 0),
 ('ZY7AF6OPFF', 'NE', 'MR', '2018-12-31 22:00:00', '2019-03-31 20:59:59', '20.80', 0),
 ('ZYA4ZVBNDP', 'KO', 'MR', '2020-09-30 21:00:00', '2020-12-31 21:59:59', '5.85', 0),
@@ -36638,16 +36638,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `password`, `type`, `operatorID`) VALUES
-('admin', '$2b$10$Dv4Kvdkc/JJY1eIn0a78tezzPltSKhQW0RKwWyyhefRys6MyByrhi', 'admin', NULL),
-('aodos', '$2b$10$aG73eQmzcrTBR1xJRfOYuOJrpABK..swcPOMtGq8ZyWLV7QZnfWfu', 'operator', 'AO'),
+('admin', '$2b$10$HP57kOoUSVJ26DNG2fUhMu0zXtQe74cR8IWldEXfZNL4Id6d7fL/6', 'admin', NULL),
+('aodos', '$2b$10$4wTDPK9vZmkfq176NOrzNOTPHrJGg3QRNBDIpsk2cVXkDzuugyopm', 'operator', 'AO'),
 ('egnatia', '$2b$10$XTzAZFLUzvHw56dEEuSIjuvfv67gWqdbcJiiDNA7EPlqSWe6oHhEa', 'operator', 'EG'),
 ('gefyra', '$2b$10$fvkjbLY4C.UW5sy4GKDXquAIKDz7g.OTjy4PSojTwhKNFvcscOIty', 'operator', 'GF'),
 ('kentriki_odos', '$2b$10$3Hwg4VDuckmZU8kmuBMV4eJpsVKLvkkEaaAe57TIywFaTmVG5N7rK', 'operator', 'KO'),
 ('moreas', '$2b$10$9XdvYS3v2pr1tL7quVumnOOCD64i8tJieY6FU/DqJ59fZ0ORUluVe', 'operator', 'MR'),
 ('nea_odos', '$2b$10$UqUUC89IZpFYL9pC6S2ihOtxW8EJzaiJGdElaTixDZQtWk0/BxW0i', 'operator', 'NE'),
-('new_user', '$2b$10$gaGMXU/n2CpQUDfaEb8FgOwGBNbUbQabxX2u8p7nVuoIuwJ0JWQd.', 'operator', 'AO'),
-('olympia_odos', '$2b$10$MXNHhAoaUCQ.4vesZGj6E.90sRV2BmoqGerNC06lddo6HR77S8qZq', 'operator', 'OO'),
-('test', '$2b$10$Hk44T1cafvS42pso2/yU.e8qJ4viPHGP2uQVe/XyMXz3yXfH576y.', 'operator', 'EG');
+('olympia_odos', '$2b$10$MXNHhAoaUCQ.4vesZGj6E.90sRV2BmoqGerNC06lddo6HR77S8qZq', 'operator', 'OO');
 
 -- --------------------------------------------------------
 
