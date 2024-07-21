@@ -4,13 +4,10 @@
 
 </p>
 
-# Toll Interoperability Service System
 
-## Introduction
+## About the Project
 
-### Purpose of the Software
-
-The Toll Interoperability Service System aims to address the growing need for seamless toll payment across the Greek highway network. With seven different motorway operators and an expanding network of toll stations, this system facilitates the use of a single electronic card (e-pass) for all highways, enhancing user convenience and reducing wait times.
+This project was developed by our team as part of the SoftEng course, during the 7th semester of the Electrical and Computer Engineering school of the National Technical University of Athens. The Toll Interoperability Service System aims to address the growing need for seamless toll payment across the Greek highway network. With seven different motorway operators and an expanding network of toll stations, this system facilitates the use of a single electronic card (e-pass) for all highways, enhancing user convenience and reducing wait times.
 
 Key objectives:
 - Record debts between motorway operators from vehicle crossings
@@ -19,6 +16,12 @@ Key objectives:
 - Ensure accurate and complete debt recording
 - Facilitate debt offsetting on operator request
 - Confirm successful payments through payment service providers
+
+### Repository contents
+
+This repository contains the cumulative work produced to develop this project. Specifically, the `api` directory contains a REST API specification, compliant with OpenAPI 3.0. The `backend` directory contains all the code for the backend application, while the `cli` directory contains the code for the CLI. The `frontend` directory contains all the code for the front-end application. The `database` directory contains a dump of the MySQL database. The `doc` directory contains documents related to the requirements specifications of the project, along with a Visual Paradigm file containing diagrams. The `test-api` and `test-backend` contain the Postman collection about API and Backend tests respectively. Finally, the `test-cli` contains unit and functional tests for the CLI module.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Interfaces
 
@@ -47,6 +50,10 @@ For Transport Authorities:
 - Traffic statistics viewing and download
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+### Built with
+
+The following major frameworks/libraries were used to bootstrap our project. In general, the project's code was written exclusively in JavaScript and Express.js, with HTML and CSS also being used to develop the front-end application.
 
 ## About us
 
